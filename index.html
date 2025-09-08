@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Заголовок приложения -->
+        <header class="header">
+            <h1>Каталог товаров</h1>
+            <div class="cart-icon" id="cartIcon">
+                🛒 <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </header>
+
+        <!-- Каталог товаров -->
+        <main class="main">
+            <div class="products-grid" id="productsGrid">
+                <!-- Товары будут загружены динамически -->
+            </div>
+        </main>
+
+        <!-- Модальное окно с деталями товара -->
+        <div class="modal" id="productModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <div class="product-details">
+                    <!-- Карусель фото -->
+                    <div class="photo-carousel" id="photoCarousel">
+                        <div class="carousel-container">
+                            <div class="carousel-track" id="carouselTrack">
+                                <!-- Фото будут добавлены динамически -->
+                            </div>
+                            <button class="carousel-btn prev-btn" id="prevBtn">&#10094;</button>
+                            <button class="carousel-btn next-btn" id="nextBtn">&#10095;</button>
+                        </div>
+                        <div class="carousel-dots" id="carouselDots">
+                            <!-- Индикаторы будут добавлены динамически -->
+                        </div>
+                    </div>
+
+                    <!-- Информация о товаре -->
+                    <div class="product-info">
+                        <h2 class="product-title" id="productTitle"></h2>
+                        <p class="product-price" id="productPrice"></p>
+                        <p class="product-article" id="productArticle"></p>
+                        
+                        <!-- Характеристики -->
+                        <div class="product-specs" id="productSpecs">
+                            <h3>Характеристики:</h3>
+                            <div class="specs-list" id="specsList"></div>
+                        </div>
+
+                        <!-- Описание -->
+                        <div class="product-description" id="productDescription"></div>
+
+                        <!-- Добавление в корзину -->
+                        <div class="add-to-cart">
+                            <div class="quantity-selector">
+                                <button class="qty-btn minus" id="qtyMinus">-</button>
+                                <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="99">
+                                <button class="qty-btn plus" id="qtyPlus">+</button>
+                            </div>
+                            <button class="add-cart-btn" id="addToCartBtn">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Корзина -->
+        <div class="cart-panel" id="cartPanel">
+            <div class="cart-content">
+                <div class="cart-header">
+                    <h2>Корзина</h2>
+                    <button class="close-cart" id="closeCart">&times;</button>
+                </div>
+                <div class="cart-items" id="cartItems">
+                    <!-- Товары в корзине будут добавлены динамически -->
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <strong>Итого: <span id="cartTotal">0</span> ₽</strong>
+                    </div>
+                    <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backdrop для модальных окон -->
+        <div class="backdrop" id="backdrop"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

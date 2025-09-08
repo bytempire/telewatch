@@ -1,0 +1,141 @@
+{
+  "products": [
+    {
+      "id": "0550",
+      "name": "Кардиган",
+      "price": 3599,
+      "article": "0550",
+      "images": [
+        "https://cloud.mail.ru/public/Hkak/997nyc6VY/download",
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=400&h=400&fit=crop&q=80"
+      ],
+      "description": "Стильный и комфортный кардиган для повседневной носки. Изготовлен из мягкой пряжи высокого качества. Отлично подходит для создания уютного и элегантного образа.",
+      "specs": {
+        "Размер": "Универсальный (S-L)",
+        "Материал": "70% шерсть, 30% акрил",
+        "Цвет": "Серый меланж",
+        "Длина": "65 см",
+        "Тип застежки": "Без застежки",
+        "Сезон": "Демисезон",
+        "Стиль": "Casual",
+        "Уход": "Ручная стирка при 30°C"
+      }
+    },
+    {
+      "id": "watch_002", 
+      "name": "Samsung Galaxy Watch 6",
+      "price": 28999,
+      "article": "GW6-40-BT-SLV",
+      "images": [
+        "https://images.unsplash.com/photo-1579586337278-3f436f25d4d1?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400&h=400&fit=crop"
+      ],
+      "description": "Новые Galaxy Watch с улучшенными датчиками для отслеживания состава тела, сна и активности. Совместимы с Android и iOS.",
+      "specs": {
+        "Размер корпуса": "40 мм",
+        "Материал корпуса": "Алюминий",
+        "Цвет": "Серебристый", 
+        "Дисплей": "Super AMOLED",
+        "Водостойкость": "5ATM + IP68",
+        "GPS": "Да",
+        "Cellular": "Нет",
+        "Батарея": "До 40 часов",
+        "Операционная система": "Wear OS 4"
+      }
+    },
+    {
+      "id": "watch_003",
+      "name": "Garmin Forerunner 955",
+      "price": 52999,
+      "article": "FR955-GPS-BLK",
+      "images": [
+        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=400&h=400&fit=crop"
+      ],
+      "description": "Премиальные GPS-часы для серьезных спортсменов с расширенными метриками производительности и картами.",
+      "specs": {
+        "Размер корпуса": "46.5 мм",
+        "Материал корпуса": "Полимер с металлической рамкой",
+        "Цвет": "Черный",
+        "Дисплей": "Memory-in-pixel (MIP)",
+        "Водостойкость": "5ATM",
+        "GPS": "Мульти-GNSS",
+        "Cellular": "Нет",
+        "Батарея": "До 15 дней",
+        "Операционная система": "Garmin OS"
+      }
+    },
+    {
+      "id": "watch_004",
+      "name": "Huawei Watch GT 4",
+      "price": 22999,
+      "article": "HW-GT4-46-GRN",
+      "images": [
+        "https://images.unsplash.com/photo-1587996112095-fce59bf97dbf?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=400&fit=crop"
+      ],
+      "description": "Стильные смарт-часы с длительным временем работы и комплексным мониторингом здоровья.",
+      "specs": {
+        "Размер корпуса": "46 мм",
+        "Материал корпуса": "Нержавеющая сталь",
+        "Цвет": "Зеленый",
+        "Дисплей": "AMOLED",
+        "Водостойкость": "5ATM",
+        "GPS": "Да",
+        "Cellular": "Нет", 
+        "Батарея": "До 14 дней",
+        "Операционная система": "HarmonyOS"
+      }
+    },
+    {
+      "id": "watch_005",
+      "name": "Amazfit GTR 4",
+      "price": 15999,
+      "article": "AMZ-GTR4-BLU",
+      "images": [
+        "https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1523371683693-b5c3eb4c3d28?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1496395031280-4201b0e022ca?w=400&h=400&fit=crop"
+      ],
+      "description": "Доступные смарт-часы с отличным соотношением цена-качество и множеством спортивных режимов.",
+      "specs": {
+        "Размер корпуса": "46 мм",
+        "Материал корпуса": "Алюминиевый сплав",
+        "Цвет": "Синий",
+        "Дисплей": "AMOLED HD",
+        "Водостойкость": "5ATM",
+        "GPS": "Да",
+        "Cellular": "Нет",
+        "Батарея": "До 14 дней",
+        "Операционная система": "Zepp OS 2.0"
+      }
+    },
+    {
+      "id": "watch_006",
+      "name": "Fossil Gen 6 Smartwatch",
+      "price": 24999,
+      "article": "FSL-GEN6-BRN",
+      "images": [
+        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=400&h=400&fit=crop",
+        "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?w=400&h=400&fit=crop"
+      ],
+      "description": "Классические смарт-часы с премиальными материалами и полным набором современных функций.",
+      "specs": {
+        "Размер корпуса": "44 мм",
+        "Материал корпуса": "Нержавеющая сталь",
+        "Цвет": "Коричневый",
+        "Дисплей": "AMOLED",
+        "Водостойкость": "3ATM",
+        "GPS": "Да",
+        "Cellular": "Нет",
+        "Батарея": "24+ часа",
+        "Операционная система": "Wear OS by Google"
+      }
+    }
+  ]
+}

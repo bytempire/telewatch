@@ -139,8 +139,8 @@ function openProductModal(productId) {
     // Настройка карусели
     setupCarousel();
     
-    // Сброс количества
-    document.getElementById('qtyInput').value = '1';
+    // Очищаем поле количества (без предзаполнения)
+    document.getElementById('qtyInput').value = '';
 
     // Показ модального окна
     elementsMap.productModal.classList.add('active');
@@ -221,10 +221,21 @@ function closeProductModal() {
 function addToCart() {
     if (!currentProduct) return;
 
-    const quantity = parseInt(document.getElementById('qtyInput').value);
+    const inputValue = document.getElementById('qtyInput').value.trim();
+    const quantity = parseInt(inputValue);
     
-    if (quantity <= 0) {
-        showNotification('Введите корректное количество');
+    if (!inputValue || isNaN(quantity)) {
+        showNotification('Введите количество товара');
+        return;
+    }
+    
+    if (quantity < 50) {
+        showNotification('Минимальное количество для заказа 50 шт');
+        return;
+    }
+    
+    if (quantity > 9999) {
+        showNotification('Максимальное количество 9999 штук');
         return;
     }
 
@@ -502,17 +513,49 @@ function setupEventListeners() {
     document.getElementById('prevBtn')?.addEventListener('click', () => goToSlide(currentSlide - 1));
     document.getElementById('nextBtn')?.addEventListener('click', () => goToSlide(currentSlide + 1));
     
-    // Управление количеством в модальном окне
-    document.getElementById('qtyMinus')?.addEventListener('click', () => {
-        const input = document.getElementById('qtyInput');
-        const newValue = Math.max(1, parseInt(input.value) - 1);
-        input.value = newValue;
+    // Управление количеством - валидация при потере фокуса
+    document.getElementById('qtyInput')?.addEventListener('blur', (e) => {
+        const inputValue = e.target.value.trim();
+        const value = parseInt(inputValue);
+        
+        // Если поле пустое, оставляем пустым (не навязываем значение)
+        if (!inputValue) {
+            return; // Просто выходим, не меняем значение
+        }
+        
+        // Если введено некорректное значение
+        if (isNaN(value) || value === 0) {
+            e.target.value = '';
+            showNotification('Введите корректное число');
+        } else if (value < 50) {
+            e.target.value = 50;
+            showNotification('Минимальное количество для заказа 50 шт');
+        } else if (value > 9999) {
+            e.target.value = 9999;
+            showNotification('Максимальное количество: 9999 штук');
+        }
     });
     
-    document.getElementById('qtyPlus')?.addEventListener('click', () => {
-        const input = document.getElementById('qtyInput');
-        const newValue = Math.min(99, parseInt(input.value) + 1);
-        input.value = newValue;
+    // Разрешаем только цифры при вводе
+    document.getElementById('qtyInput')?.addEventListener('keypress', (e) => {
+        // Разрешаем только цифры, backspace, delete, arrow keys
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+        if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+            e.preventDefault();
+        }
+    });
+    
+    // Выделяем весь текст при фокусе для удобного редактирования
+    document.getElementById('qtyInput')?.addEventListener('focus', (e) => {
+        // Небольшая задержка для корректной работы на мобильных
+        setTimeout(() => {
+            e.target.select();
+        }, 10);
+    });
+    
+    // Дополнительное выделение по клику
+    document.getElementById('qtyInput')?.addEventListener('click', (e) => {
+        e.target.select();
     });
     
     // Добавление в корзину

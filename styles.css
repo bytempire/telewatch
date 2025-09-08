@@ -731,17 +731,24 @@ body {
     
     /* Зафиксированная кнопка для мобильных */
     .add-to-cart {
-        position: sticky;
+        position: fixed;
         bottom: 0;
+        left: 0;
+        right: 0;
         background: var(--tg-theme-bg-color, #ffffff);
         padding: 16px 20px;
         border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
         box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-        z-index: 10;
+        z-index: 1000;
     }
     
     .product-description {
         padding-bottom: 100px; /* Больший отступ для мобильных */
+    }
+    
+    /* Отступ для всей секции информации о товаре */
+    .product-info {
+        padding-bottom: 120px; /* Отступ для зафиксированной кнопки */
     }
     
     /* Увеличиваем шрифты для лучшей читаемости на маленьких экранах */
@@ -789,17 +796,24 @@ body {
     
     /* Зафиксированная кнопка для очень маленьких экранов */
     .add-to-cart {
-        position: sticky;
+        position: fixed;
         bottom: 0;
+        left: 0;
+        right: 0;
         background: var(--tg-theme-bg-color, #ffffff);
         padding: 12px 8px;
         border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
         box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-        z-index: 10;
+        z-index: 1000;
     }
     
     .product-description {
         padding-bottom: 90px; /* Отступ для очень маленьких экранов */
+    }
+    
+    /* Отступ для всей секции информации о товаре */
+    .product-info {
+        padding-bottom: 110px; /* Отступ для зафиксированной кнопки */
     }
 }
 

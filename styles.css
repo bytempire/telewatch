@@ -346,7 +346,7 @@ body {
 /* Добавление в корзину */
 .add-to-cart {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
 }
 
@@ -356,16 +356,18 @@ body {
     border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
     border-radius: 8px;
     overflow: hidden;
+    flex-shrink: 0; /* Не сжимается */
+    min-width: 120px; /* Фиксированная минимальная ширина */
 }
 
 .qty-btn {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 36px;
     border: none;
     background: var(--tg-theme-section-bg-color, #f8f9fa);
     color: var(--tg-theme-text-color, #000000);
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     transition: background-color 0.2s;
 }
@@ -375,26 +377,27 @@ body {
 }
 
 .qty-input {
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 36px;
     border: none;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     background: var(--tg-theme-bg-color, #ffffff);
     color: var(--tg-theme-text-color, #000000);
 }
 
 .add-cart-btn {
-    flex: 1;
+    flex: 2; /* Занимает в 2 раза больше места чем quantity-selector */
     height: 48px;
     background: var(--tg-theme-button-color, #007AFF);
     color: var(--tg-theme-button-text-color, #ffffff);
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s;
+    min-width: 180px; /* Минимальная ширина для кнопки */
 }
 
 .add-cart-btn:hover {
@@ -679,11 +682,17 @@ body {
     .add-to-cart {
         flex-direction: column;
         align-items: stretch;
-        gap: 8px;
+        gap: 12px;
     }
     
     .quantity-selector {
         justify-content: center;
+        align-self: center; /* Центрируем селектор количества */
+        max-width: 140px; /* Ограничиваем ширину на мобильных */
+    }
+    
+    .add-cart-btn {
+        min-width: auto; /* Убираем минимальную ширину на мобильных */
     }
     
     /* Увеличиваем шрифты для лучшей читаемости на маленьких экранах */

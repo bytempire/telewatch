@@ -140,7 +140,7 @@ function openProductModal(productId) {
     setupCarousel();
     
     // Сброс количества
-    document.getElementById('qtyInput').value = '1';
+    document.getElementById('qtyInput').value = '50';
 
     // Показ модального окна
     elementsMap.productModal.classList.add('active');
@@ -223,8 +223,13 @@ function addToCart() {
 
     const quantity = parseInt(document.getElementById('qtyInput').value);
     
-    if (quantity <= 0) {
-        showNotification('Введите корректное количество');
+    if (quantity < 50) {
+        showNotification('Минимальное количество 50 штук');
+        return;
+    }
+    
+    if (isNaN(quantity) || quantity > 9999) {
+        showNotification('Введите корректное количество (50-9999)');
         return;
     }
 
@@ -502,17 +507,14 @@ function setupEventListeners() {
     document.getElementById('prevBtn')?.addEventListener('click', () => goToSlide(currentSlide - 1));
     document.getElementById('nextBtn')?.addEventListener('click', () => goToSlide(currentSlide + 1));
     
-    // Управление количеством в модальном окне
-    document.getElementById('qtyMinus')?.addEventListener('click', () => {
-        const input = document.getElementById('qtyInput');
-        const newValue = Math.max(1, parseInt(input.value) - 1);
-        input.value = newValue;
-    });
-    
-    document.getElementById('qtyPlus')?.addEventListener('click', () => {
-        const input = document.getElementById('qtyInput');
-        const newValue = Math.min(99, parseInt(input.value) + 1);
-        input.value = newValue;
+    // Управление количеством - теперь только ручной ввод
+    document.getElementById('qtyInput')?.addEventListener('input', (e) => {
+        let value = parseInt(e.target.value);
+        if (isNaN(value) || value < 50) {
+            e.target.value = 50;
+        } else if (value > 9999) {
+            e.target.value = 9999;
+        }
     });
     
     // Добавление в корзину

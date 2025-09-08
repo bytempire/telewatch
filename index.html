@@ -61,8 +61,9 @@
                         <!-- Добавление в корзину -->
                         <div class="add-to-cart">
                             <div class="quantity-selector">
+                                <label for="qtyInput" class="qty-label">Количество (мин. 50 шт):</label>
                                 <button class="qty-btn minus" id="qtyMinus">-</button>
-                                <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="99">
+                                <input type="number" class="qty-input" id="qtyInput" value="50" min="50" max="9999" placeholder="50">
                                 <button class="qty-btn plus" id="qtyPlus">+</button>
                             </div>
                             <button class="add-cart-btn" id="addToCartBtn">Добавить в корзину</button>

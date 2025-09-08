@@ -349,6 +349,7 @@ body {
     display: flex;
     gap: 16px;
     align-items: flex-end; /* Выравниваем по нижнему краю с полем ввода */
+    justify-content: center; /* Центрируем элементы */
     position: sticky;
     bottom: 0;
     background: var(--tg-theme-bg-color, #ffffff);
@@ -407,7 +408,7 @@ body {
 }
 
 .add-cart-btn {
-    flex: 4; /* Занимает в 4 раза больше места чем quantity-selector */
+    width: 140px; /* Такая же ширина как у селектора */
     height: 52px; /* Увеличиваем высоту */
     background: var(--tg-theme-button-color, #007AFF);
     color: var(--tg-theme-button-text-color, #ffffff);
@@ -417,7 +418,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    min-width: 240px; /* Увеличиваем минимальную ширину */
+    flex-shrink: 0; /* Не сжимается */
 }
 
 .add-cart-btn:hover {
@@ -724,7 +725,7 @@ body {
     }
     
     .add-cart-btn {
-        min-width: auto; /* Убираем минимальную ширину на мобильных */
+        width: 140px; /* Такая же ширина как у селектора */
         height: 54px; /* Увеличиваем высоту на мобильных */
         font-size: 19px; /* Крупнее шрифт */
     }
@@ -740,6 +741,10 @@ body {
         border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
         box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
         z-index: 1000;
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+        justify-content: center; /* Центрируем элементы */
     }
     
     .product-description {
@@ -805,6 +810,10 @@ body {
         border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
         box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
         z-index: 1000;
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+        justify-content: center; /* Центрируем элементы */
     }
     
     .product-description {

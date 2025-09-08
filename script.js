@@ -507,14 +507,41 @@ function setupEventListeners() {
     document.getElementById('prevBtn')?.addEventListener('click', () => goToSlide(currentSlide - 1));
     document.getElementById('nextBtn')?.addEventListener('click', () => goToSlide(currentSlide + 1));
     
-    // Управление количеством - теперь только ручной ввод
-    document.getElementById('qtyInput')?.addEventListener('input', (e) => {
+    // Управление количеством - валидация при потере фокуса
+    document.getElementById('qtyInput')?.addEventListener('blur', (e) => {
         let value = parseInt(e.target.value);
-        if (isNaN(value) || value < 50) {
+        if (isNaN(value) || value === 0 || e.target.value.trim() === '') {
             e.target.value = 50;
+            showNotification('Установлено минимальное количество: 50 штук');
+        } else if (value < 50) {
+            e.target.value = 50;
+            showNotification('Минимальное количество: 50 штук');
         } else if (value > 9999) {
             e.target.value = 9999;
+            showNotification('Максимальное количество: 9999 штук');
         }
+    });
+    
+    // Разрешаем только цифры при вводе
+    document.getElementById('qtyInput')?.addEventListener('keypress', (e) => {
+        // Разрешаем только цифры, backspace, delete, arrow keys
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+        if (!allowedKeys.includes(e.key) && (e.key < '0' || e.key > '9')) {
+            e.preventDefault();
+        }
+    });
+    
+    // Выделяем весь текст при фокусе для удобного редактирования
+    document.getElementById('qtyInput')?.addEventListener('focus', (e) => {
+        // Небольшая задержка для корректной работы на мобильных
+        setTimeout(() => {
+            e.target.select();
+        }, 10);
+    });
+    
+    // Дополнительное выделение по клику
+    document.getElementById('qtyInput')?.addEventListener('click', (e) => {
+        e.target.select();
     });
     
     // Добавление в корзину

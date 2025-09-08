@@ -341,6 +341,7 @@ body {
     color: var(--tg-theme-text-color, #000000);
     line-height: 1.6;
     margin-bottom: 24px;
+    padding-bottom: 80px; /* Отступ для зафиксированной кнопки */
 }
 
 /* Добавление в корзину */
@@ -348,6 +349,13 @@ body {
     display: flex;
     gap: 16px;
     align-items: flex-end; /* Выравниваем по нижнему краю с полем ввода */
+    position: sticky;
+    bottom: 0;
+    background: var(--tg-theme-bg-color, #ffffff);
+    padding: 16px 20px;
+    border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
 .quantity-selector {
@@ -721,6 +729,21 @@ body {
         font-size: 19px; /* Крупнее шрифт */
     }
     
+    /* Зафиксированная кнопка для мобильных */
+    .add-to-cart {
+        position: sticky;
+        bottom: 0;
+        background: var(--tg-theme-bg-color, #ffffff);
+        padding: 16px 20px;
+        border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+    
+    .product-description {
+        padding-bottom: 100px; /* Больший отступ для мобильных */
+    }
+    
     /* Увеличиваем шрифты для лучшей читаемости на маленьких экранах */
     .product-name {
         font-size: 13px;
@@ -762,6 +785,21 @@ body {
     /* Адаптивная карусель для маленьких экранов */
     .photo-carousel {
         height: 250px;
+    }
+    
+    /* Зафиксированная кнопка для очень маленьких экранов */
+    .add-to-cart {
+        position: sticky;
+        bottom: 0;
+        background: var(--tg-theme-bg-color, #ffffff);
+        padding: 12px 8px;
+        border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+    
+    .product-description {
+        padding-bottom: 90px; /* Отступ для очень маленьких экранов */
     }
 }
 

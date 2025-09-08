@@ -700,15 +700,16 @@ body {
     }
     
     .add-to-cart {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row; /* Элементы в одну линию */
+        align-items: flex-end; /* Выравниваем по нижнему краю */
         gap: 12px;
+        justify-content: flex-start; /* Выравниваем по левому краю */
     }
     
     .quantity-selector {
-        align-self: center; /* Центрируем селектор количества */
-        align-items: center; /* Центрируем содержимое на мобильных */
-        min-width: auto; /* Убираем фиксированную ширину на мобильных */
+        align-items: flex-start; /* Выравниваем по левому краю */
+        min-width: 140px; /* Фиксированная ширина */
+        flex-shrink: 0; /* Не сжимается */
     }
     
     .qty-input {
@@ -782,6 +783,22 @@ body {
     
     .main {
         padding: 8px;
+    }
+    
+    .add-to-cart {
+        flex-direction: row; /* Элементы в одну линию */
+        align-items: flex-end; /* Выравниваем по нижнему краю */
+        gap: 8px;
+        justify-content: flex-start; /* Выравниваем по левому краю */
+    }
+    
+    .quantity-selector {
+        min-width: 120px; /* Меньшая ширина для очень маленьких экранов */
+        flex-shrink: 0;
+    }
+    
+    .add-cart-btn {
+        width: 120px; /* Меньшая ширина для очень маленьких экранов */
     }
     
     .product-name {

@@ -230,7 +230,7 @@ function addToCart() {
     }
     
     if (quantity < 50) {
-        showNotification('Минимальное количество 50 штук');
+        showNotification('Минимальное количество для заказа 50 шт');
         return;
     }
     
@@ -529,7 +529,7 @@ function setupEventListeners() {
             showNotification('Введите корректное число');
         } else if (value < 50) {
             e.target.value = 50;
-            showNotification('Минимальное количество: 50 штук');
+            showNotification('Минимальное количество для заказа 50 шт');
         } else if (value > 9999) {
             e.target.value = 9999;
             showNotification('Максимальное количество: 9999 штук');

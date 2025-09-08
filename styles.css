@@ -349,7 +349,6 @@ body {
     display: flex;
     gap: 16px;
     align-items: flex-end; /* Выравниваем по нижнему краю с полем ввода */
-    justify-content: center; /* Центрируем элементы */
     position: sticky;
     bottom: 0;
     background: var(--tg-theme-bg-color, #ffffff);
@@ -744,7 +743,6 @@ body {
         display: flex;
         gap: 16px;
         align-items: flex-end;
-        justify-content: center; /* Центрируем элементы */
     }
     
     .product-description {
@@ -813,7 +811,6 @@ body {
         display: flex;
         gap: 12px;
         align-items: flex-end;
-        justify-content: center; /* Центрируем элементы */
     }
     
     .product-description {

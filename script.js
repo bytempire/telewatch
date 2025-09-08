@@ -139,8 +139,8 @@ function openProductModal(productId) {
     // Настройка карусели
     setupCarousel();
     
-    // Сброс количества
-    document.getElementById('qtyInput').value = '50';
+    // Очищаем поле количества (без предзаполнения)
+    document.getElementById('qtyInput').value = '';
 
     // Показ модального окна
     elementsMap.productModal.classList.add('active');
@@ -221,15 +221,21 @@ function closeProductModal() {
 function addToCart() {
     if (!currentProduct) return;
 
-    const quantity = parseInt(document.getElementById('qtyInput').value);
+    const inputValue = document.getElementById('qtyInput').value.trim();
+    const quantity = parseInt(inputValue);
+    
+    if (!inputValue || isNaN(quantity)) {
+        showNotification('Введите количество товара');
+        return;
+    }
     
     if (quantity < 50) {
         showNotification('Минимальное количество 50 штук');
         return;
     }
     
-    if (isNaN(quantity) || quantity > 9999) {
-        showNotification('Введите корректное количество (50-9999)');
+    if (quantity > 9999) {
+        showNotification('Максимальное количество 9999 штук');
         return;
     }
 
@@ -509,10 +515,18 @@ function setupEventListeners() {
     
     // Управление количеством - валидация при потере фокуса
     document.getElementById('qtyInput')?.addEventListener('blur', (e) => {
-        let value = parseInt(e.target.value);
-        if (isNaN(value) || value === 0 || e.target.value.trim() === '') {
-            e.target.value = 50;
-            showNotification('Установлено минимальное количество: 50 штук');
+        const inputValue = e.target.value.trim();
+        const value = parseInt(inputValue);
+        
+        // Если поле пустое, оставляем пустым (не навязываем значение)
+        if (!inputValue) {
+            return; // Просто выходим, не меняем значение
+        }
+        
+        // Если введено некорректное значение
+        if (isNaN(value) || value === 0) {
+            e.target.value = '';
+            showNotification('Введите корректное число');
         } else if (value < 50) {
             e.target.value = 50;
             showNotification('Минимальное количество: 50 штук');

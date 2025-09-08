@@ -347,14 +347,23 @@ body {
 .add-to-cart {
     display: flex;
     gap: 16px;
-    align-items: center; /* Выравниваем по центру */
+    align-items: flex-end; /* Выравниваем по нижнему краю с полем ввода */
 }
 
 .quantity-selector {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     flex-shrink: 0; /* Не сжимается */
     min-width: 140px; /* Немного больше для удобства */
+    gap: 6px;
+}
+
+.qty-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 2px;
 }
 
 .qty-input {
@@ -690,6 +699,7 @@ body {
     
     .quantity-selector {
         align-self: center; /* Центрируем селектор количества */
+        align-items: center; /* Центрируем содержимое на мобильных */
         min-width: auto; /* Убираем фиксированную ширину на мобильных */
     }
     
@@ -697,6 +707,12 @@ body {
         width: 160px; /* Увеличиваем на мобильных для удобства */
         height: 50px;
         font-size: 17px;
+    }
+    
+    .qty-label {
+        font-size: 14px;
+        text-align: center;
+        width: 100%;
     }
     
     .add-cart-btn {

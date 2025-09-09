@@ -14,6 +14,8 @@ let products = [];
 let cart = [];
 let currentProduct = null;
 let currentSlide = 0;
+let selectedColor = null;
+let selectedSize = null;
 
 // DOM элементы
 const elementsMap = {
@@ -65,8 +67,14 @@ async function initApp() {
 async function loadProducts() {
     try {
         const response = await fetch('./products.json');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         products = data.products;
+        
     } catch (error) {
         console.error('Ошибка загрузки товаров:', error);
         products = [];
@@ -87,20 +95,30 @@ function renderProducts() {
         return;
     }
 
-    elementsMap.productsGrid.innerHTML = products.map(product => `
-        <div class="product-card" data-product-id="${product.id}">
-            <img 
-                class="product-image" 
-                src="${product.images[0]}" 
-                alt="${product.name}"
-                loading="lazy"
-                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik00MCA0MEg4MFY4MEg0MFY0MFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+'"
-            >
-            <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">${formatPrice(product.price)} ₽</p>
-            <p class="product-article">Артикул: ${product.article}</p>
-        </div>
-    `).join('');
+    elementsMap.productsGrid.innerHTML = products.map(product => {
+        // Получаем изображение для карточки
+        let cardImage = product.images && product.images[0] ? product.images[0] : '';
+        
+        // Если у товара есть варианты цветов, используем первое изображение первого цвета
+        if (product.variants && product.variants.colors && product.variants.colors[0] && product.variants.colors[0].images) {
+            cardImage = product.variants.colors[0].images[0];
+        }
+        
+        return `
+            <div class="product-card" data-product-id="${product.id}">
+                <img 
+                    class="product-image" 
+                    src="${cardImage}" 
+                    alt="${product.name}"
+                    loading="lazy"
+                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik00MCA0MEg4MFY4MEg0MFY0MFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+'"
+                >
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">${formatPrice(product.price)} ₽</p>
+                <p class="product-article">Артикул: ${product.article}</p>
+            </div>
+        `;
+    }).join('');
 
     // Добавляем обработчики кликов на карточки товаров
     document.querySelectorAll('.product-card').forEach(card => {
@@ -139,6 +157,9 @@ function openProductModal(productId) {
     // Настройка карусели
     setupCarousel();
     
+    // Настройка вариантов (цвет и размер)
+    setupVariants();
+    
     // Очищаем поле количества (без предзаполнения)
     document.getElementById('qtyInput').value = '';
 
@@ -150,14 +171,26 @@ function openProductModal(productId) {
 
 // Настройка карусели фотографий
 function setupCarousel() {
-    if (!currentProduct || !currentProduct.images) return;
+    if (!currentProduct) return;
 
     currentSlide = 0;
     const track = elementsMap.carouselTrack;
     const dots = elementsMap.carouselDots;
 
+    // Получаем изображения для карусели
+    let images = [];
+    
+    // Если у товара есть варианты цветов, используем изображения первого цвета
+    if (currentProduct.variants && currentProduct.variants.colors && currentProduct.variants.colors[0]) {
+        images = currentProduct.variants.colors[0].images || [];
+    } else if (currentProduct.images) {
+        images = currentProduct.images;
+    }
+    
+    if (images.length === 0) return;
+
     // Создание слайдов
-    track.innerHTML = currentProduct.images.map(image => `
+    track.innerHTML = images.map(image => `
         <div class="carousel-slide">
             <img 
                 class="carousel-image" 
@@ -169,8 +202,8 @@ function setupCarousel() {
     `).join('');
 
     // Создание точек навигации
-    if (currentProduct.images.length > 1) {
-        dots.innerHTML = currentProduct.images.map((_, index) => `
+    if (images.length > 1) {
+        dots.innerHTML = images.map((_, index) => `
             <div class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></div>
         `).join('');
 
@@ -209,6 +242,126 @@ function updateCarousel() {
     });
 }
 
+// Настройка вариантов (цвет и размер)
+function setupVariants() {
+    if (!currentProduct) return;
+    
+    // Сброс выбранных вариантов
+    selectedColor = null;
+    selectedSize = null;
+    
+    const colorSelector = document.getElementById('colorSelector');
+    const sizeSelector = document.getElementById('sizeSelector');
+    const colorSelect = document.getElementById('colorSelect');
+    const sizeSelect = document.getElementById('sizeSelect');
+    
+    // Показываем/скрываем селекторы в зависимости от наличия вариантов
+    if (currentProduct.variants && currentProduct.variants.colors) {
+        colorSelector.style.display = 'block';
+        renderColorOptions(colorSelect, currentProduct.variants.colors);
+    } else {
+        colorSelector.style.display = 'none';
+    }
+    
+    if (currentProduct.variants && currentProduct.variants.sizes) {
+        sizeSelector.style.display = 'block';
+        renderSizeOptions(sizeSelect, currentProduct.variants.sizes);
+    } else {
+        sizeSelector.style.display = 'none';
+    }
+}
+
+// Отображение вариантов цвета
+function renderColorOptions(select, colors) {
+    // Очищаем и добавляем опции
+    select.innerHTML = '<option value="">Выберите цвет</option>' + 
+        colors.map(color => `<option value="${color.value}">${color.name}</option>`).join('');
+    
+    // Добавляем обработчик изменения
+    select.addEventListener('change', (e) => {
+        selectedColor = e.target.value;
+        if (selectedColor) {
+            // Обновляем карусель с новыми изображениями
+            updateCarouselForColor(selectedColor);
+        }
+    });
+    
+    // Выбираем первый цвет по умолчанию
+    if (colors.length > 0) {
+        select.value = colors[0].value;
+        selectedColor = colors[0].value;
+        updateCarouselForColor(selectedColor);
+    }
+}
+
+// Отображение вариантов размера
+function renderSizeOptions(select, sizes) {
+    // Очищаем и добавляем опции
+    select.innerHTML = '<option value="">Выберите размер</option>' + 
+        sizes.map(size => `<option value="${size.value}">${size.name}</option>`).join('');
+    
+    // Добавляем обработчик изменения
+    select.addEventListener('change', (e) => {
+        selectedSize = e.target.value;
+    });
+}
+
+// Получение CSS цвета по значению
+function getColorValue(colorValue) {
+    const colorMap = {
+        'olive': '#808000',
+        'black': '#000000',
+        'blue': '#87CEEB',
+        'dark-blue': '#0000CD',
+        'light-pink': '#FFB6C1',
+        'light-brown': '#D2B48C'
+    };
+    return colorMap[colorValue] || '#CCCCCC';
+}
+
+// Обновление карусели для выбранного цвета
+function updateCarouselForColor(colorValue) {
+    if (!currentProduct || !currentProduct.variants || !currentProduct.variants.colors) return;
+    
+    const selectedColorData = currentProduct.variants.colors.find(c => c.value === colorValue);
+    if (!selectedColorData || !selectedColorData.images) return;
+    
+    // Обновляем изображения в карусели
+    const track = elementsMap.carouselTrack;
+    if (track) {
+        track.innerHTML = selectedColorData.images.map(image => `
+            <div class="carousel-slide">
+                <img 
+                    class="carousel-image" 
+                    src="${image}" 
+                    alt="${currentProduct.name}"
+                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
+                >
+            </div>
+        `).join('');
+        
+        // Обновляем точки навигации
+        const dots = elementsMap.carouselDots;
+        if (dots && selectedColorData.images.length > 1) {
+            dots.innerHTML = selectedColorData.images.map((_, index) => `
+                <div class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}"></div>
+            `).join('');
+            
+            // Добавляем обработчики для точек
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    goToSlide(parseInt(dot.dataset.slide));
+                });
+            });
+        } else {
+            dots.innerHTML = '';
+        }
+        
+        currentSlide = 0;
+        updateCarousel();
+    }
+}
+
 // Закрытие модального окна
 function closeProductModal() {
     elementsMap.productModal.classList.remove('active');
@@ -238,18 +391,58 @@ function addToCart() {
         return;
     }
 
-    const existingItem = cart.find(item => item.id === currentProduct.id);
+    // Проверяем, выбраны ли обязательные варианты
+    if (currentProduct.variants) {
+        if (currentProduct.variants.colors && !selectedColor) {
+            showNotification('Выберите цвет');
+            return;
+        }
+        if (currentProduct.variants.sizes && !selectedSize) {
+            showNotification('Выберите размер');
+            return;
+        }
+    }
+
+    // Создаем уникальный ID с учетом вариантов
+    const variantId = currentProduct.variants ? 
+        `${currentProduct.id}_${selectedColor || ''}_${selectedSize || ''}` : 
+        currentProduct.id;
+
+    const existingItem = cart.find(item => item.id === variantId);
     
     if (existingItem) {
         existingItem.quantity += quantity;
     } else {
+        // Получаем изображение для выбранного цвета или используем первое
+        let productImage = currentProduct.images[0];
+        if (currentProduct.variants && currentProduct.variants.colors && selectedColor) {
+            const selectedColorData = currentProduct.variants.colors.find(c => c.value === selectedColor);
+            if (selectedColorData && selectedColorData.images && selectedColorData.images[0]) {
+                productImage = selectedColorData.images[0];
+            }
+        }
+        
+        // Создаем название с вариантами
+        let productName = currentProduct.name;
+        if (currentProduct.variants) {
+            if (selectedColor) {
+                const colorName = currentProduct.variants.colors.find(c => c.value === selectedColor)?.name;
+                if (colorName) productName += ` (${colorName})`;
+            }
+            if (selectedSize) {
+                productName += `, размер ${selectedSize}`;
+            }
+        }
+        
         cart.push({
-            id: currentProduct.id,
-            name: currentProduct.name,
+            id: variantId,
+            name: productName,
             price: currentProduct.price,
             article: currentProduct.article,
-            image: currentProduct.images[0],
-            quantity: quantity
+            image: productImage,
+            quantity: quantity,
+            color: selectedColor,
+            size: selectedSize
         });
     }
 

@@ -335,13 +335,74 @@ body {
     font-weight: 500;
 }
 
+/* Выбор цвета */
+.color-selector {
+    margin-bottom: 20px;
+}
+
+.color-selector h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--tg-theme-text-color, #000000);
+}
+
+.color-select {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 16px;
+    background: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.color-select:focus {
+    outline: none;
+    border-color: var(--tg-theme-button-color, #007AFF);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+/* Выбор размера */
+.size-selector {
+    margin-bottom: 20px;
+}
+
+.size-selector h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--tg-theme-text-color, #000000);
+}
+
+.size-select {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 16px;
+    background: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.size-select:focus {
+    outline: none;
+    border-color: var(--tg-theme-button-color, #007AFF);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
 /* Описание */
 .product-description {
     font-size: 14px;
     color: var(--tg-theme-text-color, #000000);
     line-height: 1.6;
     margin-bottom: 24px;
-    padding-bottom: 80px; /* Отступ для зафиксированной кнопки */
 }
 
 /* Добавление в корзину */
@@ -349,13 +410,6 @@ body {
     display: flex;
     gap: 16px;
     align-items: flex-end; /* Выравниваем по нижнему краю с полем ввода */
-    position: sticky;
-    bottom: 0;
-    background: var(--tg-theme-bg-color, #ffffff);
-    padding: 16px 20px;
-    border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-    z-index: 10;
 }
 
 .quantity-selector {
@@ -407,7 +461,7 @@ body {
 }
 
 .add-cart-btn {
-    width: 140px; /* Такая же ширина как у селектора */
+    flex: 4; /* Занимает в 4 раза больше места чем quantity-selector */
     height: 52px; /* Увеличиваем высоту */
     background: var(--tg-theme-button-color, #007AFF);
     color: var(--tg-theme-button-text-color, #ffffff);
@@ -417,7 +471,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
-    flex-shrink: 0; /* Не сжимается */
+    min-width: 240px; /* Увеличиваем минимальную ширину */
 }
 
 .add-cart-btn:hover {
@@ -700,16 +754,15 @@ body {
     }
     
     .add-to-cart {
-        flex-direction: row; /* Элементы в одну линию */
-        align-items: flex-end; /* Выравниваем по нижнему краю */
+        flex-direction: column;
+        align-items: stretch;
         gap: 12px;
-        justify-content: flex-start; /* Выравниваем по левому краю */
     }
     
     .quantity-selector {
-        align-items: flex-start; /* Выравниваем по левому краю */
-        min-width: 140px; /* Фиксированная ширина */
-        flex-shrink: 0; /* Не сжимается */
+        align-self: center; /* Центрируем селектор количества */
+        align-items: center; /* Центрируем содержимое на мобильных */
+        min-width: auto; /* Убираем фиксированную ширину на мобильных */
     }
     
     .qty-input {
@@ -725,34 +778,9 @@ body {
     }
     
     .add-cart-btn {
-        width: 140px; /* Такая же ширина как у селектора */
+        min-width: auto; /* Убираем минимальную ширину на мобильных */
         height: 54px; /* Увеличиваем высоту на мобильных */
         font-size: 19px; /* Крупнее шрифт */
-    }
-    
-    /* Зафиксированная кнопка для мобильных */
-    .add-to-cart {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--tg-theme-bg-color, #ffffff);
-        padding: 16px 20px;
-        border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
-        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-        z-index: 1000;
-        display: flex;
-        gap: 16px;
-        align-items: flex-end;
-    }
-    
-    .product-description {
-        padding-bottom: 100px; /* Больший отступ для мобильных */
-    }
-    
-    /* Отступ для всей секции информации о товаре */
-    .product-info {
-        padding-bottom: 120px; /* Отступ для зафиксированной кнопки */
     }
     
     /* Увеличиваем шрифты для лучшей читаемости на маленьких экранах */
@@ -785,22 +813,6 @@ body {
         padding: 8px;
     }
     
-    .add-to-cart {
-        flex-direction: row; /* Элементы в одну линию */
-        align-items: flex-end; /* Выравниваем по нижнему краю */
-        gap: 8px;
-        justify-content: flex-start; /* Выравниваем по левому краю */
-    }
-    
-    .quantity-selector {
-        min-width: 120px; /* Меньшая ширина для очень маленьких экранов */
-        flex-shrink: 0;
-    }
-    
-    .add-cart-btn {
-        width: 120px; /* Меньшая ширина для очень маленьких экранов */
-    }
-    
     .product-name {
         font-size: 12px;
     }
@@ -812,31 +824,6 @@ body {
     /* Адаптивная карусель для маленьких экранов */
     .photo-carousel {
         height: 250px;
-    }
-    
-    /* Зафиксированная кнопка для очень маленьких экранов */
-    .add-to-cart {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--tg-theme-bg-color, #ffffff);
-        padding: 12px 8px;
-        border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
-        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-        z-index: 1000;
-        display: flex;
-        gap: 12px;
-        align-items: flex-end;
-    }
-    
-    .product-description {
-        padding-bottom: 90px; /* Отступ для очень маленьких экранов */
-    }
-    
-    /* Отступ для всей секции информации о товаре */
-    .product-info {
-        padding-bottom: 110px; /* Отступ для зафиксированной кнопки */
     }
 }
 
@@ -905,3 +892,4 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+

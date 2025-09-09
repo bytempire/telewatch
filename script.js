@@ -542,8 +542,8 @@ function addToCart() {
         return;
     }
     
-    if (quantity < 50) {
-        showNotification('Минимальное количество для заказа 50 шт');
+    if (quantity < 10) {
+        showNotification('Минимальное количество для заказа 10 шт');
         return;
     }
     
@@ -650,15 +650,15 @@ function renderProductsListItems() {
                 <div class="products-list-item-article">Артикул: ${item.article}</div>
                 <div class="products-list-item-price">${formatPrice(item.price)} ₽</div>
                 <div class="products-list-item-quantity">
-                    <input 
-                        type="number" 
-                        class="products-list-qty-input" 
-                        value="${item.quantity}" 
-                        min="50"
-                        data-product-id="${item.id}"
-                        onchange="updateProductQuantity('${item.id}', this.value)"
-                        onblur="validateQuantity('${item.id}', this.value)"
-                    >
+                            <input 
+                                type="number" 
+                                class="products-list-qty-input" 
+                                value="${item.quantity}" 
+                                min="10"
+                                data-product-id="${item.id}"
+                                onchange="updateProductQuantity('${item.id}', this.value)"
+                                onblur="validateQuantity('${item.id}', this.value)"
+                            >
                     <button class="remove-item" onclick="removeFromProductsList('${item.id}')">Удалить</button>
                 </div>
             </div>
@@ -679,11 +679,11 @@ function updateProductQuantity(productId, newQuantity) {
         return;
     }
 
-    if (quantity < 50) {
-        item.quantity = 50;
+    if (quantity < 10) {
+        item.quantity = 10;
         const input = document.querySelector(`[data-product-id="${productId}"]`);
-        if (input) input.value = 50;
-        showNotification('Минимальное количество для заказа 50 шт');
+        if (input) input.value = 10;
+        showNotification('Минимальное количество для заказа 10 шт');
     } else {
         item.quantity = quantity;
     }
@@ -701,13 +701,13 @@ function validateQuantity(productId, value) {
     const input = document.querySelector(`[data-product-id="${productId}"]`);
     
     if (!value || isNaN(quantity) || quantity < 1) {
-        if (input) input.value = 50;
-        item.quantity = 50;
-        showNotification('Минимальное количество для заказа 50 шт');
-    } else if (quantity < 50) {
-        if (input) input.value = 50;
-        item.quantity = 50;
-        showNotification('Минимальное количество для заказа 50 шт');
+        if (input) input.value = 10;
+        item.quantity = 10;
+        showNotification('Минимальное количество для заказа 10 шт');
+    } else if (quantity < 10) {
+        if (input) input.value = 10;
+        item.quantity = 10;
+        showNotification('Минимальное количество для заказа 10 шт');
     } else {
         item.quantity = quantity;
     }
@@ -894,10 +894,10 @@ function setupEventListeners() {
         if (isNaN(value) || value === 0) {
             e.target.value = '';
             showNotification('Введите корректное число');
-        } else if (value < 50) {
-            // Больше не выставляем 50 автоматически — пользователь должен сам ввести допустимое значение
+        } else if (value < 10) {
+            // Больше не выставляем 10 автоматически — пользователь должен сам ввести допустимое значение
             e.target.value = '';
-            showNotification('Минимальное количество для заказа 50 шт');
+            showNotification('Минимальное количество для заказа 10 шт');
         }
     });
     

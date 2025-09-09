@@ -758,8 +758,8 @@ body {
     }
     
     .add-to-cart {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        align-items: flex-end;
         gap: 12px;
     }
     

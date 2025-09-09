@@ -50,7 +50,7 @@ body {
 }
 
 .cart-icon:hover {
-    background-color: var(--tg-theme-button-color, #007AFF);
+    background-color: var(--tg-theme-button-color, #833177);
     color: white;
 }
 
@@ -129,7 +129,7 @@ body {
 .product-price {
     font-size: 16px;
     font-weight: 600;
-    color: var(--tg-theme-button-color, #007AFF);
+    color: var(--tg-theme-button-color, #833177);
 }
 
 .product-article {
@@ -269,7 +269,7 @@ body {
 }
 
 .dot.active {
-    background: var(--tg-theme-button-color, #007AFF);
+    background: var(--tg-theme-button-color, #833177);
 }
 
 /* Информация о товаре */
@@ -287,7 +287,7 @@ body {
 .product-price {
     font-size: 24px;
     font-weight: 700;
-    color: var(--tg-theme-button-color, #007AFF);
+    color: var(--tg-theme-button-color, #833177);
     margin-bottom: 8px;
 }
 
@@ -363,8 +363,8 @@ body {
 
 .color-select:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #007AFF);
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    border-color: var(--tg-theme-button-color, #833177);
+    box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
 /* Выбор размера */
@@ -394,8 +394,8 @@ body {
 
 .size-select:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #007AFF);
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    border-color: var(--tg-theme-button-color, #833177);
+    box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
 /* Описание */
@@ -448,8 +448,8 @@ body {
 
 .qty-input:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #007AFF);
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    border-color: var(--tg-theme-button-color, #833177);
+    box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
 .qty-input::placeholder {
@@ -467,7 +467,7 @@ body {
 .add-cart-btn {
     flex: 1;
     height: 48px;
-    background: var(--tg-theme-button-color, #007AFF);
+    background: var(--tg-theme-button-color, #833177);
     color: var(--tg-theme-button-text-color, #ffffff);
     border: none;
     border-radius: 8px;
@@ -569,7 +569,7 @@ body {
 
 .cart-item-price {
     font-size: 14px;
-    color: var(--tg-theme-button-color, #007AFF);
+    color: var(--tg-theme-button-color, #833177);
     font-weight: 600;
 }
 
@@ -636,7 +636,7 @@ body {
 .checkout-btn {
     width: 100%;
     height: 48px;
-    background: var(--tg-theme-button-color, #007AFF);
+    background: var(--tg-theme-button-color, #833177);
     color: var(--tg-theme-button-text-color, #ffffff);
     border: none;
     border-radius: 8px;
@@ -887,7 +887,7 @@ body {
     width: 32px;
     height: 32px;
     border: 3px solid var(--tg-theme-hint-color, #e0e0e0);
-    border-top: 3px solid var(--tg-theme-button-color, #007AFF);
+    border-top: 3px solid var(--tg-theme-button-color, #833177);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-right: 12px;

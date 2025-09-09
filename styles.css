@@ -153,6 +153,7 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    padding: 0;
 }
 
 .modal-content {
@@ -162,6 +163,7 @@ body {
     height: 100vh;
     overflow-y: auto;
     position: relative;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
 }
 
 .close-modal {
@@ -748,6 +750,17 @@ body {
     .main {
         padding: 16px;
     }
+    
+    /* Исправление прокрутки модального окна на мобильных */
+    .modal-content {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .product-info {
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
 }
 
 /* Маленькие мобильные устройства (320px - 480px) */
@@ -808,6 +821,18 @@ body {
     
     .product-price {
         font-size: 15px;
+    }
+    
+    /* Исправление прокрутки модального окна на мобильных */
+    .modal-content {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+    
+    .product-info {
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
     }
 }
 

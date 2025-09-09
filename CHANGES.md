@@ -1198,6 +1198,69 @@ if (elementsMap.productsListTotal) {
 - ✅ Пользователь может вводить количество только вручную
 - ✅ Поддержка всех браузеров (WebKit и Firefox)
 
+### 24. Исправление прокрутки модального окна на мобильных устройствах
+
+**Проблема:** В мобильной версии модальное окно товара не позволяло прокручивать контент вниз, чтобы добраться до селекторов и кнопки "Добавить в корзину".
+
+**Изменения:**
+
+**Обновлены базовые стили модального окна:**
+```css
+.modal-content {
+    background: var(--tg-theme-bg-color, #ffffff);
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+}
+
+.modal.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+}
+```
+
+**Добавлены специальные стили для мобильных устройств:**
+```css
+/* Мобильные устройства (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .modal-content {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .product-info {
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
+}
+
+/* Маленькие мобильные устройства (320px - 480px) */
+@media (max-width: 480px) {
+    .modal-content {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+    
+    .product-info {
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
+}
+```
+
+**Результат:**
+- ✅ Модальное окно теперь прокручивается на всех мобильных устройствах
+- ✅ Пользователь может добраться до всех селекторов и кнопок
+- ✅ Плавная прокрутка на iOS устройствах
+- ✅ Дополнительный отступ снизу для лучшего UX
+- ✅ Поддержка всех размеров мобильных экранов
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

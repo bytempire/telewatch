@@ -746,5 +746,462 @@ totalImages: null
 - ✅ Плавные анимации появления и исчезновения
 - ✅ Адаптивный дизайн для мобильных устройств
 
+### 18. Замена корзины на список товаров с прямым редактированием количества
+
+**Задача:** Заменить корзину на список товаров, где каждый товар отображается с возможностью изменения количества прямо в списке без кнопок.
+
+#### HTML изменения
+
+**Заменена структура корзины на список товаров:**
+```html
+<!-- Было: Корзина -->
+<div class="cart-panel" id="cartPanel">
+    <div class="cart-content">
+        <div class="cart-header">
+            <h2>Корзина</h2>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Товары в корзине будут добавлены динамически -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Итого: <span id="cartTotal">0</span> ₽</strong>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+        </div>
+    </div>
+</div>
+
+<!-- Стало: Список товаров -->
+<div class="products-list-panel" id="productsListPanel">
+    <div class="products-list-content">
+        <div class="products-list-header">
+            <h2>Список товаров</h2>
+            <button class="close-products-list" id="closeProductsList">&times;</button>
+        </div>
+        <div class="products-list-items" id="productsListItems">
+            <!-- Товары в списке будут добавлены динамически -->
+        </div>
+        <div class="products-list-footer">
+            <div class="products-list-total">
+                <strong>Итого: <span id="productsListTotal">0</span> ₽</strong>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+        </div>
+    </div>
+</div>
+```
+
+**Обновлена иконка в заголовке:**
+- Изменена иконка с 🛒 на 📋
+- Обновлены все соответствующие ID и классы
+
+#### CSS изменения
+
+**Добавлены стили для списка товаров:**
+```css
+/* Список товаров */
+.products-list-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+}
+
+.products-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+}
+
+.products-list-item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: contain;
+    background-color: #f5f5f5;
+}
+
+.products-list-item-info {
+    flex: 1;
+}
+
+.products-list-item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.products-list-item-article {
+    font-size: 12px;
+    color: var(--tg-theme-hint-color, #999999);
+    margin-bottom: 4px;
+}
+
+.products-list-item-price {
+    font-size: 14px;
+    color: var(--tg-theme-button-color, #833177);
+    font-weight: 600;
+}
+
+.products-list-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.products-list-qty-input {
+    width: 60px;
+    height: 32px;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--tg-theme-bg-color, #ffffff);
+    color: var(--tg-theme-text-color, #000000);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.products-list-qty-input:focus {
+    outline: none;
+    border-color: var(--tg-theme-button-color, #833177);
+    box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
+}
+```
+
+#### JavaScript изменения
+
+**Обновлены DOM элементы:**
+```javascript
+const elementsMap = {
+    productsGrid: null,
+    productModal: null,
+    productsListPanel: null,  // было: cartPanel
+    backdrop: null,
+    cartCount: null,
+    productsListItems: null,  // было: cartItems
+    productsListTotal: null,  // было: cartTotal
+    // ... остальные элементы
+};
+```
+
+**Заменены функции корзины на функции списка товаров:**
+
+1. **Открытие/закрытие списка:**
+```javascript
+// Было: openCart(), closeCart()
+// Стало: openProductsList(), closeProductsList()
+```
+
+2. **Отображение товаров:**
+```javascript
+function renderProductsListItems() {
+    if (!elementsMap.productsListItems) return;
+
+    if (cart.length === 0) {
+        elementsMap.productsListItems.innerHTML = `
+            <div class="empty-cart">
+                <div class="empty-cart-icon">📋</div>
+                <div class="empty-cart-text">Список товаров пуст<br>Добавьте товары из каталога</div>
+            </div>
+        `;
+        return;
+    }
+
+    elementsMap.productsListItems.innerHTML = cart.map(item => `
+        <div class="products-list-item" data-product-id="${item.id}">
+            <img class="products-list-item-image" src="${item.image}" alt="${item.name}">
+            <div class="products-list-item-info">
+                <div class="products-list-item-name">${item.name}</div>
+                <div class="products-list-item-article">Артикул: ${item.article}</div>
+                <div class="products-list-item-price">${formatPrice(item.price)} ₽</div>
+                <div class="products-list-item-quantity">
+                    <input 
+                        type="number" 
+                        class="products-list-qty-input" 
+                        value="${item.quantity}" 
+                        min="50"
+                        data-product-id="${item.id}"
+                        onchange="updateProductQuantity('${item.id}', this.value)"
+                        onblur="validateQuantity('${item.id}', this.value)"
+                    >
+                    <button class="remove-item" onclick="removeFromProductsList('${item.id}')">Удалить</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+```
+
+3. **Новые функции для работы с количеством:**
+```javascript
+// Обновление количества товара
+function updateProductQuantity(productId, newQuantity) {
+    const item = cart.find(item => item.id === productId);
+    if (!item) return;
+
+    const quantity = parseInt(newQuantity);
+    if (isNaN(quantity) || quantity < 1) {
+        const input = document.querySelector(`[data-product-id="${productId}"]`);
+        if (input) input.value = item.quantity;
+        return;
+    }
+
+    if (quantity < 50) {
+        item.quantity = 50;
+        const input = document.querySelector(`[data-product-id="${productId}"]`);
+        if (input) input.value = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
+    } else {
+        item.quantity = quantity;
+    }
+
+    saveCartToStorage();
+    updateProductsListUI();
+}
+
+// Валидация количества при потере фокуса
+function validateQuantity(productId, value) {
+    const item = cart.find(item => item.id === productId);
+    if (!item) return;
+
+    const quantity = parseInt(value);
+    const input = document.querySelector(`[data-product-id="${productId}"]`);
+    
+    if (!value || isNaN(quantity) || quantity < 1) {
+        if (input) input.value = 50;
+        item.quantity = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
+    } else if (quantity < 50) {
+        if (input) input.value = 50;
+        item.quantity = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
+    } else {
+        item.quantity = quantity;
+    }
+
+    saveCartToStorage();
+    updateProductsListUI();
+}
+
+// Удаление товара из списка
+function removeFromProductsList(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCartToStorage();
+    updateProductsListUI();
+    renderProductsListItems();
+    
+    if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('warning');
+    }
+}
+```
+
+4. **Обновлена функция обновления UI:**
+```javascript
+// Было: updateCartUI()
+// Стало: updateProductsListUI()
+```
+
+5. **Обновлены обработчики событий:**
+```javascript
+// Список товаров
+document.getElementById('cartIcon')?.addEventListener('click', openProductsList);
+document.getElementById('closeProductsList')?.addEventListener('click', closeProductsList);
+document.getElementById('checkoutBtn')?.addEventListener('click', checkout);
+```
+
+6. **Сделаны функции глобальными:**
+```javascript
+window.updateProductQuantity = updateProductQuantity;
+window.validateQuantity = validateQuantity;
+window.removeFromProductsList = removeFromProductsList;
+```
+
+#### Ключевые особенности
+
+1. **Прямое редактирование количества**: Пользователь может вводить количество напрямую в поле ввода
+2. **Валидация**: Минимальное количество 50 штук с системным сообщением
+3. **Автоматическое обновление**: При изменении количества автоматически пересчитывается общая сумма
+4. **Сохранение в localStorage**: Все изменения сохраняются локально
+5. **Адаптивный дизайн**: Работает на всех размерах экранов
+6. **Отображение артикула**: В списке товаров отображается артикул каждого товара
+
+### 19. Исправление валидации количества в списке товаров
+
+**Проблема:** В списке товаров не было проверки на минимальное количество 50 штук.
+
+**Исправления:**
+
+1. **Обновлена функция `updateProductQuantity`:**
+```javascript
+if (quantity < 50) {
+    item.quantity = 50;
+    const input = document.querySelector(`[data-product-id="${productId}"]`);
+    if (input) input.value = 50;
+    showNotification('Минимальное количество для заказа 50 шт');
+} else {
+    item.quantity = quantity;
+}
+```
+
+2. **Обновлена функция `validateQuantity`:**
+```javascript
+if (!value || isNaN(quantity) || quantity < 1) {
+    if (input) input.value = 50;
+    item.quantity = 50;
+    showNotification('Минимальное количество для заказа 50 шт');
+} else if (quantity < 50) {
+    if (input) input.value = 50;
+    item.quantity = 50;
+    showNotification('Минимальное количество для заказа 50 шт');
+} else {
+    item.quantity = quantity;
+}
+```
+
+3. **Обновлены HTML атрибуты:**
+```html
+<input 
+    type="number" 
+    class="products-list-qty-input" 
+    value="${item.quantity}" 
+    min="50"
+    data-product-id="${item.id}"
+    onchange="updateProductQuantity('${item.id}', this.value)"
+    onblur="validateQuantity('${item.id}', this.value)"
+>
+```
+
+### 20. Удаление ограничения максимального количества
+
+**Задача:** Убрать ограничение в 9999 штук как в модальном окне товара, так и в списке товаров.
+
+**Изменения:**
+
+1. **Модальное окно товара:**
+   - Убрана проверка `if (quantity > 9999)` в функции `addToCart()`
+   - Убрана проверка `if (value > 9999)` в валидации поля ввода
+
+2. **Список товаров:**
+   - Убрана проверка `if (quantity > 9999)` в функции `updateProductQuantity()`
+   - Убрана проверка `if (quantity > 9999)` в функции `validateQuantity()`
+   - Убран атрибут `max="9999"` из поля ввода количества
+
+**Результат:**
+- ✅ Минимальное количество: 50 штук (с системным сообщением)
+- ✅ Максимальное количество: не ограничено
+- ✅ Пользователь может вводить любое количество от 50 и выше
+- ✅ Валидация работает как в модальном окне товара, так и в списке товаров
+
+### 21. Изменение логики отображения счетчика на иконке списка товаров
+
+**Задача:** На иконке списка товаров отображать количество уникальных артикулов, а не общее количество штук.
+
+**Изменения:**
+
+**Обновлена функция `updateProductsListUI`:**
+```javascript
+// Обновление интерфейса списка товаров
+function updateProductsListUI() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const uniqueProducts = cart.length; // Количество уникальных артикулов
+
+    // Обновление счетчика товаров (показываем количество артикулов)
+    if (elementsMap.cartCount) {
+        elementsMap.cartCount.textContent = uniqueProducts;
+        elementsMap.cartCount.style.display = uniqueProducts > 0 ? 'flex' : 'none';
+    }
+
+    // Обновление общей стоимости
+    if (elementsMap.productsListTotal) {
+        elementsMap.productsListTotal.textContent = `${formatPrice(totalPrice)} ₽`;
+    }
+
+    // Активация/деактивация кнопки оформления
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+        checkoutBtn.disabled = cart.length === 0;
+    }
+}
+```
+
+**Результат:**
+- ✅ На иконке списка товаров отображается количество уникальных артикулов
+- ✅ Если в списке 2 товара с количеством 100 и 200 штук, на иконке будет показано "2"
+- ✅ Счетчик скрывается, когда список товаров пуст
+- ✅ Общая сумма по-прежнему рассчитывается корректно
+
+### 22. Исправление дублирования символа рубля в итоговой сумме
+
+**Проблема:** В итоговой сумме отображалось два символа рубля (например, "89 100 ₽₽").
+
+**Причина:** В HTML уже был символ рубля после `productsListTotal`, а в JavaScript добавлялся еще один.
+
+**Исправление:**
+
+**Обновлена функция `updateProductsListUI`:**
+```javascript
+// Обновление общей стоимости
+if (elementsMap.productsListTotal) {
+    elementsMap.productsListTotal.textContent = formatPrice(totalPrice); // Убран лишний " ₽"
+}
+```
+
+**HTML структура:**
+```html
+<strong>Итого: <span id="productsListTotal">0</span> ₽</strong>
+```
+
+**Результат:**
+- ✅ Теперь отображается корректно: "Итого: 89 100 ₽"
+- ✅ Убран дублирующий символ рубля
+- ✅ Сумма отображается в правильном формате
+
+### 23. Скрытие стрелочек у поля ввода количества
+
+**Задача:** Убрать стрелочки (spinner) у поля ввода количества в списке товаров.
+
+**Изменения:**
+
+**Добавлены CSS стили для скрытия стрелочек:**
+```css
+/* Скрываем стрелочки у поля ввода количества */
+.products-list-qty-input::-webkit-outer-spin-button,
+.products-list-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.products-list-qty-input[type=number] {
+    -moz-appearance: textfield;
+}
+```
+
+**Результат:**
+- ✅ Убраны стрелочки повышения/понижения у поля ввода количества
+- ✅ Поле ввода выглядит чище и более минималистично
+- ✅ Пользователь может вводить количество только вручную
+- ✅ Поддержка всех браузеров (WebKit и Firefox)
+
+## Файлы, которые были изменены:
+- `/Users/user/Documents/telewatch/index.html` - структура HTML
+- `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров
+- `/Users/user/Documents/telewatch/script.js` - логика работы со списком товаров
+
 ## Дата изменений:
 9 сентября 2025

@@ -749,16 +749,17 @@ function removeFromCart(productId) {
 function updateProductsListUI() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const uniqueProducts = cart.length; // Количество уникальных артикулов
 
-    // Обновление счетчика товаров
+    // Обновление счетчика товаров (показываем количество артикулов)
     if (elementsMap.cartCount) {
-        elementsMap.cartCount.textContent = totalItems;
-        elementsMap.cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        elementsMap.cartCount.textContent = uniqueProducts;
+        elementsMap.cartCount.style.display = uniqueProducts > 0 ? 'flex' : 'none';
     }
 
     // Обновление общей стоимости
     if (elementsMap.productsListTotal) {
-        elementsMap.productsListTotal.textContent = `${formatPrice(totalPrice)} ₽`;
+        elementsMap.productsListTotal.textContent = formatPrice(totalPrice);
     }
 
     // Активация/деактивация кнопки оформления

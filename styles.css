@@ -605,6 +605,18 @@ body {
     box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
+/* Скрываем стрелочки у поля ввода количества */
+.products-list-qty-input::-webkit-outer-spin-button,
+.products-list-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.products-list-qty-input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
 .remove-item {
     background: var(--tg-theme-destructive-text-color, #FF3B30);
     color: white;

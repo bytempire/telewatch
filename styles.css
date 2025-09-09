@@ -493,7 +493,7 @@ body {
     right: -100%;
     width: 100%;
     max-width: 400px;
-    height: 80vh; /* Уменьшена высота с 100vh до 80vh */
+    height: 100vh; /* Возвращена полная высота экрана */
     background: var(--tg-theme-bg-color, #ffffff);
     z-index: 1001;
     transition: right 0.3s ease;
@@ -507,7 +507,7 @@ body {
 .products-list-content {
     display: flex;
     flex-direction: column;
-    height: 80vh; /* Уменьшена высота с 100% до 80vh */
+    height: 100vh; /* Возвращена полная высота экрана */
     position: relative;
 }
 
@@ -540,7 +540,7 @@ body {
     padding: 0 20px 60px 20px; /* Увеличенный отступ снизу */
     -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
     overscroll-behavior: none; /* Полностью отключаем отскок */
-    max-height: calc(80vh - 140px); /* Уменьшена высота с 100vh до 80vh */
+    max-height: calc(100vh - 140px); /* Возвращена полная высота экрана */
 }
 
 .products-list-item {
@@ -788,7 +788,7 @@ body {
     
     /* Улучшение прокрутки списка товаров на мобильных */
     .products-list-items {
-        max-height: calc(80vh - 160px); /* Уменьшена высота с 100vh до 80vh */
+        max-height: calc(100vh - 160px); /* Возвращена полная высота экрана */
         padding: 0 20px 80px 20px; /* Увеличенный отступ снизу */
         overscroll-behavior: none; /* Отключаем отскок */
     }
@@ -884,7 +884,7 @@ body {
     
     /* Улучшение прокрутки списка товаров на маленьких мобильных */
     .products-list-items {
-        max-height: calc(80vh - 160px); /* Уменьшена высота с 100vh до 80vh */
+        max-height: calc(100vh - 160px); /* Возвращена полная высота экрана */
         padding: 0 20px 80px 20px; /* Увеличенный отступ снизу */
         overscroll-behavior: none; /* Отключаем отскок */
     }
@@ -991,7 +991,7 @@ body {
     
     /* Улучшение прокрутки списка товаров на iOS */
     .products-list-items {
-        max-height: calc(80vh - 180px); /* Уменьшена высота с 100vh до 80vh */
+        max-height: calc(100vh - 180px); /* Возвращена полная высота экрана */
         padding: 0 20px 100px 20px; /* Увеличенный отступ снизу для iOS */
         overscroll-behavior: none; /* Отключаем отскок */
     }

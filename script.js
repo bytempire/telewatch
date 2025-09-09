@@ -56,7 +56,10 @@ function initializeElements() {
         if (key === 'photoCarousel') elementsMap[key] = document.getElementById('photoCarousel');
         if (key === 'carouselTrack') elementsMap[key] = document.getElementById('carouselTrack');
         if (key === 'carouselDots') elementsMap[key] = document.getElementById('carouselDots');
-        if (key === 'fullscreenModal') elementsMap[key] = document.getElementById('fullscreenModal');
+        if (key === 'fullscreenModal') {
+            elementsMap[key] = document.getElementById('fullscreenModal');
+            console.log('Fullscreen modal element:', elementsMap[key]); // Отладочная информация
+        }
         if (key === 'fullscreenImage') elementsMap[key] = document.getElementById('fullscreenImage');
         if (key === 'currentImageIndex') elementsMap[key] = document.getElementById('currentImageIndex');
         if (key === 'totalImages') elementsMap[key] = document.getElementById('totalImages');
@@ -208,6 +211,7 @@ function setupCarousel() {
                 alt="${currentProduct.name}"
                 data-image-index="${index}"
                 style="cursor: pointer;"
+                onclick="openFullscreen(${index})"
                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
             >
         </div>
@@ -240,14 +244,7 @@ function setupCarousel() {
         nextBtn.onclick = () => goToSlide(currentSlide + 1);
     }
 
-    // Добавляем обработчики кликов на изображения для полноэкранного просмотра
-    document.querySelectorAll('.carousel-image').forEach(img => {
-        img.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const imageIndex = parseInt(img.dataset.imageIndex);
-            openFullscreen(imageIndex);
-        });
-    });
+    // Обработчики кликов теперь добавлены напрямую в HTML через onclick
 
     updateCarousel();
 }
@@ -386,12 +383,15 @@ function updateCarouselForColor(colorValue) {
     // Обновляем изображения в карусели
     const track = elementsMap.carouselTrack;
     if (track) {
-        track.innerHTML = selectedColorData.images.map(image => `
+        track.innerHTML = selectedColorData.images.map((image, index) => `
             <div class="carousel-slide">
                 <img 
                     class="carousel-image" 
                     src="${encodeImagePath(image)}" 
                     alt="${currentProduct.name}"
+                    data-image-index="${index}"
+                    style="cursor: pointer;"
+                    onclick="openFullscreen(${index})"
                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
                 >
             </div>
@@ -425,14 +425,7 @@ function updateCarouselForColor(colorValue) {
             nextBtn.onclick = () => goToSlide(currentSlide + 1);
         }
         
-        // Добавляем обработчики кликов на изображения для полноэкранного просмотра
-        document.querySelectorAll('.carousel-image').forEach(img => {
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const imageIndex = parseInt(img.dataset.imageIndex);
-                openFullscreen(imageIndex);
-            });
-        });
+        // Обработчики кликов теперь добавлены напрямую в HTML через onclick
         
         currentSlide = 0;
         updateCarousel();
@@ -440,8 +433,12 @@ function updateCarouselForColor(colorValue) {
 }
 
 // Открытие полноэкранного просмотра изображения
-function openFullscreen(imageIndex = 0) {
-    if (!currentProduct) return;
+window.openFullscreen = function(imageIndex = 0) {
+    console.log('openFullscreen called with index:', imageIndex); // Отладочная информация
+    if (!currentProduct) {
+        console.log('No current product'); // Отладочная информация
+        return;
+    }
     
     // Получаем изображения для полноэкранного просмотра
     let images = [];
@@ -456,7 +453,11 @@ function openFullscreen(imageIndex = 0) {
         images = currentProduct.images;
     }
     
-    if (images.length === 0) return;
+    console.log('Fullscreen images:', images); // Отладочная информация
+    if (images.length === 0) {
+        console.log('No images found for fullscreen');
+        return;
+    }
     
     fullscreenImages = images;
     currentFullscreenIndex = Math.max(0, Math.min(imageIndex, images.length - 1));
@@ -479,6 +480,9 @@ function openFullscreen(imageIndex = 0) {
     if (elementsMap.fullscreenModal) {
         elementsMap.fullscreenModal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        console.log('Fullscreen modal opened'); // Отладочная информация
+    } else {
+        console.log('Fullscreen modal element not found'); // Отладочная информация
     }
 }
 

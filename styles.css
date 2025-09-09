@@ -1080,6 +1080,8 @@ body {
         font-size: 13px;
         padding: 10px 16px;
         z-index: 99999;
+        width: auto;
+        margin: 0;
     }
 }
 

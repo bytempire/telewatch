@@ -933,13 +933,25 @@ function showNotification(message, type = 'info') {
     // Анимация появления
     requestAnimationFrame(() => {
         notification.style.opacity = '1';
-        notification.style.transform = 'translateX(-50%) translateY(0)';
+        // Проверяем, мобильное ли устройство
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile) {
+            notification.style.transform = 'translateX(-50%) translateY(0)';
+        } else {
+            notification.style.transform = 'translateY(0)';
+        }
     });
 
     // Удаление через 3 секунды
     notificationTimeout = setTimeout(() => {
         notification.style.opacity = '0';
-        notification.style.transform = 'translateX(-50%) translateY(-20px)';
+        // Проверяем, мобильное ли устройство
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile) {
+            notification.style.transform = 'translateX(-50%) translateY(-20px)';
+        } else {
+            notification.style.transform = 'translateY(-20px)';
+        }
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
@@ -961,7 +973,7 @@ function showDiscountNotification() {
     discountNotificationTimeout = setTimeout(() => {
         console.log('Показываем уведомление о скидке');
         showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
-    }, 4000);
+    }, 3000);
 }
 
 // Настройка обработчиков событий

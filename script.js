@@ -23,11 +23,11 @@ let currentFullscreenIndex = 0;
 const elementsMap = {
     productsGrid: null,
     productModal: null,
-    cartPanel: null,
+    productsListPanel: null,
     backdrop: null,
     cartCount: null,
-    cartItems: null,
-    cartTotal: null,
+    productsListItems: null,
+    productsListTotal: null,
     photoCarousel: null,
     carouselTrack: null,
     carouselDots: null,
@@ -48,11 +48,11 @@ function initializeElements() {
         
         if (key === 'productsGrid') elementsMap[key] = document.getElementById('productsGrid');
         if (key === 'productModal') elementsMap[key] = document.getElementById('productModal');
-        if (key === 'cartPanel') elementsMap[key] = document.getElementById('cartPanel');
+        if (key === 'productsListPanel') elementsMap[key] = document.getElementById('productsListPanel');
         if (key === 'backdrop') elementsMap[key] = document.getElementById('backdrop');
         if (key === 'cartCount') elementsMap[key] = document.getElementById('cartCount');
-        if (key === 'cartItems') elementsMap[key] = document.getElementById('cartItems');
-        if (key === 'cartTotal') elementsMap[key] = document.getElementById('cartTotal');
+        if (key === 'productsListItems') elementsMap[key] = document.getElementById('productsListItems');
+        if (key === 'productsListTotal') elementsMap[key] = document.getElementById('productsListTotal');
         if (key === 'photoCarousel') elementsMap[key] = document.getElementById('photoCarousel');
         if (key === 'carouselTrack') elementsMap[key] = document.getElementById('carouselTrack');
         if (key === 'carouselDots') elementsMap[key] = document.getElementById('carouselDots');
@@ -73,7 +73,7 @@ async function initApp() {
     renderProducts();
     setupEventListeners();
     loadCartFromStorage();
-    updateCartUI();
+    updateProductsListUI();
 }
 
 // Загрузка товаров из JSON
@@ -608,8 +608,8 @@ function addToCart() {
     }
 
     saveCartToStorage();
-    updateCartUI();
-    showNotification('Товар добавлен в корзину');
+    updateProductsListUI();
+    showNotification('Товар добавлен в список');
     
     // Вибрация (если поддерживается)
     if (tg && tg.HapticFeedback) {
@@ -617,89 +617,126 @@ function addToCart() {
     }
 }
 
-// Открытие корзины
-function openCart() {
-    renderCartItems();
-    elementsMap.cartPanel.classList.add('active');
+// Открытие списка товаров
+function openProductsList() {
+    renderProductsListItems();
+    elementsMap.productsListPanel.classList.add('active');
     elementsMap.backdrop.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
-// Закрытие корзины
-function closeCart() {
-    elementsMap.cartPanel.classList.remove('active');
+// Закрытие списка товаров
+function closeProductsList() {
+    elementsMap.productsListPanel.classList.remove('active');
     elementsMap.backdrop.classList.remove('active');
     document.body.style.overflow = '';
 }
 
-// Отображение товаров в корзине
-function renderCartItems() {
-    if (!elementsMap.cartItems) return;
+// Отображение товаров в списке
+function renderProductsListItems() {
+    if (!elementsMap.productsListItems) return;
 
     if (cart.length === 0) {
-        elementsMap.cartItems.innerHTML = `
+        elementsMap.productsListItems.innerHTML = `
             <div class="empty-cart">
-                <div class="empty-cart-icon">🛒</div>
-                <div class="empty-cart-text">Корзина пуста<br>Добавьте товары из каталога</div>
+                <div class="empty-cart-icon">📋</div>
+                <div class="empty-cart-text">Список товаров пуст<br>Добавьте товары из каталога</div>
             </div>
         `;
         return;
     }
 
-    elementsMap.cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item" data-product-id="${item.id}">
-            <img class="cart-item-image" src="${item.image}" alt="${item.name}">
-            <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">${formatPrice(item.price)} ₽</div>
-                <div class="cart-item-quantity">
-                    <button class="cart-qty-btn minus" data-action="decrease">-</button>
-                    <span class="cart-qty-display">${item.quantity}</span>
-                    <button class="cart-qty-btn plus" data-action="increase">+</button>
-                    <button class="remove-item" data-action="remove">Удалить</button>
+    elementsMap.productsListItems.innerHTML = cart.map(item => `
+        <div class="products-list-item" data-product-id="${item.id}">
+            <img class="products-list-item-image" src="${item.image}" alt="${item.name}">
+            <div class="products-list-item-info">
+                <div class="products-list-item-name">${item.name}</div>
+                <div class="products-list-item-article">Артикул: ${item.article}</div>
+                <div class="products-list-item-price">${formatPrice(item.price)} ₽</div>
+                <div class="products-list-item-quantity">
+                    <input 
+                        type="number" 
+                        class="products-list-qty-input" 
+                        value="${item.quantity}" 
+                        min="1" 
+                        max="9999"
+                        data-product-id="${item.id}"
+                        onchange="updateProductQuantity('${item.id}', this.value)"
+                        onblur="validateQuantity('${item.id}', this.value)"
+                    >
+                    <button class="remove-item" onclick="removeFromProductsList('${item.id}')">Удалить</button>
                 </div>
             </div>
         </div>
     `).join('');
-
-    // Добавляем обработчики событий для управления количеством
-    document.querySelectorAll('.cart-qty-btn, .remove-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const productId = btn.closest('.cart-item').dataset.productId;
-            const action = btn.dataset.action;
-            
-            handleCartItemAction(productId, action);
-        });
-    });
 }
 
-// Обработка действий с товарами в корзине
-function handleCartItemAction(productId, action) {
+// Обновление количества товара
+function updateProductQuantity(productId, newQuantity) {
     const item = cart.find(item => item.id === productId);
     if (!item) return;
 
-    switch (action) {
-        case 'increase':
-            item.quantity += 1;
-            break;
-        case 'decrease':
-            if (item.quantity > 1) {
-                item.quantity -= 1;
-            } else {
-                removeFromCart(productId);
-                return;
-            }
-            break;
-        case 'remove':
-            removeFromCart(productId);
-            return;
+    const quantity = parseInt(newQuantity);
+    if (isNaN(quantity) || quantity < 1) {
+        // Восстанавливаем предыдущее значение
+        const input = document.querySelector(`[data-product-id="${productId}"]`);
+        if (input) input.value = item.quantity;
+        return;
+    }
+
+    if (quantity > 9999) {
+        item.quantity = 9999;
+        const input = document.querySelector(`[data-product-id="${productId}"]`);
+        if (input) input.value = 9999;
+        showNotification('Максимальное количество: 9999 штук');
+    } else {
+        item.quantity = quantity;
     }
 
     saveCartToStorage();
-    updateCartUI();
-    renderCartItems();
+    updateProductsListUI();
 }
+
+// Валидация количества при потере фокуса
+function validateQuantity(productId, value) {
+    const item = cart.find(item => item.id === productId);
+    if (!item) return;
+
+    const quantity = parseInt(value);
+    const input = document.querySelector(`[data-product-id="${productId}"]`);
+    
+    if (!value || isNaN(quantity) || quantity < 1) {
+        if (input) input.value = 1;
+        item.quantity = 1;
+        showNotification('Минимальное количество: 1 штука');
+    } else if (quantity > 9999) {
+        if (input) input.value = 9999;
+        item.quantity = 9999;
+        showNotification('Максимальное количество: 9999 штук');
+    } else {
+        item.quantity = quantity;
+    }
+
+    saveCartToStorage();
+    updateProductsListUI();
+}
+
+// Удаление товара из списка
+function removeFromProductsList(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCartToStorage();
+    updateProductsListUI();
+    renderProductsListItems();
+    
+    if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('warning');
+    }
+}
+
+// Делаем функции глобальными для работы с inline обработчиками
+window.updateProductQuantity = updateProductQuantity;
+window.validateQuantity = validateQuantity;
+window.removeFromProductsList = removeFromProductsList;
 
 // Удаление товара из корзины
 function removeFromCart(productId) {
@@ -713,8 +750,8 @@ function removeFromCart(productId) {
     }
 }
 
-// Обновление интерфейса корзины
-function updateCartUI() {
+// Обновление интерфейса списка товаров
+function updateProductsListUI() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -725,8 +762,8 @@ function updateCartUI() {
     }
 
     // Обновление общей стоимости
-    if (elementsMap.cartTotal) {
-        elementsMap.cartTotal.textContent = `${formatPrice(totalPrice)} ₽`;
+    if (elementsMap.productsListTotal) {
+        elementsMap.productsListTotal.textContent = `${formatPrice(totalPrice)} ₽`;
     }
 
     // Активация/деактивация кнопки оформления
@@ -761,7 +798,7 @@ function loadCartFromStorage() {
 // Оформление заказа
 function checkout() {
     if (cart.length === 0) {
-        showNotification('Корзина пуста');
+        showNotification('Список товаров пуст');
         return;
     }
 
@@ -792,11 +829,11 @@ function checkout() {
         fallbackCheckout(orderData);
     }
 
-    // Очистка корзины после оформления заказа
+    // Очистка списка товаров после оформления заказа
     cart = [];
     saveCartToStorage();
-    updateCartUI();
-    closeCart();
+    updateProductsListUI();
+    closeProductsList();
     showNotification('Заказ отправлен!');
     
     if (tg && tg.HapticFeedback) {
@@ -896,9 +933,9 @@ function setupEventListeners() {
     // Добавление в корзину
     document.getElementById('addToCartBtn')?.addEventListener('click', addToCart);
     
-    // Корзина
-    document.getElementById('cartIcon')?.addEventListener('click', openCart);
-    document.getElementById('closeCart')?.addEventListener('click', closeCart);
+    // Список товаров
+    document.getElementById('cartIcon')?.addEventListener('click', openProductsList);
+    document.getElementById('closeProductsList')?.addEventListener('click', closeProductsList);
     document.getElementById('checkoutBtn')?.addEventListener('click', checkout);
     
     // Полноэкранный просмотр изображений
@@ -911,8 +948,8 @@ function setupEventListeners() {
         if (elementsMap.productModal.classList.contains('active')) {
             closeProductModal();
         }
-        if (elementsMap.cartPanel.classList.contains('active')) {
-            closeCart();
+        if (elementsMap.productsListPanel.classList.contains('active')) {
+            closeProductsList();
         }
     });
     
@@ -923,8 +960,8 @@ function setupEventListeners() {
                 closeFullscreen();
             } else if (elementsMap.productModal.classList.contains('active')) {
                 closeProductModal();
-            } else if (elementsMap.cartPanel.classList.contains('active')) {
-                closeCart();
+            } else if (elementsMap.productsListPanel.classList.contains('active')) {
+                closeProductsList();
             }
         }
         

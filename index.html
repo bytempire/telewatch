@@ -108,6 +108,19 @@
 
         <!-- Backdrop для модальных окон -->
         <div class="backdrop" id="backdrop"></div>
+
+        <!-- Полноэкранный просмотр изображений -->
+        <div class="fullscreen-modal" id="fullscreenModal">
+            <div class="fullscreen-content">
+                <span class="close-fullscreen" id="closeFullscreen">&times;</span>
+                <img class="fullscreen-image" id="fullscreenImage" alt="Полноэкранное изображение">
+                <button class="fullscreen-nav prev-fullscreen" id="prevFullscreen">&#10094;</button>
+                <button class="fullscreen-nav next-fullscreen" id="nextFullscreen">&#10095;</button>
+                <div class="fullscreen-counter" id="fullscreenCounter">
+                    <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

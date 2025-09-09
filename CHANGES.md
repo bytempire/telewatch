@@ -335,5 +335,170 @@ line-clamp: 2;
 - Убран "7 кл." из названия и добавлен в характеристики как "Класс: 7кл"
 - Название стало более чистым и читаемым: "Джемпер"
 
+### 10. Добавление полноэкранного просмотра изображений
+
+**Задача:** Добавить возможность открывать фотографии товаров в полноэкранном режиме с навигацией между изображениями.
+
+#### HTML изменения
+
+**Добавлено:**
+```html
+<!-- Полноэкранный просмотр изображений -->
+<div class="fullscreen-modal" id="fullscreenModal">
+    <div class="fullscreen-content">
+        <span class="close-fullscreen" id="closeFullscreen">&times;</span>
+        <img class="fullscreen-image" id="fullscreenImage" alt="Полноэкранное изображение">
+        <button class="fullscreen-nav prev-fullscreen" id="prevFullscreen">&#10094;</button>
+        <button class="fullscreen-nav next-fullscreen" id="nextFullscreen">&#10095;</button>
+        <div class="fullscreen-counter" id="fullscreenCounter">
+            <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+        </div>
+    </div>
+</div>
+```
+
+#### CSS изменения
+
+**Добавлены стили для полноэкранного режима:**
+```css
+/* Полноэкранный просмотр изображений */
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    cursor: pointer;
+}
+
+.fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.close-fullscreen {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.fullscreen-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background-color 0.2s;
+}
+
+.fullscreen-counter {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10;
+}
+```
+
+**Добавлена адаптивность для мобильных устройств:**
+- Уменьшенные размеры кнопок и элементов на маленьких экранах
+- Оптимизированные отступы для мобильных устройств
+
+#### JavaScript изменения
+
+**Добавлены глобальные переменные:**
+```javascript
+let fullscreenImages = [];
+let currentFullscreenIndex = 0;
+```
+
+**Добавлены новые DOM элементы в elementsMap:**
+```javascript
+fullscreenModal: null,
+fullscreenImage: null,
+currentImageIndex: null,
+totalImages: null
+```
+
+**Добавлены функции:**
+- `openFullscreen(imageIndex)` - открытие полноэкранного режима
+- `closeFullscreen()` - закрытие полноэкранного режима
+- `nextFullscreenImage()` - переход к следующему изображению
+- `prevFullscreenImage()` - переход к предыдущему изображению
+- `updateFullscreenImage()` - обновление изображения и счетчика
+
+**Добавлены обработчики событий:**
+- Клик по изображениям в карусели для открытия полноэкранного режима
+- Кнопки навигации (предыдущее/следующее изображение)
+- Кнопка закрытия
+- Поддержка клавиатуры (стрелки влево/вправо, Escape)
+- Поддержка свайпов на мобильных устройствах
+
+**Функциональность:**
+- ✅ Клик по изображению в карусели открывает полноэкранный режим
+- ✅ Навигация между изображениями кнопками и клавиатурой
+- ✅ Счетчик текущего изображения
+- ✅ Поддержка свайпов на мобильных устройствах
+- ✅ Адаптивный дизайн для всех размеров экранов
+- ✅ Закрытие по Escape или клику на кнопку закрытия
+
+### 11. Удаление лишних товаров из каталога
+
+**Задача:** Оставить в каталоге только один товар - джемпер с id "0188".
+
+**Изменения:**
+- Удалены все товары кроме джемпера "0188"
+- Оставлен только один товар с полной функциональностью:
+  - 6 вариантов цветов
+  - 4 варианта размеров
+  - Полноэкранный просмотр изображений
+  - Все характеристики и описания
+
+**Результат:**
+- Каталог теперь содержит только один товар
+- Упрощена структура для тестирования
+- Сохранена вся функциональность приложения
+
 ## Дата изменений:
 9 сентября 2025

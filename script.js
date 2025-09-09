@@ -16,6 +16,8 @@ let currentProduct = null;
 let currentSlide = 0;
 let selectedColor = null;
 let selectedSize = null;
+let fullscreenImages = [];
+let currentFullscreenIndex = 0;
 
 // DOM элементы
 const elementsMap = {
@@ -28,7 +30,11 @@ const elementsMap = {
     cartTotal: null,
     photoCarousel: null,
     carouselTrack: null,
-    carouselDots: null
+    carouselDots: null,
+    fullscreenModal: null,
+    fullscreenImage: null,
+    currentImageIndex: null,
+    totalImages: null
 };
 
 // Инициализация DOM элементов
@@ -50,6 +56,10 @@ function initializeElements() {
         if (key === 'photoCarousel') elementsMap[key] = document.getElementById('photoCarousel');
         if (key === 'carouselTrack') elementsMap[key] = document.getElementById('carouselTrack');
         if (key === 'carouselDots') elementsMap[key] = document.getElementById('carouselDots');
+        if (key === 'fullscreenModal') elementsMap[key] = document.getElementById('fullscreenModal');
+        if (key === 'fullscreenImage') elementsMap[key] = document.getElementById('fullscreenImage');
+        if (key === 'currentImageIndex') elementsMap[key] = document.getElementById('currentImageIndex');
+        if (key === 'totalImages') elementsMap[key] = document.getElementById('totalImages');
     });
 }
 
@@ -190,12 +200,14 @@ function setupCarousel() {
     if (images.length === 0) return;
 
     // Создание слайдов
-    track.innerHTML = images.map(image => `
+    track.innerHTML = images.map((image, index) => `
         <div class="carousel-slide">
             <img 
                 class="carousel-image" 
                 src="${encodeImagePath(image)}" 
                 alt="${currentProduct.name}"
+                data-image-index="${index}"
+                style="cursor: pointer;"
                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
             >
         </div>
@@ -227,6 +239,15 @@ function setupCarousel() {
     if (nextBtn) {
         nextBtn.onclick = () => goToSlide(currentSlide + 1);
     }
+
+    // Добавляем обработчики кликов на изображения для полноэкранного просмотра
+    document.querySelectorAll('.carousel-image').forEach(img => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const imageIndex = parseInt(img.dataset.imageIndex);
+            openFullscreen(imageIndex);
+        });
+    });
 
     updateCarousel();
 }
@@ -404,8 +425,97 @@ function updateCarouselForColor(colorValue) {
             nextBtn.onclick = () => goToSlide(currentSlide + 1);
         }
         
+        // Добавляем обработчики кликов на изображения для полноэкранного просмотра
+        document.querySelectorAll('.carousel-image').forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const imageIndex = parseInt(img.dataset.imageIndex);
+                openFullscreen(imageIndex);
+            });
+        });
+        
         currentSlide = 0;
         updateCarousel();
+    }
+}
+
+// Открытие полноэкранного просмотра изображения
+function openFullscreen(imageIndex = 0) {
+    if (!currentProduct) return;
+    
+    // Получаем изображения для полноэкранного просмотра
+    let images = [];
+    if (currentProduct.variants && currentProduct.variants.colors && selectedColor) {
+        const selectedColorData = currentProduct.variants.colors.find(c => c.value === selectedColor);
+        if (selectedColorData && selectedColorData.images) {
+            images = selectedColorData.images;
+        }
+    } else if (currentProduct.variants && currentProduct.variants.colors && currentProduct.variants.colors[0]) {
+        images = currentProduct.variants.colors[0].images || [];
+    } else if (currentProduct.images) {
+        images = currentProduct.images;
+    }
+    
+    if (images.length === 0) return;
+    
+    fullscreenImages = images;
+    currentFullscreenIndex = Math.max(0, Math.min(imageIndex, images.length - 1));
+    
+    // Устанавливаем изображение
+    if (elementsMap.fullscreenImage) {
+        elementsMap.fullscreenImage.src = encodeImagePath(fullscreenImages[currentFullscreenIndex]);
+        elementsMap.fullscreenImage.alt = currentProduct.name;
+    }
+    
+    // Обновляем счетчик
+    if (elementsMap.currentImageIndex) {
+        elementsMap.currentImageIndex.textContent = currentFullscreenIndex + 1;
+    }
+    if (elementsMap.totalImages) {
+        elementsMap.totalImages.textContent = fullscreenImages.length;
+    }
+    
+    // Показываем модальное окно
+    if (elementsMap.fullscreenModal) {
+        elementsMap.fullscreenModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Закрытие полноэкранного просмотра
+function closeFullscreen() {
+    if (elementsMap.fullscreenModal) {
+        elementsMap.fullscreenModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Переход к следующему изображению в полноэкранном режиме
+function nextFullscreenImage() {
+    if (fullscreenImages.length === 0) return;
+    
+    currentFullscreenIndex = (currentFullscreenIndex + 1) % fullscreenImages.length;
+    updateFullscreenImage();
+}
+
+// Переход к предыдущему изображению в полноэкранном режиме
+function prevFullscreenImage() {
+    if (fullscreenImages.length === 0) return;
+    
+    currentFullscreenIndex = currentFullscreenIndex === 0 ? fullscreenImages.length - 1 : currentFullscreenIndex - 1;
+    updateFullscreenImage();
+}
+
+// Обновление изображения в полноэкранном режиме
+function updateFullscreenImage() {
+    if (!elementsMap.fullscreenImage || fullscreenImages.length === 0) return;
+    
+    elementsMap.fullscreenImage.src = encodeImagePath(fullscreenImages[currentFullscreenIndex]);
+    elementsMap.fullscreenImage.alt = currentProduct.name;
+    
+    // Обновляем счетчик
+    if (elementsMap.currentImageIndex) {
+        elementsMap.currentImageIndex.textContent = currentFullscreenIndex + 1;
     }
 }
 
@@ -804,6 +914,11 @@ function setupEventListeners() {
     document.getElementById('closeCart')?.addEventListener('click', closeCart);
     document.getElementById('checkoutBtn')?.addEventListener('click', checkout);
     
+    // Полноэкранный просмотр изображений
+    document.getElementById('closeFullscreen')?.addEventListener('click', closeFullscreen);
+    document.getElementById('prevFullscreen')?.addEventListener('click', prevFullscreenImage);
+    document.getElementById('nextFullscreen')?.addEventListener('click', nextFullscreenImage);
+    
     // Закрытие по клику на backdrop
     elementsMap.backdrop?.addEventListener('click', () => {
         if (elementsMap.productModal.classList.contains('active')) {
@@ -817,15 +932,25 @@ function setupEventListeners() {
     // Обработка клавиатуры
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (elementsMap.productModal.classList.contains('active')) {
+            if (elementsMap.fullscreenModal && elementsMap.fullscreenModal.classList.contains('active')) {
+                closeFullscreen();
+            } else if (elementsMap.productModal.classList.contains('active')) {
                 closeProductModal();
             } else if (elementsMap.cartPanel.classList.contains('active')) {
                 closeCart();
             }
         }
         
+        // Навигация в полноэкранном режиме
+        if (elementsMap.fullscreenModal && elementsMap.fullscreenModal.classList.contains('active')) {
+            if (e.key === 'ArrowLeft') {
+                prevFullscreenImage();
+            } else if (e.key === 'ArrowRight') {
+                nextFullscreenImage();
+            }
+        }
         // Навигация в карусели
-        if (elementsMap.productModal.classList.contains('active')) {
+        else if (elementsMap.productModal.classList.contains('active')) {
             if (e.key === 'ArrowLeft') {
                 goToSlide(currentSlide - 1);
             } else if (e.key === 'ArrowRight') {
@@ -858,6 +983,34 @@ function setupEventListeners() {
             } else {
                 // Swipe right - prev slide
                 goToSlide(currentSlide - 1);
+            }
+        }
+    }
+    
+    // Touch события для полноэкранного режима
+    let fullscreenTouchStartX = 0;
+    let fullscreenTouchEndX = 0;
+    
+    elementsMap.fullscreenModal?.addEventListener('touchstart', (e) => {
+        fullscreenTouchStartX = e.changedTouches[0].screenX;
+    });
+    
+    elementsMap.fullscreenModal?.addEventListener('touchend', (e) => {
+        fullscreenTouchEndX = e.changedTouches[0].screenX;
+        handleFullscreenSwipe();
+    });
+    
+    function handleFullscreenSwipe() {
+        const threshold = 50;
+        const diff = fullscreenTouchStartX - fullscreenTouchEndX;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                // Swipe left - next image
+                nextFullscreenImage();
+            } else {
+                // Swipe right - prev image
+                prevFullscreenImage();
             }
         }
     }

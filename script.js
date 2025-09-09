@@ -821,23 +821,6 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--tg-theme-button-color, #007AFF);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        z-index: 10000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        max-width: 90vw;
-        text-align: center;
-    `;
 
     document.body.appendChild(notification);
 

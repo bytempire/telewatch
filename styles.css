@@ -857,6 +857,47 @@ body {
     }
 }
 
+/* Системные сообщения */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    color: #333333;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    max-width: 90vw;
+    text-align: center;
+    border: 2px solid #833177;
+    box-shadow: 0 4px 12px rgba(131, 49, 119, 0.2);
+}
+
+.notification-success {
+    border-color: #28a745;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+}
+
+.notification-error {
+    border-color: #dc3545;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+}
+
+.notification-warning {
+    border-color: #ffc107;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+}
+
+.notification-info {
+    border-color: #833177;
+    box-shadow: 0 4px 12px rgba(131, 49, 119, 0.2);
+}
+
 /* Анимации */
 @keyframes fadeIn {
     from {

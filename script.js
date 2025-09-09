@@ -745,10 +745,23 @@ function removeFromCart(productId) {
     }
 }
 
+// Расчет скидки
+function calculateDiscount(totalPrice) {
+    const DISCOUNT_THRESHOLD = 100000; // Порог для скидки
+    const DISCOUNT_PERCENT = 3; // Процент скидки
+    
+    if (totalPrice >= DISCOUNT_THRESHOLD) {
+        return Math.round(totalPrice * DISCOUNT_PERCENT / 100);
+    }
+    return 0;
+}
+
 // Обновление интерфейса списка товаров
 function updateProductsListUI() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const discount = calculateDiscount(totalPrice);
+    const finalPrice = totalPrice - discount;
     const uniqueProducts = cart.length; // Количество уникальных артикулов
 
     // Обновление счетчика товаров (показываем количество артикулов)
@@ -757,9 +770,37 @@ function updateProductsListUI() {
         elementsMap.cartCount.style.display = uniqueProducts > 0 ? 'flex' : 'none';
     }
 
-    // Обновление общей стоимости
+    // Обновление общей стоимости с учетом скидки
     if (elementsMap.productsListTotal) {
-        elementsMap.productsListTotal.textContent = formatPrice(totalPrice);
+        if (discount > 0) {
+            elementsMap.productsListTotal.innerHTML = `
+                <div style="text-decoration: line-through; color: #999; font-size: 14px; margin-bottom: 4px;">
+                    ${formatPrice(totalPrice)} ₽
+                </div>
+                <div style="color: #28a745; font-weight: 600;">
+                    ${formatPrice(finalPrice)} ₽
+                </div>
+                <div style="font-size: 12px; color: #28a745; margin-top: 2px;">
+                    Скидка 3%
+                </div>
+            `;
+        } else {
+            elementsMap.productsListTotal.textContent = formatPrice(totalPrice) + ' ₽';
+        }
+    }
+
+    // Показываем уведомление о скидке при достижении порога
+    if (totalPrice >= 100000 && discount > 0) {
+        // Проверяем, не показывали ли уже уведомление для этой суммы
+        if (!window.discountNotificationShown || window.lastDiscountAmount !== totalPrice) {
+            showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
+            window.discountNotificationShown = true;
+            window.lastDiscountAmount = totalPrice;
+        }
+    } else if (totalPrice < 100000) {
+        // Сбрасываем флаг, если сумма стала меньше порога
+        window.discountNotificationShown = false;
+        window.lastDiscountAmount = 0;
     }
 
     // Активация/деактивация кнопки оформления
@@ -799,6 +840,10 @@ function checkout() {
     }
 
     // Подготовка данных заказа
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const discount = calculateDiscount(subtotal);
+    const finalTotal = subtotal - discount;
+    
     const orderData = {
         items: cart.map(item => ({
             name: item.name,
@@ -807,7 +852,10 @@ function checkout() {
             quantity: item.quantity,
             total: item.price * item.quantity
         })),
-        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        subtotal: subtotal,
+        discount: discount,
+        discountPercent: discount > 0 ? 3 : 0,
+        total: finalTotal,
         timestamp: new Date().toISOString()
     };
 

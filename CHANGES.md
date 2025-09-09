@@ -1541,6 +1541,93 @@ if (elementsMap.productsListTotal) {
 - ✅ Специальные стили для iOS Safari
 - ✅ Сохранена совместимость с Android устройствами
 
+### 29. Прикрепление кнопки "Оформить заказ" к нижней части экрана и улучшение прокрутки списка товаров
+
+**Задача:** Сделать кнопку "Оформить заказ" sticky к нижней части экрана браузера и улучшить прокрутку списка товаров.
+
+**Изменения:**
+
+**1. Сделана кнопка "Оформить заказ" sticky к нижней части экрана:**
+```css
+.products-list-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 20px;
+    border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+}
+```
+
+**2. Улучшена прокрутка списка товаров:**
+```css
+.products-list-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    overscroll-behavior: contain; /* Предотвращает отскок */
+    max-height: calc(100vh - 140px); /* Вычитаем высоту header и footer */
+}
+```
+
+**3. Обновлены стили для мобильных устройств:**
+```css
+/* Мобильные устройства (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .products-list-items {
+        max-height: calc(100vh - 160px); /* Учитываем sticky footer */
+        padding-bottom: 20px;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 20px; /* Стандартный отступ */
+    }
+}
+
+/* Маленькие мобильные устройства (320px - 480px) */
+@media (max-width: 480px) {
+    .products-list-items {
+        max-height: calc(100vh - 160px); /* Учитываем sticky footer */
+        padding-bottom: 20px;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 20px; /* Стандартный отступ */
+    }
+}
+```
+
+**4. Добавлены специальные стили для iOS устройств:**
+```css
+/* Специальные стили для iOS устройств */
+@supports (-webkit-touch-callout: none) {
+    .products-list-items {
+        max-height: calc(100vh - 180px); /* Учитываем sticky footer на iOS */
+        padding-bottom: 40px;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 40px; /* Больший отступ для iOS Safari */
+    }
+}
+```
+
+**5. Упрощена структура панели:**
+- Убран `overflow: hidden` с `.products-list-panel`
+- Убраны сложные стили прокрутки панели
+- Список товаров теперь прокручивается независимо от панели
+
+**Результат:**
+- ✅ **Кнопка "Оформить заказ" прикреплена к нижней части экрана** и всегда видна
+- ✅ **Список товаров прокручивается плавно** с правильными отступами
+- ✅ **Sticky footer с тенью** для лучшего визуального разделения
+- ✅ **Адаптивные отступы** для разных размеров экранов
+- ✅ **Специальные стили для iOS** с увеличенными отступами
+- ✅ **Упрощенная структура** без сложных стилей прокрутки панели
+- ✅ **Сохранена совместимость** с Android устройствами
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

@@ -498,7 +498,6 @@ body {
     z-index: 1001;
     transition: right 0.3s ease;
     box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-    overflow: hidden; /* Предотвращаем прокрутку панели */
 }
 
 .products-list-panel.active {
@@ -509,6 +508,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 }
 
 .products-list-header {
@@ -536,10 +536,11 @@ body {
 
 .products-list-items {
     flex: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 0 20px;
     -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
     overscroll-behavior: contain; /* Предотвращает отскок */
+    max-height: calc(100vh - 140px); /* Вычитаем высоту header и footer */
 }
 
 .products-list-item {
@@ -640,8 +641,13 @@ body {
 }
 
 .products-list-footer {
+    position: sticky;
+    bottom: 0;
     padding: 20px;
     border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
 }
 
 .products-list-total {
@@ -780,20 +786,14 @@ body {
         padding-bottom: 20px; /* Дополнительный отступ снизу */
     }
     
-    /* Исправление прокрутки панели списка товаров на мобильных */
-    .products-list-panel {
-        overflow: hidden;
-    }
-    
-    .products-list-content {
-        height: 100vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+    /* Улучшение прокрутки списка товаров на мобильных */
+    .products-list-items {
+        max-height: calc(100vh - 160px); /* Учитываем sticky footer */
+        padding-bottom: 20px;
     }
     
     .products-list-footer {
-        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
+        padding-bottom: 20px; /* Стандартный отступ */
     }
 }
 
@@ -881,20 +881,14 @@ body {
         padding-bottom: 20px; /* Дополнительный отступ снизу */
     }
     
-    /* Исправление прокрутки панели списка товаров на маленьких мобильных */
-    .products-list-panel {
-        overflow: hidden;
-    }
-    
-    .products-list-content {
-        height: 100vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+    /* Улучшение прокрутки списка товаров на маленьких мобильных */
+    .products-list-items {
+        max-height: calc(100vh - 160px); /* Учитываем sticky footer */
+        padding-bottom: 20px;
     }
     
     .products-list-footer {
-        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
+        padding-bottom: 20px; /* Стандартный отступ */
     }
 }
 
@@ -993,20 +987,14 @@ body {
         padding-bottom: 40px; /* Больший отступ для iOS */
     }
     
-    /* Исправление прокрутки панели списка товаров на iOS */
-    .products-list-panel {
-        overflow: hidden;
-    }
-    
-    .products-list-content {
-        height: 100vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
+    /* Улучшение прокрутки списка товаров на iOS */
+    .products-list-items {
+        max-height: calc(100vh - 180px); /* Учитываем sticky footer на iOS */
+        padding-bottom: 40px;
     }
     
     .products-list-footer {
-        padding-bottom: 60px; /* Больший отступ для iOS Safari */
+        padding-bottom: 40px; /* Больший отступ для iOS Safari */
     }
 }
 

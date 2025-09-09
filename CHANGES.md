@@ -1448,6 +1448,99 @@ if (elementsMap.productsListTotal) {
 - ✅ Специальные стили для iOS Safari
 - ✅ Совместимость с Android устройствами
 
+### 28. Исправление прокрутки панели списка товаров на мобильных устройствах
+
+**Проблема:** В мобильной версии списка товаров кнопка "Оформить заказ" не была видна и к ней нельзя было прокрутиться.
+
+**Причина:** Панель списка товаров не имела правильной настройки прокрутки, что приводило к тому, что footer с кнопкой "Оформить заказ" оставался за пределами видимой области.
+
+**Изменения:**
+
+**Обновлены базовые стили панели списка товаров:**
+```css
+.products-list-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    overflow: hidden; /* Предотвращаем прокрутку панели */
+}
+```
+
+**Добавлены стили для мобильных устройств:**
+```css
+/* Мобильные устройства (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
+    }
+}
+
+/* Маленькие мобильные устройства (320px - 480px) */
+@media (max-width: 480px) {
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
+    }
+}
+```
+
+**Добавлены специальные стили для iOS устройств:**
+```css
+/* Специальные стили для iOS устройств */
+@supports (-webkit-touch-callout: none) {
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 60px; /* Больший отступ для iOS Safari */
+    }
+}
+```
+
+**Результат:**
+- ✅ Кнопка "Оформить заказ" теперь видна и доступна на всех мобильных устройствах
+- ✅ Панель списка товаров прокручивается корректно
+- ✅ Плавная прокрутка на iOS устройствах
+- ✅ Дополнительные отступы для footer с кнопкой
+- ✅ Специальные стили для iOS Safari
+- ✅ Сохранена совместимость с Android устройствами
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

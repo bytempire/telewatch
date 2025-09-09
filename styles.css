@@ -498,6 +498,7 @@ body {
     z-index: 1001;
     transition: right 0.3s ease;
     box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    overflow: hidden; /* Предотвращаем прокрутку панели */
 }
 
 .products-list-panel.active {
@@ -778,6 +779,22 @@ body {
         overscroll-behavior: contain;
         padding-bottom: 20px; /* Дополнительный отступ снизу */
     }
+    
+    /* Исправление прокрутки панели списка товаров на мобильных */
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
+    }
 }
 
 /* Маленькие мобильные устройства (320px - 480px) */
@@ -862,6 +879,22 @@ body {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
         padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
+    
+    /* Исправление прокрутки панели списка товаров на маленьких мобильных */
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 40px; /* Дополнительный отступ для кнопки */
     }
 }
 
@@ -958,6 +991,22 @@ body {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
         padding-bottom: 40px; /* Больший отступ для iOS */
+    }
+    
+    /* Исправление прокрутки панели списка товаров на iOS */
+    .products-list-panel {
+        overflow: hidden;
+    }
+    
+    .products-list-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .products-list-footer {
+        padding-bottom: 60px; /* Больший отступ для iOS Safari */
     }
 }
 

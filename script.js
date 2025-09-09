@@ -255,6 +255,7 @@ function addToCart() {
 
     saveCartToStorage();
     updateCartUI();
+    showNotification('Товар добавлен в корзину');
     
     // Вибрация (если поддерживается)
     if (tg && tg.HapticFeedback) {

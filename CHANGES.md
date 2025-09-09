@@ -1700,6 +1700,105 @@ if (elementsMap.productsListTotal) {
 - ✅ **Специальные стили для iOS** с увеличенными отступами
 - ✅ **Стабильная прокрутка** без возврата к началу списка
 
+### 31. Уменьшение высоты блока списка товаров и footer
+
+**Задача:** Уменьшить общую высоту блока списка товаров и сделать footer более компактным.
+
+**Изменения:**
+
+**1. Уменьшена высота панели списка товаров:**
+```css
+.products-list-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 80vh; /* Уменьшена высота с 100vh до 80vh */
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+}
+```
+
+**2. Уменьшена высота контента:**
+```css
+.products-list-content {
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* Уменьшена высота с 100% до 80vh */
+    position: relative;
+}
+```
+
+**3. Обновлена максимальная высота списка товаров:**
+```css
+.products-list-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 60px 20px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    max-height: calc(80vh - 140px); /* Уменьшена высота с 100vh до 80vh */
+}
+```
+
+**4. Сделан footer более компактным:**
+```css
+.products-list-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 20px; /* Уменьшены отступы с 20px до 12px */
+    border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    background: var(--tg-theme-bg-color, #ffffff);
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+}
+```
+
+**5. Уменьшен отступ между итоговой суммой и кнопкой:**
+```css
+.products-list-total {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px; /* Уменьшен отступ с 16px до 8px */
+    text-align: center;
+    color: var(--tg-theme-text-color, #000000);
+}
+```
+
+**6. Уменьшена высота кнопки "Оформить заказ":**
+```css
+.checkout-btn {
+    width: 100%;
+    height: 40px; /* Уменьшена высота с 48px до 40px */
+    background: var(--tg-theme-button-color, #833177);
+    color: var(--tg-theme-button-text-color, #ffffff);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px; /* Уменьшен размер шрифта с 16px до 15px */
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+```
+
+**7. Обновлены стили для всех размеров экранов:**
+- Мобильные устройства: `max-height: calc(80vh - 160px)`
+- Маленькие мобильные: `max-height: calc(80vh - 160px)`
+- iOS устройства: `max-height: calc(80vh - 180px)`
+- Единообразные отступы footer: `padding: 12px 20px`
+
+**Результат:**
+- ✅ **Панель списка товаров стала компактнее** - занимает 80% высоты экрана
+- ✅ **Footer стал более компактным** с уменьшенными отступами
+- ✅ **Кнопка "Оформить заказ" стала меньше** по высоте и размеру шрифта
+- ✅ **Уменьшен отступ** между итоговой суммой и кнопкой
+- ✅ **Сохранена функциональность** прокрутки и sticky footer
+- ✅ **Адаптивность** для всех размеров экранов
+- ✅ **Больше места** для контента списка товаров
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

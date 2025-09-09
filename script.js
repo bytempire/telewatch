@@ -517,18 +517,19 @@ function setupEventListeners() {
     document.getElementById('qtyInput')?.addEventListener('blur', (e) => {
         const inputValue = e.target.value.trim();
         const value = parseInt(inputValue);
-        
+
         // Если поле пустое, оставляем пустым (не навязываем значение)
         if (!inputValue) {
             return; // Просто выходим, не меняем значение
         }
-        
+
         // Если введено некорректное значение
         if (isNaN(value) || value === 0) {
             e.target.value = '';
             showNotification('Введите корректное число');
         } else if (value < 50) {
-            e.target.value = 50;
+            // Больше не выставляем 50 автоматически — пользователь должен сам ввести допустимое значение
+            e.target.value = '';
             showNotification('Минимальное количество для заказа 50 шт');
         } else if (value > 9999) {
             e.target.value = 9999;

@@ -1261,6 +1261,88 @@ if (elementsMap.productsListTotal) {
 - ✅ Дополнительный отступ снизу для лучшего UX
 - ✅ Поддержка всех размеров мобильных экранов
 
+### 25. Исправление проблемы с отскоком прокрутки на iOS устройствах
+
+**Проблема:** На iPhone 12 mini (и других iOS устройствах) в Safari и Chrome модальное окно прокручивалось, но затем контент "отскакивал" обратно, скрывая селекторы и кнопки.
+
+**Причина:** iOS Safari имеет особенности работы с `-webkit-overflow-scrolling: touch` и `overflow-y: auto`, что может вызывать нестабильное поведение прокрутки.
+
+**Изменения:**
+
+**Обновлены базовые стили модального окна:**
+```css
+.modal-content {
+    background: var(--tg-theme-bg-color, #ffffff);
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    overflow-y: scroll; /* Изменено с auto на scroll */
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* Предотвращает отскок */
+}
+```
+
+**Добавлены специальные стили для iOS устройств:**
+```css
+/* Специальные стили для iOS устройств */
+@supports (-webkit-touch-callout: none) {
+    .modal-content {
+        height: 100vh;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        position: fixed; /* Фиксированное позиционирование */
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 480px;
+    }
+    
+    .product-info {
+        padding-bottom: 60px; /* Больший отступ для iOS */
+    }
+    
+    /* Предотвращаем отскок на iOS */
+    .modal.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+}
+```
+
+**Обновлены стили для мобильных устройств:**
+```css
+/* Мобильные устройства */
+.modal-content {
+    height: 100vh;
+    overflow-y: scroll; /* Изменено с auto на scroll */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.product-info {
+    padding-bottom: 40px; /* Увеличенный отступ снизу */
+}
+```
+
+**Результат:**
+- ✅ Исправлена проблема с отскоком прокрутки на iOS устройствах
+- ✅ Стабильная прокрутка на iPhone 12 mini и других iOS устройствах
+- ✅ Работает корректно в Safari и Chrome на iOS
+- ✅ Увеличенные отступы снизу для лучшего доступа к элементам
+- ✅ Фиксированное позиционирование предотвращает нестабильность
+- ✅ Сохранена совместимость с Android устройствами
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

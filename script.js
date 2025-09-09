@@ -108,7 +108,7 @@ function renderProducts() {
             <div class="product-card" data-product-id="${product.id}">
                 <img 
                     class="product-image" 
-                    src="${cardImage}" 
+                    src="${encodeImagePath(cardImage)}" 
                     alt="${product.name}"
                     loading="lazy"
                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik00MCA0MEg4MFY4MEg0MFY0MFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+'"
@@ -194,7 +194,7 @@ function setupCarousel() {
         <div class="carousel-slide">
             <img 
                 class="carousel-image" 
-                src="${image}" 
+                src="${encodeImagePath(image)}" 
                 alt="${currentProduct.name}"
                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
             >
@@ -217,6 +217,17 @@ function setupCarousel() {
         dots.innerHTML = '';
     }
 
+    // Добавляем обработчики для кнопок навигации
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+        prevBtn.onclick = () => goToSlide(currentSlide - 1);
+    }
+    if (nextBtn) {
+        nextBtn.onclick = () => goToSlide(currentSlide + 1);
+    }
+
     updateCarousel();
 }
 
@@ -224,8 +235,22 @@ function setupCarousel() {
 function goToSlide(slideIndex) {
     if (!currentProduct) return;
     
-    const maxSlide = currentProduct.images.length - 1;
+    // Получаем актуальные изображения для текущего слайда
+    let images = [];
+    if (currentProduct.variants && currentProduct.variants.colors && selectedColor) {
+        const selectedColorData = currentProduct.variants.colors.find(c => c.value === selectedColor);
+        if (selectedColorData && selectedColorData.images) {
+            images = selectedColorData.images;
+        }
+    } else if (currentProduct.variants && currentProduct.variants.colors && currentProduct.variants.colors[0]) {
+        images = currentProduct.variants.colors[0].images || [];
+    } else if (currentProduct.images) {
+        images = currentProduct.images;
+    }
+    
+    const maxSlide = images.length - 1;
     currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
+    
     updateCarousel();
 }
 
@@ -319,6 +344,17 @@ function getColorValue(colorValue) {
     return colorMap[colorValue] || '#CCCCCC';
 }
 
+// Функция для правильного кодирования путей к изображениям
+function encodeImagePath(path) {
+    // Разделяем путь на директорию и имя файла
+    const parts = path.split('/');
+    const directory = parts.slice(0, -1).join('/');
+    const filename = parts[parts.length - 1];
+    
+    // Кодируем только имя файла
+    return directory + '/' + encodeURIComponent(filename);
+}
+
 // Обновление карусели для выбранного цвета
 function updateCarouselForColor(colorValue) {
     if (!currentProduct || !currentProduct.variants || !currentProduct.variants.colors) return;
@@ -333,7 +369,7 @@ function updateCarouselForColor(colorValue) {
             <div class="carousel-slide">
                 <img 
                     class="carousel-image" 
-                    src="${image}" 
+                    src="${encodeImagePath(image)}" 
                     alt="${currentProduct.name}"
                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0xNTAgMTAwSDE1MFYyMDBIMjUwVjEwMEgxNTBaIiBmaWxsPSIjQ0NDQ0NDIi8+Cjwvc3ZnPg=='"
                 >
@@ -355,6 +391,17 @@ function updateCarouselForColor(colorValue) {
             });
         } else {
             dots.innerHTML = '';
+        }
+        
+        // Добавляем обработчики для кнопок навигации
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (prevBtn) {
+            prevBtn.onclick = () => goToSlide(currentSlide - 1);
+        }
+        if (nextBtn) {
+            nextBtn.onclick = () => goToSlide(currentSlide + 1);
         }
         
         currentSlide = 0;
@@ -701,9 +748,7 @@ function setupEventListeners() {
     // Кнопки модального окна товара
     document.getElementById('closeModal')?.addEventListener('click', closeProductModal);
     
-    // Карусель
-    document.getElementById('prevBtn')?.addEventListener('click', () => goToSlide(currentSlide - 1));
-    document.getElementById('nextBtn')?.addEventListener('click', () => goToSlide(currentSlide + 1));
+    // Карусель - обработчики будут добавлены в setupCarousel
     
     // Управление количеством - валидация при потере фокуса
     document.getElementById('qtyInput')?.addEventListener('blur', (e) => {

@@ -108,7 +108,8 @@
       "price": 1480,
       "article": "0188",
       "images": [
-        "./images/0188-2джемпероливковый(1).jpg"
+        "./images/0188-2-olive-6.jpg",
+        "./images/0188-2-olive-2.jpg"
       ],
       "description": "Стильный джемпер с V-образным вырезом. Удобная модель для повседневной носки.",
       "specs": {
@@ -121,49 +122,48 @@
             "name": "Оливковый",
             "value": "olive",
             "images": [
-              "./images/0188-2джемпероливковый(1).jpg",
-              "./images/0188-2джемпероливковый(4).jpg",
-              "./images/0188-2джемпероливковый(9).jpg"
+              "./images/0188-2-olive-6.jpg",
+              "./images/0188-2-olive-2.jpg"
             ]
           },
           {
             "name": "Черный", 
             "value": "black",
             "images": [
-              "./images/0188-2джемперчёрный(2).jpg",
-              "./images/0188-2джемперчёрный(1).jpg"
+              "./images/0188-2-black-2.jpg",
+              "./images/0188-2-black-1.jpg"
             ]
           },
           {
             "name": "Голубой",
             "value": "blue",
             "images": [
-              "./images/0188-2джемперголубой(6).jpg",
-              "./images/0188-2джемперголубой(1).jpg"
+              "./images/0188-2-blue-6.jpg",
+              "./images/0188-2-blue-3.jpg"
             ]
           },
           {
             "name": "Синий",
             "value": "dark-blue",
             "images": [
-              "./images/0188-2джемперсиний(5).jpg",
-              "./images/0188-2джемперсиний(1).jpg"
+              "./images/0188-2-dark-blue-5.jpg",
+              "./images/0188-2-dark-blue-1.jpg"
             ]
           },
           {
             "name": "Светло-розовый",
             "value": "light-pink",
             "images": [
-              "./images/0188-2джемперсветло-розовый(3).jpg",
-              "./images/0188-2джемперсветло-розовый(4).jpg"
+              "./images/0188-2-light-pink-3.jpg",
+              "./images/0188-2-light-pink-4.jpg"
             ]
           },
           {
             "name": "Светло-коричневый",
             "value": "light-brown",
             "images": [
-              "./images/0188-2джемперсветло-коричневый(3).png",
-              "./images/0188-2джемперсветло-коричневый(4).png"
+              "./images/0188-2-light-brown-3.png",
+              "./images/0188-2-light-brown-4.png"
             ]
           }
         ],

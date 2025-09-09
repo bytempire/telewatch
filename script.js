@@ -547,10 +547,6 @@ function addToCart() {
         return;
     }
     
-    if (quantity > 9999) {
-        showNotification('Максимальное количество 9999 штук');
-        return;
-    }
 
     // Проверяем, выбраны ли обязательные варианты
     if (currentProduct.variants) {
@@ -658,8 +654,7 @@ function renderProductsListItems() {
                         type="number" 
                         class="products-list-qty-input" 
                         value="${item.quantity}" 
-                        min="1" 
-                        max="9999"
+                        min="50"
                         data-product-id="${item.id}"
                         onchange="updateProductQuantity('${item.id}', this.value)"
                         onblur="validateQuantity('${item.id}', this.value)"
@@ -684,11 +679,11 @@ function updateProductQuantity(productId, newQuantity) {
         return;
     }
 
-    if (quantity > 9999) {
-        item.quantity = 9999;
+    if (quantity < 50) {
+        item.quantity = 50;
         const input = document.querySelector(`[data-product-id="${productId}"]`);
-        if (input) input.value = 9999;
-        showNotification('Максимальное количество: 9999 штук');
+        if (input) input.value = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
     } else {
         item.quantity = quantity;
     }
@@ -706,13 +701,13 @@ function validateQuantity(productId, value) {
     const input = document.querySelector(`[data-product-id="${productId}"]`);
     
     if (!value || isNaN(quantity) || quantity < 1) {
-        if (input) input.value = 1;
-        item.quantity = 1;
-        showNotification('Минимальное количество: 1 штука');
-    } else if (quantity > 9999) {
-        if (input) input.value = 9999;
-        item.quantity = 9999;
-        showNotification('Максимальное количество: 9999 штук');
+        if (input) input.value = 50;
+        item.quantity = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
+    } else if (quantity < 50) {
+        if (input) input.value = 50;
+        item.quantity = 50;
+        showNotification('Минимальное количество для заказа 50 шт');
     } else {
         item.quantity = quantity;
     }
@@ -902,9 +897,6 @@ function setupEventListeners() {
             // Больше не выставляем 50 автоматически — пользователь должен сам ввести допустимое значение
             e.target.value = '';
             showNotification('Минимальное количество для заказа 50 шт');
-        } else if (value > 9999) {
-            e.target.value = 9999;
-            showNotification('Максимальное количество: 9999 штук');
         }
     });
     

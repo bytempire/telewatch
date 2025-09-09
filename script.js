@@ -19,9 +19,9 @@ let selectedSize = null;
 let fullscreenImages = [];
 let currentFullscreenIndex = 0;
 
-// Система очереди уведомлений
-let notificationQueue = [];
-let isShowingNotification = false;
+// Система уведомлений для мобильных устройств
+let notificationTimeout = null;
+let discountNotificationTimeout = null;
 
 // DOM элементы
 const elementsMap = {
@@ -793,14 +793,11 @@ function updateProductsListUI() {
         }
     }
 
-    // Показываем уведомление о скидке при достижении порога с задержкой
+    // Показываем уведомление о скидке при достижении порога
     if (totalPrice >= 100000 && discount > 0) {
         // Проверяем, не показывали ли уже уведомление для этой суммы
         if (!window.discountNotificationShown || window.lastDiscountAmount !== totalPrice) {
-            // Добавляем задержку, чтобы уведомление о добавлении товара успело показаться
-            setTimeout(() => {
-                showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
-            }, 3000); // 3.5 секунды - после того как уведомление о добавлении товара исчезнет
+            showDiscountNotification();
             window.discountNotificationShown = true;
             window.lastDiscountAmount = totalPrice;
         }
@@ -808,6 +805,11 @@ function updateProductsListUI() {
         // Сбрасываем флаг, если сумма стала меньше порога
         window.discountNotificationShown = false;
         window.lastDiscountAmount = 0;
+        // Очищаем таймаут скидки, если сумма стала меньше порога
+        if (discountNotificationTimeout) {
+            clearTimeout(discountNotificationTimeout);
+            discountNotificationTimeout = null;
+        }
     }
 
     // Активация/деактивация кнопки оформления
@@ -905,24 +907,18 @@ function fallbackCheckout(orderData) {
 
 // Показ уведомления
 function showNotification(message, type = 'info') {
-    // Добавляем уведомление в очередь
-    notificationQueue.push({ message, type });
+    // Очищаем предыдущие таймауты
+    if (notificationTimeout) {
+        clearTimeout(notificationTimeout);
+    }
     
-    // Если нет активного уведомления, показываем следующее
-    if (!isShowingNotification) {
-        processNotificationQueue();
-    }
-}
-
-// Обработка очереди уведомлений
-function processNotificationQueue() {
-    if (notificationQueue.length === 0) {
-        isShowingNotification = false;
-        return;
-    }
-
-    isShowingNotification = true;
-    const { message, type } = notificationQueue.shift();
+    // Удаляем предыдущие уведомления
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => {
+        if (notif.parentNode) {
+            notif.parentNode.removeChild(notif);
+        }
+    });
     
     // Создание элемента уведомления
     const notification = document.createElement('div');
@@ -931,24 +927,41 @@ function processNotificationQueue() {
 
     document.body.appendChild(notification);
 
+    // Принудительное обновление DOM
+    notification.offsetHeight;
+
     // Анимация появления
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         notification.style.opacity = '1';
-    }, 10);
+        notification.style.transform = 'translateX(-50%) translateY(0)';
+    });
 
     // Удаление через 3 секунды
-    setTimeout(() => {
+    notificationTimeout = setTimeout(() => {
         notification.style.opacity = '0';
+        notification.style.transform = 'translateX(-50%) translateY(-20px)';
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
             }
-            // Показываем следующее уведомление из очереди
-            setTimeout(() => {
-                processNotificationQueue();
-            }, 50); // Небольшая задержка между уведомлениями
         }, 300);
     }, 3000);
+}
+
+// Показ уведомления о скидке с задержкой
+function showDiscountNotification() {
+    // Очищаем предыдущий таймаут скидки
+    if (discountNotificationTimeout) {
+        clearTimeout(discountNotificationTimeout);
+    }
+    
+    console.log('Запланировано уведомление о скидке через 4 секунды');
+    
+    // Показываем уведомление о скидке через 4 секунды
+    discountNotificationTimeout = setTimeout(() => {
+        console.log('Показываем уведомление о скидке');
+        showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
+    }, 4000);
 }
 
 // Настройка обработчиков событий

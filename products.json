@@ -72,6 +72,61 @@
           {"name": "58-60", "value": "58-60"}
         ]
       }
+    },
+    {
+      "id": "0207",
+      "name": "Джемпер",
+      "price": 1620,
+      "article": "0207/1",
+      "images": [
+        "./images/0207-1-cream.jpg"
+      ],
+      "specs": {
+        "Класс": "5кл",
+        "Материал": "30% шерсть, 70% пан",
+        "Средний вес": "0.670 гр"
+      },
+      "variants": {
+        "colors": [
+          {
+            "name": "Сливочный",
+            "value": "cream",
+            "images": [
+              "./images/0207-1-cream.jpg",
+              "./images/0207-1-cream2.jpg"
+            ]
+          },
+          {
+            "name": "Бежевый",
+            "value": "beige",
+            "images": [
+              "./images/0207-1-beige.jpg",
+              "./images/0207-1-beige2.jpg"
+            ]
+          },
+          {
+            "name": "Синий",
+            "value": "blue",
+            "images": [
+              "./images/0207-1-blue.jpg",
+              "./images/0207-1-blue2.jpg"
+            ]
+          },
+          {
+            "name": "Черный",
+            "value": "black",
+            "images": [
+              "./images/0207-1-black.jpg",
+              "./images/0207-1-black2.jpg"
+            ]
+          }
+        ],
+        "sizes": [
+          {"name": "44-46", "value": "44-46"},
+          {"name": "48-50", "value": "48-50"},
+          {"name": "52-54", "value": "52-54"}
+        ]
+      }
     }
   ]
 }

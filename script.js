@@ -19,6 +19,10 @@ let selectedSize = null;
 let fullscreenImages = [];
 let currentFullscreenIndex = 0;
 
+// Система очереди уведомлений
+let notificationQueue = [];
+let isShowingNotification = false;
+
 // DOM элементы
 const elementsMap = {
     productsGrid: null,
@@ -789,11 +793,14 @@ function updateProductsListUI() {
         }
     }
 
-    // Показываем уведомление о скидке при достижении порога
+    // Показываем уведомление о скидке при достижении порога с задержкой
     if (totalPrice >= 100000 && discount > 0) {
         // Проверяем, не показывали ли уже уведомление для этой суммы
         if (!window.discountNotificationShown || window.lastDiscountAmount !== totalPrice) {
-            showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
+            // Добавляем задержку, чтобы уведомление о добавлении товара успело показаться
+            setTimeout(() => {
+                showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');
+            }, 3000); // 3.5 секунды - после того как уведомление о добавлении товара исчезнет
             window.discountNotificationShown = true;
             window.lastDiscountAmount = totalPrice;
         }
@@ -898,6 +905,25 @@ function fallbackCheckout(orderData) {
 
 // Показ уведомления
 function showNotification(message, type = 'info') {
+    // Добавляем уведомление в очередь
+    notificationQueue.push({ message, type });
+    
+    // Если нет активного уведомления, показываем следующее
+    if (!isShowingNotification) {
+        processNotificationQueue();
+    }
+}
+
+// Обработка очереди уведомлений
+function processNotificationQueue() {
+    if (notificationQueue.length === 0) {
+        isShowingNotification = false;
+        return;
+    }
+
+    isShowingNotification = true;
+    const { message, type } = notificationQueue.shift();
+    
     // Создание элемента уведомления
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -917,6 +943,10 @@ function showNotification(message, type = 'info') {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
             }
+            // Показываем следующее уведомление из очереди
+            setTimeout(() => {
+                processNotificationQueue();
+            }, 50); // Небольшая задержка между уведомлениями
         }, 300);
     }, 3000);
 }

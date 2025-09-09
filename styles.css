@@ -416,6 +416,7 @@ body {
     align-items: flex-end;
     gap: 16px;
     width: 100%;
+    margin-bottom: 20px; /* Дополнительный отступ снизу */
 }
 
 .quantity-selector {
@@ -765,7 +766,7 @@ body {
     }
     
     .product-info {
-        padding-bottom: 40px; /* Увеличенный отступ снизу для iOS */
+        padding-bottom: 80px; /* Увеличенный отступ снизу для мобильных */
     }
 }
 
@@ -842,7 +843,7 @@ body {
     }
     
     .product-info {
-        padding-bottom: 40px; /* Увеличенный отступ снизу для iOS */
+        padding-bottom: 80px; /* Увеличенный отступ снизу для мобильных */
     }
 }
 
@@ -891,7 +892,7 @@ body {
     }
     
     .product-info {
-        padding-bottom: 40px;
+        padding-bottom: 80px;
     }
 }
 
@@ -911,7 +912,11 @@ body {
     }
     
     .product-info {
-        padding-bottom: 60px; /* Больший отступ для iOS */
+        padding-bottom: 120px; /* Увеличенный отступ для iOS Safari */
+    }
+    
+    .add-to-cart {
+        margin-bottom: 40px; /* Больший отступ для iOS Safari */
     }
     
     /* Предотвращаем отскок на iOS */
@@ -922,6 +927,11 @@ body {
         width: 100%;
         height: 100%;
         overflow: hidden;
+    }
+    
+    /* Дополнительный отступ для Safari на iOS */
+    .product-description {
+        margin-bottom: 40px;
     }
 }
 

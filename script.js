@@ -224,10 +224,10 @@ function addToCart() {
     const inputValue = document.getElementById('qtyInput').value.trim();
     const quantity = parseInt(inputValue);
     
-    if (!inputValue || isNaN(quantity)) {
-        showNotification('Введите количество товара');
-        return;
-    }
+    // if (!inputValue || isNaN(quantity)) {
+    //     showNotification('Введите количество товара');
+    //     return;
+    // }
     
     if (quantity < 50) {
         showNotification('Минимальное количество для заказа 50 шт');

@@ -1387,6 +1387,67 @@ if (elementsMap.productsListTotal) {
 - ✅ Улучшенная видимость всех элементов управления
 - ✅ Сохранена совместимость с другими браузерами и устройствами
 
+### 27. Улучшение прокрутки списка товаров
+
+**Задача:** Сделать список товаров прокручиваемым с теми же улучшениями, что и модальное окно товара.
+
+**Изменения:**
+
+**Обновлены базовые стили списка товаров:**
+```css
+.products-list-items {
+    flex: 1;
+    overflow-y: scroll; /* Изменено с auto на scroll */
+    padding: 0 20px;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    overscroll-behavior: contain; /* Предотвращает отскок */
+}
+```
+
+**Добавлены стили для мобильных устройств:**
+```css
+/* Мобильные устройства (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
+}
+
+/* Маленькие мобильные устройства (320px - 480px) */
+@media (max-width: 480px) {
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
+}
+```
+
+**Добавлены специальные стили для iOS устройств:**
+```css
+/* Специальные стили для iOS устройств */
+@supports (-webkit-touch-callout: none) {
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 40px; /* Больший отступ для iOS */
+    }
+}
+```
+
+**Результат:**
+- ✅ Список товаров теперь прокручивается плавно на всех устройствах
+- ✅ Плавная прокрутка на iOS устройствах
+- ✅ Предотвращение отскока прокрутки
+- ✅ Дополнительные отступы снизу для лучшего UX
+- ✅ Специальные стили для iOS Safari
+- ✅ Совместимость с Android устройствами
+
 ## Файлы, которые были изменены:
 - `/Users/user/Documents/telewatch/index.html` - структура HTML
 - `/Users/user/Documents/telewatch/styles.css` - стили для списка товаров

@@ -535,8 +535,10 @@ body {
 
 .products-list-items {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 0 20px;
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    overscroll-behavior: contain; /* Предотвращает отскок */
 }
 
 .products-list-item {
@@ -768,6 +770,14 @@ body {
     .product-info {
         padding-bottom: 80px; /* Увеличенный отступ снизу для мобильных */
     }
+    
+    /* Улучшение прокрутки списка товаров на мобильных */
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
+    }
 }
 
 /* Маленькие мобильные устройства (320px - 480px) */
@@ -844,6 +854,14 @@ body {
     
     .product-info {
         padding-bottom: 80px; /* Увеличенный отступ снизу для мобильных */
+    }
+    
+    /* Улучшение прокрутки списка товаров на маленьких мобильных */
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 20px; /* Дополнительный отступ снизу */
     }
 }
 
@@ -932,6 +950,14 @@ body {
     /* Дополнительный отступ для Safari на iOS */
     .product-description {
         margin-bottom: 40px;
+    }
+    
+    /* Улучшение прокрутки списка товаров на iOS */
+    .products-list-items {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        padding-bottom: 40px; /* Больший отступ для iOS */
     }
 }
 

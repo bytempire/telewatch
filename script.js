@@ -23,6 +23,9 @@ let currentFullscreenIndex = 0;
 let notificationTimeout = null;
 let discountNotificationTimeout = null;
 
+// Флаг для отслеживания показа уведомления о скидке в текущей сессии
+let discountNotificationShownInSession = false;
+
 // DOM элементы
 const elementsMap = {
     productsGrid: null,
@@ -78,6 +81,20 @@ async function initApp() {
     setupEventListeners();
     loadCartFromStorage();
     updateProductsListUI();
+    
+    // Проверяем, есть ли уже скидка при загрузке
+    checkInitialDiscountState();
+}
+
+// Проверка начального состояния скидки
+function checkInitialDiscountState() {
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const discount = calculateDiscount(totalPrice);
+    
+    // Если уже есть скидка при загрузке, помечаем что уведомление уже показано
+    if (totalPrice >= 100000 && discount > 0) {
+        discountNotificationShownInSession = true;
+    }
 }
 
 // Загрузка товаров из JSON
@@ -611,6 +628,9 @@ function addToCart() {
     updateProductsListUI();
     showNotification('Товар добавлен в список');
     
+    // Проверяем скидку после добавления товара
+    checkDiscountAfterAdd();
+    
     // Вибрация (если поддерживается)
     if (tg && tg.HapticFeedback) {
         tg.HapticFeedback.notificationOccurred('success');
@@ -694,6 +714,9 @@ function updateProductQuantity(productId, newQuantity) {
 
     saveCartToStorage();
     updateProductsListUI();
+    
+    // Проверяем скидку после изменения количества
+    checkDiscountAfterAdd();
 }
 
 // Валидация количества при потере фокуса
@@ -793,18 +816,8 @@ function updateProductsListUI() {
         }
     }
 
-    // Показываем уведомление о скидке при достижении порога
-    if (totalPrice >= 100000 && discount > 0) {
-        // Проверяем, не показывали ли уже уведомление для этой суммы
-        if (!window.discountNotificationShown || window.lastDiscountAmount !== totalPrice) {
-            showDiscountNotification();
-            window.discountNotificationShown = true;
-            window.lastDiscountAmount = totalPrice;
-        }
-    } else if (totalPrice < 100000) {
-        // Сбрасываем флаг, если сумма стала меньше порога
-        window.discountNotificationShown = false;
-        window.lastDiscountAmount = 0;
+    // Сбрасываем флаг скидки, если сумма стала меньше порога
+    if (totalPrice < 100000) {
         // Очищаем таймаут скидки, если сумма стала меньше порога
         if (discountNotificationTimeout) {
             clearTimeout(discountNotificationTimeout);
@@ -960,6 +973,21 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
+// Проверка скидки после добавления товара
+function checkDiscountAfterAdd() {
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const discount = calculateDiscount(totalPrice);
+    
+    // Показываем уведомление о скидке только если достигли порога
+    if (totalPrice >= 100000 && discount > 0) {
+        // Проверяем, не показывали ли уже уведомление в этой сессии
+        if (!discountNotificationShownInSession) {
+            showDiscountNotification();
+            discountNotificationShownInSession = true;
+        }
+    }
+}
+
 // Показ уведомления о скидке с задержкой
 function showDiscountNotification() {
     // Очищаем предыдущий таймаут скидки
@@ -967,9 +995,9 @@ function showDiscountNotification() {
         clearTimeout(discountNotificationTimeout);
     }
     
-    console.log('Запланировано уведомление о скидке через 4 секунды');
+    console.log('Запланировано уведомление о скидке через 3 секунды');
     
-    // Показываем уведомление о скидке через 4 секунды
+    // Показываем уведомление о скидке через 3 секунды
     discountNotificationTimeout = setTimeout(() => {
         console.log('Показываем уведомление о скидке');
         showNotification(`🎉 Поздравляем! Вы получили скидку 3%`, 'success');

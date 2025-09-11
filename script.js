@@ -818,6 +818,8 @@ function updateProductsListUI() {
 
     // Сбрасываем флаг скидки, если сумма стала меньше порога
     if (totalPrice < 100000) {
+        // Сбрасываем флаг уведомления о скидке, чтобы можно было показать его снова
+        discountNotificationShownInSession = false;
         // Очищаем таймаут скидки, если сумма стала меньше порога
         if (discountNotificationTimeout) {
             clearTimeout(discountNotificationTimeout);

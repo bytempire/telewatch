@@ -21,6 +21,10 @@
             <!-- Информация о компании -->
             <div class="company-info">
                 <h2 class="company-title">Трикотажная компания POLLEN</h2>
+                <div class="scroll-hint">
+                    <span class="scroll-text">Прокрутите для подробностей</span>
+                    <span class="scroll-icon">↓</span>
+                </div>
                 
                 <div class="company-content scrollable">
                     <div class="company-description">
@@ -119,6 +123,44 @@
                     card.style.transform = 'translateY(0)';
                 }, index * 100);
             });
+
+            // Интерактивность подсказки прокрутки
+            const scrollableContent = document.querySelector('.company-content.scrollable');
+            const scrollHint = document.querySelector('.scroll-hint');
+            
+            if (scrollableContent && scrollHint) {
+                let hasScrolled = false;
+                
+                // Скрыть подсказку после первого скролла
+                scrollableContent.addEventListener('scroll', () => {
+                    if (!hasScrolled && scrollableContent.scrollTop > 10) {
+                        hasScrolled = true;
+                        scrollHint.classList.add('hidden');
+                        
+                        // Добавляем тактильную обратную связь
+                        if (tg && tg.HapticFeedback) {
+                            tg.HapticFeedback.impactOccurred('light');
+                        }
+                    }
+                });
+                
+                // Показать подсказку при наведении (только на десктопе)
+                if (window.innerWidth > 768) {
+                    scrollableContent.addEventListener('mouseenter', () => {
+                        if (!hasScrolled) {
+                            scrollHint.style.opacity = '1';
+                            scrollHint.style.transform = 'translateY(0)';
+                        }
+                    });
+                }
+                
+                // Автоматически скрыть подсказку через 5 секунд
+                setTimeout(() => {
+                    if (!hasScrolled) {
+                        scrollHint.classList.add('hidden');
+                    }
+                }, 5000);
+            }
         });
     </script>
 </body>

@@ -1422,18 +1422,61 @@ body {
     background: rgba(131, 49, 119, 0.8);
 }
 
-/* Индикатор прокрутки */
-.company-content.scrollable:after {
+/* Подсказка для прокрутки */
+.scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--tg-theme-hint-color, #666666);
+    transition: opacity 0.3s ease;
+}
+
+.scroll-text {
+    font-weight: 500;
+}
+
+.scroll-icon {
+    font-size: 14px;
+    animation: bounce 2s infinite;
+    color: var(--tg-theme-button-color, #833177);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-4px);
+    }
+    60% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Fade-out эффект внизу прокручиваемого блока */
+.company-info::after {
     content: "";
     position: absolute;
+    bottom: 0;
+    left: 20px;
     right: 20px;
-    bottom: 20px;
-    width: 20px;
     height: 20px;
-    background: linear-gradient(135deg, transparent 50%, var(--tg-theme-hint-color, #ccc) 50%);
-    border-radius: 50%;
-    opacity: 0.6;
+    background: linear-gradient(to top, var(--tg-theme-bg-color, #ffffff), transparent);
     pointer-events: none;
+    border-radius: 0 0 16px 16px;
+}
+
+/* Скрыть подсказку после скролла */
+.company-content.scrolled + .company-info .scroll-hint,
+.scroll-hint.hidden {
+    opacity: 0;
+    transform: translateY(-5px);
 }
 
 .company-title {
@@ -1811,6 +1854,16 @@ body {
         max-height: 150px;
     }
     
+    .scroll-hint {
+        font-size: 11px;
+        padding: 5px 10px;
+        margin-bottom: 10px;
+    }
+    
+    .scroll-icon {
+        font-size: 12px;
+    }
+    
     .menu-grid {
         gap: 12px;
     }
@@ -1888,6 +1941,16 @@ body {
     
     .company-content.scrollable {
         max-height: 120px;
+    }
+    
+    .scroll-hint {
+        font-size: 10px;
+        padding: 4px 8px;
+        margin-bottom: 8px;
+    }
+    
+    .scroll-icon {
+        font-size: 11px;
     }
     
     .menu-grid {

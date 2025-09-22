@@ -38,6 +38,62 @@ body {
     font-size: 20px;
     font-weight: 600;
     color: var(--tg-theme-text-color, #000000);
+    flex: 1;
+    text-align: center;
+}
+
+/* Логотип */
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 32px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+.logo-small {
+    height: 24px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+}
+
+/* Заголовок страницы для внутренних страниц */
+.page-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    position: absolute;
+    right: 20px;
+}
+
+
+/* Кнопка назад */
+.nav-back {
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--tg-theme-button-color, #833177);
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    user-select: none;
+    position: absolute;
+    left: 20px;
+}
+
+.nav-back:hover {
+    background-color: var(--tg-theme-section-bg-color, #f8f9fa);
+}
+
+.nav-back:active {
+    background-color: var(--tg-theme-hint-color, #e0e0e0);
 }
 
 .cart-icon {
@@ -1314,6 +1370,536 @@ body {
     
     .fullscreen-content {
         padding: 10px;
+    }
+}
+
+/* ГЛАВНАЯ СТРАНИЦА */
+
+/* Главное меню */
+.main-menu {
+    padding: 20px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Информация о компании */
+.company-info {
+    background: var(--tg-theme-bg-color, #ffffff);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+/* Прокручиваемый контент */
+.company-content.scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tg-theme-button-color, #833177) var(--tg-theme-section-bg-color, #f8f9fa);
+}
+
+/* Стилизация скроллбара для WebKit браузеров */
+.company-content.scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+
+.company-content.scrollable::-webkit-scrollbar-track {
+    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    border-radius: 3px;
+}
+
+.company-content.scrollable::-webkit-scrollbar-thumb {
+    background: var(--tg-theme-button-color, #833177);
+    border-radius: 3px;
+}
+
+.company-content.scrollable::-webkit-scrollbar-thumb:hover {
+    background: rgba(131, 49, 119, 0.8);
+}
+
+/* Индикатор прокрутки */
+.company-content.scrollable:after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, transparent 50%, var(--tg-theme-hint-color, #ccc) 50%);
+    border-radius: 50%;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.company-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.company-description {
+    margin-bottom: 20px;
+}
+
+.company-description p {
+    font-size: 14px;
+    color: var(--tg-theme-text-color, #000000);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.company-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.spec-group {
+    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.spec-group h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 12px;
+}
+
+.spec-group p {
+    font-size: 13px;
+    color: var(--tg-theme-text-color, #000000);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.spec-group p:last-child {
+    margin-bottom: 0;
+}
+
+.spec-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.spec-group li {
+    font-size: 13px;
+    color: var(--tg-theme-text-color, #000000);
+    line-height: 1.5;
+    margin-bottom: 6px;
+    position: relative;
+    padding-left: 12px;
+}
+
+.spec-group li:before {
+    content: "•";
+    color: var(--tg-theme-button-color, #833177);
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.spec-group li:last-child {
+    margin-bottom: 0;
+}
+
+.advantages {
+    border: 2px solid var(--tg-theme-button-color, #833177);
+    background: rgba(131, 49, 119, 0.05);
+}
+
+.advantages h3 {
+    color: var(--tg-theme-button-color, #833177);
+}
+
+.advantages li strong {
+    color: var(--tg-theme-button-color, #833177);
+}
+
+
+.menu-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.menu-card {
+    background: var(--tg-theme-bg-color, #ffffff);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    opacity: 0;
+    transform: translateY(20px);
+    text-align: center;
+}
+
+.menu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.menu-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.menu-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.menu-card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 8px;
+}
+
+.menu-card p {
+    font-size: 13px;
+    color: var(--tg-theme-hint-color, #666666);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.menu-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.price-range {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tg-theme-button-color, #833177);
+    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+/* СТРАНИЦА ИНДИВИДУАЛЬНОГО ЗАКАЗА */
+
+.custom-order-container {
+    padding: 20px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.custom-order-intro {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 24px;
+    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    border-radius: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.intro-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.custom-order-intro h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 12px;
+}
+
+.custom-order-intro p {
+    font-size: 16px;
+    color: var(--tg-theme-hint-color, #666666);
+    line-height: 1.6;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.feature-card {
+    background: var(--tg-theme-bg-color, #ffffff);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.feature-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.feature-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 12px;
+    color: var(--tg-theme-hint-color, #666666);
+    line-height: 1.4;
+}
+
+.order-form-placeholder {
+    background: var(--tg-theme-bg-color, #ffffff);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    border: 2px dashed var(--tg-theme-hint-color, #e0e0e0);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.placeholder-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.order-form-placeholder h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--tg-theme-text-color, #000000);
+    margin-bottom: 12px;
+}
+
+.order-form-placeholder p {
+    font-size: 14px;
+    color: var(--tg-theme-hint-color, #666666);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.contact-btn {
+    padding: 14px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.contact-btn.primary {
+    background: var(--tg-theme-button-color, #833177);
+    color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+.contact-btn.primary:hover {
+    opacity: 0.9;
+}
+
+.contact-btn.secondary {
+    background: transparent;
+    color: var(--tg-theme-button-color, #833177);
+    border: 2px solid var(--tg-theme-button-color, #833177);
+}
+
+.contact-btn.secondary:hover {
+    background: var(--tg-theme-button-color, #833177);
+    color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+/* Адаптивность логотипа */
+@media (max-width: 480px) {
+    .logo {
+        height: 28px;
+        max-width: 160px;
+    }
+    
+    .logo-small {
+        height: 20px;
+        max-width: 120px;
+    }
+    
+    .page-title {
+        font-size: 14px;
+        right: 16px;
+    }
+}
+
+@media (max-width: 320px) {
+    .logo {
+        height: 24px;
+        max-width: 140px;
+    }
+    
+    .logo-small {
+        height: 18px;
+        max-width: 100px;
+    }
+    
+    .page-title {
+        font-size: 13px;
+    }
+}
+
+/* Адаптивность новых страниц */
+@media (max-width: 480px) {
+    .main-menu, .custom-order-container {
+        padding: 16px;
+    }
+    
+    .menu-grid {
+        gap: 16px;
+    }
+    
+    .menu-card {
+        padding: 14px;
+    }
+    
+    .menu-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .menu-card h2 {
+        font-size: 14px;
+    }
+    
+    .menu-card p {
+        font-size: 12px;
+    }
+    
+    .company-info {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .company-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .spec-group {
+        padding: 12px;
+    }
+    
+    .spec-group h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .company-content.scrollable {
+        max-height: 150px;
+    }
+    
+    .menu-grid {
+        gap: 12px;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .feature-card {
+        padding: 16px;
+    }
+    
+    .feature-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .custom-order-intro {
+        padding: 20px;
+    }
+    
+    .order-form-placeholder {
+        padding: 24px 20px;
+    }
+}
+
+/* Очень маленькие экраны для новых страниц */
+@media (max-width: 320px) {
+    .main-menu, .custom-order-container {
+        padding: 12px;
+    }
+    
+    .menu-card {
+        padding: 12px;
+    }
+    
+    .menu-icon {
+        font-size: 24px;
+        margin-bottom: 6px;
+    }
+    
+    .menu-card h2 {
+        font-size: 13px;
+    }
+    
+    .menu-card p {
+        font-size: 11px;
+    }
+    
+    .company-info {
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .company-title {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .spec-group {
+        padding: 10px;
+    }
+    
+    .spec-group h3 {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+    
+    .company-description p,
+    .spec-group p,
+    .spec-group li {
+        font-size: 11px;
+    }
+    
+    .company-content.scrollable {
+        max-height: 120px;
+    }
+    
+    .menu-grid {
+        gap: 10px;
+    }
+    
+    .custom-order-intro {
+        padding: 16px;
+    }
+    
+    .order-form-placeholder {
+        padding: 20px 16px;
     }
 }
 

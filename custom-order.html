@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Индивидуальный заказ - POLLEN</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Заголовок приложения -->
+        <header class="header">
+            <div class="nav-back" onclick="goBack()">
+                ← Назад
+            </div>
+            <div class="logo-container">
+                <img src="logo.png" alt="POLLEN" class="logo-small">
+            </div>
+            <div class="page-title">Индивидуальный заказ</div>
+        </header>
+
+        <!-- Контент страницы -->
+        <main class="main">
+            <div class="custom-order-container">
+                <!-- Описание услуги -->
+                <div class="custom-order-intro">
+                    <div class="intro-icon">✨</div>
+                    <h2>Создайте уникальное изделие</h2>
+                    <p>Мы изготавливаем изделия по индивидуальным пожеланиям: выберите материал, цвет, размер и дизайн. Наши мастера воплотят ваши идеи в реальность.</p>
+                </div>
+
+                <!-- Преимущества -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Любой цвет</h3>
+                        <p>Выберите из широкой палитры или предложите свой вариант</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📏</div>
+                        <h3>Идеальная посадка</h3>
+                        <p>Изделие будет сшито точно по вашим меркам</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🧶</div>
+                        <h3>Качественные материалы</h3>
+                        <p>Только лучшие ткани и нити для долговечности</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Быстрое изготовление</h3>
+                        <p>Готовность заказа от 7 до 14 дней</p>
+                    </div>
+                </div>
+
+                <!-- Форма заказа (заглушка) -->
+                <div class="order-form-placeholder">
+                    <div class="placeholder-icon">📝</div>
+                    <h3>Форма заказа</h3>
+                    <p>Форма для оформления индивидуального заказа будет добавлена в ближайшее время.</p>
+                    <p>А пока вы можете связаться с нами для консультации:</p>
+                    
+                    <div class="contact-buttons">
+                        <button class="contact-btn primary" onclick="contactManager()">
+                            📞 Связаться с менеджером
+                        </button>
+                        <button class="contact-btn secondary" onclick="showExamples()">
+                            👀 Посмотреть примеры работ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Telegram Web App инициализация
+        let tg = window.Telegram?.WebApp;
+
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            tg.enableClosingConfirmation();
+        } else {
+            console.log('Telegram Web App не доступен');
+        }
+
+        // Функция возврата на главную страницу
+        function goBack() {
+            window.location.href = 'index.html';
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        // Связь с менеджером
+        function contactManager() {
+            if (tg && tg.openTelegramLink) {
+                // Здесь должна быть ссылка на менеджера или чат поддержки
+                tg.openTelegramLink('https://t.me/your_manager_username');
+            } else {
+                // Fallback для браузера
+                alert('Свяжитесь с менеджером: @your_manager_username');
+            }
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        }
+
+        // Показать примеры работ
+        function showExamples() {
+            alert('Раздел с примерами работ будет добавлен позже');
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        // Анимация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.feature-card, .custom-order-intro, .order-form-placeholder');
+            elements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

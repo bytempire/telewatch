@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров - POLLEN</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Заголовок приложения -->
+        <header class="header">
+            <div class="nav-back" onclick="goBack()">
+                ← Назад
+            </div>
+            <div class="logo-container">
+                <img src="logo.png" alt="POLLEN" class="logo-small">
+            </div>
+            <div class="cart-icon" id="cartIcon">
+                📋 <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </header>
+
+        <!-- Каталог товаров -->
+        <main class="main">
+            <div class="products-grid" id="productsGrid">
+                <!-- Товары будут загружены динамически -->
+            </div>
+        </main>
+
+        <!-- Модальное окно с деталями товара -->
+        <div class="modal" id="productModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModal">&times;</span>
+                <div class="product-details">
+                    <!-- Карусель фото -->
+                    <div class="photo-carousel" id="photoCarousel">
+                        <div class="carousel-container">
+                            <div class="carousel-track" id="carouselTrack">
+                                <!-- Фото будут добавлены динамически -->
+                            </div>
+                            <button class="carousel-btn prev-btn" id="prevBtn">&#10094;</button>
+                            <button class="carousel-btn next-btn" id="nextBtn">&#10095;</button>
+                        </div>
+                        <div class="carousel-dots" id="carouselDots">
+                            <!-- Индикаторы будут добавлены динамически -->
+                        </div>
+                    </div>
+
+                    <!-- Информация о товаре -->
+                    <div class="product-info">
+                        <h2 class="product-title" id="productTitle"></h2>
+                        <p class="product-price" id="productPrice"></p>
+                        <p class="product-article" id="productArticle"></p>
+                        
+                        <!-- Характеристики -->
+                        <div class="product-specs" id="productSpecs">
+                            <h3>Характеристики:</h3>
+                            <div class="specs-list" id="specsList"></div>
+                        </div>
+
+                        <!-- Выбор цвета -->
+                        <div class="color-selector" id="colorSelector" style="display: none;">
+                            <h3>Выберите цвет:</h3>
+                            <select class="color-select" id="colorSelect">
+                                <option value="">Выберите цвет</option>
+                            </select>
+                        </div>
+
+                        <!-- Выбор размера -->
+                        <div class="size-selector" id="sizeSelector" style="display: none;">
+                            <h3>Выберите размер:</h3>
+                            <select class="size-select" id="sizeSelect">
+                                <option value="">Выберите размер</option>
+                            </select>
+                        </div>
+
+                        <!-- Описание -->
+                        <div class="product-description" id="productDescription"></div>
+
+                        <!-- Добавление в корзину -->
+                        <div class="add-to-cart">
+                            <div class="quantity-selector">
+                                <label for="qtyInput" class="qty-label">Количество:</label>
+                                <input type="number" class="qty-input" id="qtyInput" placeholder="мин. 10 шт" inputmode="numeric">
+                            </div>
+                            <button class="add-cart-btn" id="addToCartBtn">Добавить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Список товаров -->
+        <div class="products-list-panel" id="productsListPanel">
+            <div class="products-list-content">
+                <div class="products-list-header">
+                    <h2>Список товаров</h2>
+                    <button class="close-products-list" id="closeProductsList">&times;</button>
+                </div>
+                <div class="products-list-items" id="productsListItems">
+                    <!-- Товары в списке будут добавлены динамически -->
+                </div>
+                <div class="products-list-footer">
+                    <div class="products-list-total">
+                        <strong>Итого: <span id="productsListTotal">0</span></strong>
+                    </div>
+                    <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backdrop для модальных окон -->
+        <div class="backdrop" id="backdrop"></div>
+
+        <!-- Полноэкранный просмотр изображений -->
+        <div class="fullscreen-modal" id="fullscreenModal">
+            <div class="fullscreen-content">
+                <span class="close-fullscreen" id="closeFullscreen">&times;</span>
+                <img class="fullscreen-image" id="fullscreenImage" alt="Полноэкранное изображение">
+                <button class="fullscreen-nav prev-fullscreen" id="prevFullscreen">&#10094;</button>
+                <button class="fullscreen-nav next-fullscreen" id="nextFullscreen">&#10095;</button>
+                <div class="fullscreen-counter" id="fullscreenCounter">
+                    <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Функция возврата на главную страницу
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

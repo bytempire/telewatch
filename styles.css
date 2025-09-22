@@ -7,8 +7,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--tg-theme-bg-color, #f0f2f5);
-    color: var(--tg-theme-text-color, #000000);
+    background-color: #f0f2f5;
+    color: #000000;
     line-height: 1.5;
     min-height: 100vh;
     overflow-x: hidden;
@@ -17,7 +17,7 @@ body {
 .app {
     max-width: 480px;
     margin: 0 auto;
-    background-color: var(--tg-theme-bg-color, #ffffff);
+    background-color: #ffffff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -29,7 +29,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
-    background: var(--tg-theme-header-bg-color, #ffffff);
+    background: #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
@@ -39,7 +39,7 @@ body {
 .header h1 {
     font-size: 20px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     flex: 1;
     text-align: center;
 }
@@ -70,7 +70,7 @@ body {
 .page-title {
     font-size: 16px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     position: absolute;
     right: 20px;
 }
@@ -80,7 +80,7 @@ body {
 .nav-back {
     cursor: pointer;
     font-size: 16px;
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
     font-weight: 500;
     padding: 8px;
     border-radius: 6px;
@@ -91,11 +91,11 @@ body {
 }
 
 .nav-back:hover {
-    background-color: var(--tg-theme-section-bg-color, #f8f9fa);
+    background-color: #f8f9fa;
 }
 
 .nav-back:active {
-    background-color: var(--tg-theme-hint-color, #e0e0e0);
+    background-color: #e0e0e0;
 }
 
 .cart-icon {
@@ -108,7 +108,7 @@ body {
 }
 
 .cart-icon:hover {
-    background-color: var(--tg-theme-button-color, #833177);
+    background-color: #833177;
     color: white;
 }
 
@@ -116,7 +116,7 @@ body {
     position: absolute;
     top: -2px;
     right: -2px;
-    background: var(--tg-theme-button-color, #FF3B30);
+    background: #FF3B30;
     color: white;
     border-radius: 50%;
     width: 18px;
@@ -141,13 +141,13 @@ body {
 }
 
 .product-card {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     border-radius: 12px;
     padding: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
 }
 
 .product-card:hover {
@@ -175,7 +175,7 @@ body {
     font-size: 14px;
     font-weight: 500;
     margin: 8px 0 4px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -187,12 +187,12 @@ body {
 .product-price {
     font-size: 16px;
     font-weight: 600;
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
 }
 
 .product-article {
     font-size: 12px;
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
     margin-top: 4px;
 }
 
@@ -215,7 +215,7 @@ body {
 }
 
 .modal-content {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     width: 100%;
     max-width: 480px;
     height: 100vh;
@@ -324,13 +324,13 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--tg-theme-hint-color, #cccccc);
+    background: #cccccc;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .dot.active {
-    background: var(--tg-theme-button-color, #833177);
+    background: #833177;
 }
 
 /* Информация о товаре */
@@ -342,19 +342,19 @@ body {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .product-price {
     font-size: 24px;
     font-weight: 700;
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
     margin-bottom: 8px;
 }
 
 .product-article {
     font-size: 14px;
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
     margin-bottom: 16px;
 }
 
@@ -367,11 +367,11 @@ body {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .specs-list {
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 8px;
     padding: 12px;
 }
@@ -381,7 +381,7 @@ body {
     justify-content: space-between;
     padding: 4px 0;
     font-size: 14px;
-    border-bottom: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .spec-item:last-child {
@@ -389,11 +389,11 @@ body {
 }
 
 .spec-name {
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
 }
 
 .spec-value {
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     font-weight: 500;
 }
 
@@ -406,25 +406,25 @@ body {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 12px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .color-select {
     width: 100%;
     height: 48px;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 0 12px;
     font-size: 16px;
-    background: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
+    background: #ffffff;
+    color: #000000;
     cursor: pointer;
     transition: border-color 0.2s;
 }
 
 .color-select:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #833177);
+    border-color: #833177;
     box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
@@ -437,32 +437,32 @@ body {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 12px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .size-select {
     width: 100%;
     height: 48px;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 0 12px;
     font-size: 16px;
-    background: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
+    background: #ffffff;
+    color: #000000;
     cursor: pointer;
     transition: border-color 0.2s;
 }
 
 .size-select:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #833177);
+    border-color: #833177;
     box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
 /* Описание */
 .product-description {
     font-size: 14px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     line-height: 1.6;
     margin-bottom: 24px;
 }
@@ -489,7 +489,7 @@ body {
 .qty-label {
     font-size: 14px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     text-align: center;
     width: 100%;
 }
@@ -497,25 +497,25 @@ body {
 .qty-input {
     width: 100%;
     height: 48px;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     text-align: center;
     font-size: 16px;
     font-weight: 600;
-    background: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
+    background: #ffffff;
+    color: #000000;
     padding: 0 12px;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .qty-input:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #833177);
+    border-color: #833177;
     box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
 .qty-input::placeholder {
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
     opacity: 0.8;
     font-size: 14px;
     font-weight: 500;
@@ -529,8 +529,8 @@ body {
 .add-cart-btn {
     flex: 1;
     height: 48px;
-    background: var(--tg-theme-button-color, #833177);
-    color: var(--tg-theme-button-text-color, #ffffff);
+    background: #833177;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -552,7 +552,7 @@ body {
     width: 100%;
     max-width: 400px;
     height: 100vh; /* Возвращена полная высота экрана */
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     z-index: 1001;
     transition: right 0.3s ease;
     box-shadow: -2px 0 8px rgba(0,0,0,0.1);
@@ -574,13 +574,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .products-list-header h2 {
     font-size: 20px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .close-products-list {
@@ -588,7 +588,7 @@ body {
     cursor: pointer;
     background: none;
     border: none;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     padding: 4px;
 }
 
@@ -606,7 +606,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 16px 0;
-    border-bottom: 1px solid var(--tg-theme-separator-color, #e0e0e0);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .products-list-item:last-child {
@@ -628,20 +628,20 @@ body {
 .products-list-item-name {
     font-size: 14px;
     font-weight: 500;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 4px;
     line-height: 1.3;
 }
 
 .products-list-item-article {
     font-size: 12px;
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
     margin-bottom: 4px;
 }
 
 .products-list-item-price {
     font-size: 14px;
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
     font-weight: 600;
 }
 
@@ -655,19 +655,19 @@ body {
 .products-list-qty-input {
     width: 60px;
     height: 32px;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     border-radius: 4px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
-    background: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
+    background: #ffffff;
+    color: #000000;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .products-list-qty-input:focus {
     outline: none;
-    border-color: var(--tg-theme-button-color, #833177);
+    border-color: #833177;
     box-shadow: 0 0 0 2px rgba(131, 49, 119, 0.2);
 }
 
@@ -684,7 +684,7 @@ body {
 }
 
 .remove-item {
-    background: var(--tg-theme-destructive-text-color, #FF3B30);
+    background: #FF3B30;
     color: white;
     border: none;
     border-radius: 4px;
@@ -702,8 +702,8 @@ body {
     position: sticky;
     bottom: 0;
     padding: 12px 20px; /* Уменьшены отступы с 20px до 12px */
-    border-top: 1px solid var(--tg-theme-separator-color, #e0e0e0);
-    background: var(--tg-theme-bg-color, #ffffff);
+    border-top: 1px solid #e0e0e0;
+    background: #ffffff;
     z-index: 10;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
 }
@@ -713,14 +713,14 @@ body {
     font-weight: 600;
     margin-bottom: 8px; /* Уменьшен отступ с 16px до 8px */
     text-align: center;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
 }
 
 .checkout-btn {
     width: 100%;
     height: 40px; /* Уменьшена высота с 48px до 40px */
-    background: var(--tg-theme-button-color, #833177);
-    color: var(--tg-theme-button-text-color, #ffffff);
+    background: #833177;
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-size: 15px; /* Уменьшен размер шрифта с 16px до 15px */
@@ -758,7 +758,7 @@ body {
 .empty-cart {
     text-align: center;
     padding: 40px 20px;
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
 }
 
 .empty-cart-icon {
@@ -1183,14 +1183,14 @@ body {
     align-items: center;
     padding: 40px;
     font-size: 16px;
-    color: var(--tg-theme-hint-color, #999999);
+    color: #999999;
 }
 
 .spinner {
     width: 32px;
     height: 32px;
-    border: 3px solid var(--tg-theme-hint-color, #e0e0e0);
-    border-top: 3px solid var(--tg-theme-button-color, #833177);
+    border: 3px solid #e0e0e0;
+    border-top: 3px solid #833177;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-right: 12px;
@@ -1390,11 +1390,11 @@ body {
 
 /* Информация о компании */
 .company-info {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 24px;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     position: relative;
     height: 320px;
@@ -1408,7 +1408,7 @@ body {
     padding-right: 8px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: var(--tg-theme-button-color, #833177) var(--tg-theme-section-bg-color, #f8f9fa);
+    scrollbar-color: #833177 #f8f9fa;
 }
 
 /* Стилизация скроллбара для WebKit браузеров */
@@ -1417,12 +1417,12 @@ body {
 }
 
 .company-content.scrollable::-webkit-scrollbar-track {
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 3px;
 }
 
 .company-content.scrollable::-webkit-scrollbar-thumb {
-    background: var(--tg-theme-button-color, #833177);
+    background: #833177;
     border-radius: 3px;
 }
 
@@ -1438,10 +1438,10 @@ body {
     gap: 6px;
     margin-bottom: 12px;
     padding: 6px 12px;
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 20px;
     font-size: 12px;
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
     transition: opacity 0.3s ease;
 }
 
@@ -1452,7 +1452,7 @@ body {
 .scroll-icon {
     font-size: 14px;
     animation: bounce 2s infinite;
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
 }
 
 @keyframes bounce {
@@ -1475,7 +1475,7 @@ body {
     left: 20px;
     right: 20px;
     height: 20px;
-    background: linear-gradient(to top, var(--tg-theme-bg-color, #ffffff), transparent);
+    background: linear-gradient(to top, #ffffff, transparent);
     pointer-events: none;
     border-radius: 0 0 16px 16px;
 }
@@ -1490,7 +1490,7 @@ body {
 .company-title {
     font-size: 18px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     text-align: center;
     margin-bottom: 16px;
 }
@@ -1501,7 +1501,7 @@ body {
 
 .company-description p {
     font-size: 14px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     line-height: 1.5;
     margin-bottom: 8px;
 }
@@ -1513,7 +1513,7 @@ body {
 }
 
 .spec-group {
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 8px;
     padding: 16px;
 }
@@ -1521,13 +1521,13 @@ body {
 .spec-group h3 {
     font-size: 15px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 12px;
 }
 
 .spec-group p {
     font-size: 13px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     line-height: 1.5;
     margin-bottom: 8px;
 }
@@ -1544,7 +1544,7 @@ body {
 
 .spec-group li {
     font-size: 13px;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     line-height: 1.5;
     margin-bottom: 6px;
     position: relative;
@@ -1553,7 +1553,7 @@ body {
 
 .spec-group li:before {
     content: "•";
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
     position: absolute;
     left: 0;
     font-weight: bold;
@@ -1564,16 +1564,16 @@ body {
 }
 
 .advantages {
-    border: 2px solid var(--tg-theme-button-color, #833177);
+    border: 2px solid #833177;
     background: rgba(131, 49, 119, 0.05);
 }
 
 .advantages h3 {
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
 }
 
 .advantages li strong {
-    color: var(--tg-theme-button-color, #833177);
+    color: #833177;
 }
 
 
@@ -1586,13 +1586,13 @@ body {
 }
 
 .menu-card {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     opacity: 0;
     transform: translateY(20px);
     text-align: center;
@@ -1622,13 +1622,13 @@ body {
 .menu-card h2 {
     font-size: 16px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 8px;
 }
 
 .menu-card p {
     font-size: 13px;
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
     line-height: 1.4;
     margin-bottom: 0;
 }
@@ -1645,7 +1645,7 @@ body {
     text-align: center;
     margin-bottom: 32px;
     padding: 24px;
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 16px;
     opacity: 0;
     transform: translateY(20px);
@@ -1659,13 +1659,13 @@ body {
 .custom-order-intro h2 {
     font-size: 24px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 12px;
 }
 
 .custom-order-intro p {
     font-size: 16px;
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
     line-height: 1.6;
 }
 
@@ -1677,11 +1677,11 @@ body {
 }
 
 .feature-card {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
+    border: 1px solid #e0e0e0;
     opacity: 0;
     transform: translateY(20px);
 }
@@ -1694,22 +1694,22 @@ body {
 .feature-card h3 {
     font-size: 14px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 8px;
 }
 
 .feature-card p {
     font-size: 12px;
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
     line-height: 1.4;
 }
 
 .order-form-placeholder {
-    background: var(--tg-theme-bg-color, #ffffff);
+    background: #ffffff;
     border-radius: 16px;
     padding: 32px 24px;
     text-align: center;
-    border: 2px dashed var(--tg-theme-hint-color, #e0e0e0);
+    border: 2px dashed #e0e0e0;
     opacity: 0;
     transform: translateY(20px);
 }
@@ -1722,13 +1722,13 @@ body {
 .order-form-placeholder h3 {
     font-size: 20px;
     font-weight: 600;
-    color: var(--tg-theme-text-color, #000000);
+    color: #000000;
     margin-bottom: 12px;
 }
 
 .order-form-placeholder p {
     font-size: 14px;
-    color: var(--tg-theme-hint-color, #666666);
+    color: #666666;
     line-height: 1.5;
     margin-bottom: 12px;
 }
@@ -1751,8 +1751,8 @@ body {
 }
 
 .contact-btn.primary {
-    background: var(--tg-theme-button-color, #833177);
-    color: var(--tg-theme-button-text-color, #ffffff);
+    background: #833177;
+    color: #ffffff;
 }
 
 .contact-btn.primary:hover {
@@ -1761,13 +1761,13 @@ body {
 
 .contact-btn.secondary {
     background: transparent;
-    color: var(--tg-theme-button-color, #833177);
-    border: 2px solid var(--tg-theme-button-color, #833177);
+    color: #833177;
+    border: 2px solid #833177;
 }
 
 .contact-btn.secondary:hover {
-    background: var(--tg-theme-button-color, #833177);
-    color: var(--tg-theme-button-text-color, #ffffff);
+    background: #833177;
+    color: #ffffff;
 }
 
 /* Адаптивность логотипа */

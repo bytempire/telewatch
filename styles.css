@@ -1397,8 +1397,7 @@ body {
     border: 1px solid var(--tg-theme-hint-color, #e0e0e0);
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     position: relative;
-    flex: 1;
-    max-height: 400px;
+    height: 320px;
     overflow: hidden;
 }
 
@@ -1836,7 +1835,7 @@ body {
     .company-info {
         padding: 16px;
         margin-bottom: 20px;
-        max-height: 300px;
+        height: 280px;
     }
     
     .company-title {
@@ -1854,7 +1853,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 220px;
+        max-height: 190px;
     }
     
     .scroll-hint {
@@ -1897,7 +1896,7 @@ body {
 /* Очень маленькие экраны для новых страниц */
 @media (max-width: 320px) {
     .main-menu, .custom-order-container {
-        padding: 12px;
+        padding: 10px;
     }
     
     .menu-card {
@@ -1919,9 +1918,9 @@ body {
     }
     
     .company-info {
-        padding: 12px;
-        margin-bottom: 16px;
-        max-height: 250px;
+        padding: 10px;
+        margin-bottom: 12px;
+        height: 200px;
     }
     
     .company-title {
@@ -1945,7 +1944,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 170px;
+        max-height: 120px;
     }
     
     .scroll-hint {

@@ -1586,6 +1586,11 @@ body {
     opacity: 0;
     transform: translateY(20px);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
 }
 
 .menu-card:hover {
@@ -1615,22 +1620,7 @@ body {
     font-size: 13px;
     color: var(--tg-theme-hint-color, #666666);
     line-height: 1.4;
-    margin-bottom: 12px;
-}
-
-.menu-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.price-range {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--tg-theme-button-color, #833177);
-    background: var(--tg-theme-section-bg-color, #f8f9fa);
-    padding: 8px 16px;
-    border-radius: 20px;
+    margin-bottom: 0;
 }
 
 /* СТРАНИЦА ИНДИВИДУАЛЬНОГО ЗАКАЗА */
@@ -1816,6 +1806,7 @@ body {
     
     .menu-card {
         padding: 14px;
+        min-height: 100px;
     }
     
     .menu-icon {
@@ -1899,6 +1890,7 @@ body {
     
     .menu-card {
         padding: 12px;
+        min-height: 80px;
     }
     
     .menu-icon {

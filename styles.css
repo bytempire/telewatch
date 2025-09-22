@@ -1397,13 +1397,13 @@ body {
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     position: relative;
-    height: 320px;
+    flex: 1;
     overflow: hidden;
 }
 
 /* Прокручиваемый контент */
 .company-content.scrollable {
-    max-height: 300px;
+    height: calc(100% - 80px);
     overflow-y: auto;
     padding-right: 8px;
     -webkit-overflow-scrolling: touch;
@@ -1835,7 +1835,7 @@ body {
     .company-info {
         padding: 16px;
         margin-bottom: 20px;
-        height: 280px;
+        flex: 1;
     }
     
     .company-title {
@@ -1853,7 +1853,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 190px;
+        height: calc(100% - 70px);
     }
     
     .scroll-hint {
@@ -1920,7 +1920,7 @@ body {
     .company-info {
         padding: 10px;
         margin-bottom: 12px;
-        height: 200px;
+        flex: 1;
     }
     
     .company-title {
@@ -1944,7 +1944,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 120px;
+        height: calc(100% - 60px);
     }
     
     .scroll-hint {

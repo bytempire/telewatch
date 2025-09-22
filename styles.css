@@ -1393,6 +1393,7 @@ body {
     background: #ffffff;
     border-radius: 16px;
     padding: 20px;
+    margin-top: 24px;
     margin-bottom: 0;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -1834,6 +1835,7 @@ body {
     
     .company-info {
         padding: 16px;
+        margin-top: 20px;
         margin-bottom: 0;
         flex: 1;
     }
@@ -1919,6 +1921,7 @@ body {
     
     .company-info {
         padding: 10px;
+        margin-top: 16px;
         margin-bottom: 0;
         flex: 1;
     }

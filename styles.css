@@ -1658,6 +1658,7 @@ body {
     padding: 24px;
     background: #f8f9fa;
     border-radius: 16px;
+    border: 2px solid #833177;
     opacity: 0;
     transform: translateY(20px);
 }
@@ -1692,9 +1693,10 @@ body {
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    border: 1px solid #e0e0e0;
+    border: 2px solid #833177;
     opacity: 0;
     transform: translateY(20px);
+    transition: all 0.3s ease;
 }
 
 .feature-icon {
@@ -1715,14 +1717,21 @@ body {
     line-height: 1.4;
 }
 
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(131, 49, 119, 0.2);
+    background: rgba(131, 49, 119, 0.02);
+}
+
 .order-form-placeholder {
     background: #ffffff;
     border-radius: 16px;
     padding: 32px 24px;
     text-align: center;
-    border: 2px dashed #e0e0e0;
+    border: 2px dashed #833177;
     opacity: 0;
     transform: translateY(20px);
+    transition: all 0.3s ease;
 }
 
 .placeholder-icon {
@@ -1742,6 +1751,12 @@ body {
     color: #666666;
     line-height: 1.5;
     margin-bottom: 12px;
+}
+
+.order-form-placeholder:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(131, 49, 119, 0.15);
+    background: rgba(131, 49, 119, 0.02);
 }
 
 .contact-buttons {

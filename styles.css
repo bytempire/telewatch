@@ -1385,6 +1385,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 /* Информация о компании */
@@ -1397,6 +1398,8 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     position: relative;
     flex: 1;
+    max-height: 400px;
+    overflow: hidden;
 }
 
 /* Прокручиваемый контент */
@@ -1580,6 +1583,7 @@ body {
     gap: 16px;
     grid-template-columns: repeat(2, 1fr);
     margin-top: auto;
+    flex-shrink: 0;
 }
 
 .menu-card {
@@ -1832,6 +1836,7 @@ body {
     .company-info {
         padding: 16px;
         margin-bottom: 20px;
+        max-height: 300px;
     }
     
     .company-title {
@@ -1849,7 +1854,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 250px;
+        max-height: 220px;
     }
     
     .scroll-hint {
@@ -1916,6 +1921,7 @@ body {
     .company-info {
         padding: 12px;
         margin-bottom: 16px;
+        max-height: 250px;
     }
     
     .company-title {
@@ -1939,7 +1945,7 @@ body {
     }
     
     .company-content.scrollable {
-        max-height: 200px;
+        max-height: 170px;
     }
     
     .scroll-hint {

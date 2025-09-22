@@ -1403,7 +1403,7 @@ body {
 
 /* Прокручиваемый контент */
 .company-content.scrollable {
-    height: calc(100% - 80px);
+    max-height: 400px;
     overflow-y: auto;
     padding-right: 8px;
     -webkit-overflow-scrolling: touch;
@@ -1853,7 +1853,7 @@ body {
     }
     
     .company-content.scrollable {
-        height: calc(100% - 70px);
+        max-height: 320px;
     }
     
     .scroll-hint {
@@ -1944,7 +1944,7 @@ body {
     }
     
     .company-content.scrollable {
-        height: calc(100% - 60px);
+        max-height: 280px;
     }
     
     .scroll-hint {

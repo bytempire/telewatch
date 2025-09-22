@@ -36,6 +36,10 @@ body {
     z-index: 100;
 }
 
+.header {
+    position: relative;
+}
+
 .header h1 {
     font-size: 20px;
     font-weight: 600;
@@ -46,10 +50,13 @@ body {
 
 /* Логотип */
 .logo-container {
-    flex: 1;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
 }
 
 .logo {

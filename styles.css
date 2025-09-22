@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 20px;
+    padding: 28px 20px 20px 20px;
     background: #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: sticky;
@@ -122,7 +122,7 @@ body {
 
 .cart-count {
     position: absolute;
-    top: -3px;
+    top: 2px;
     right: -3px;
     background: #FF3B30;
     color: white;
@@ -1795,6 +1795,11 @@ body {
         font-size: 14px;
         right: 16px;
     }
+    
+    /* Увеличиваем отступы шапки на мобильных */
+    .header {
+        padding: 32px 20px 20px 20px;
+    }
 }
 
 @media (max-width: 320px) {
@@ -1810,6 +1815,11 @@ body {
     
     .page-title {
         font-size: 13px;
+    }
+    
+    /* Еще больше отступ для очень маленьких экранов */
+    .header {
+        padding: 36px 16px 20px 16px;
     }
 }
 

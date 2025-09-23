@@ -19,6 +19,43 @@ let selectedSize = null;
 let fullscreenImages = [];
 let currentFullscreenIndex = 0;
 
+// Конфигурация Telegram (загружается из внешнего файла)
+let TELEGRAM_CONFIG = {
+    CHAT_ID: '',
+    BOT_TOKEN: '',
+    API_URL: 'https://api.telegram.org/bot'
+};
+
+// Функция загрузки конфигурации
+function loadConfig() {
+    // Попытка загрузить конфигурацию из внешнего файла
+    if (typeof CONFIG !== 'undefined' && CONFIG.TELEGRAM) {
+        TELEGRAM_CONFIG = {
+            CHAT_ID: CONFIG.TELEGRAM.CHAT_ID,
+            BOT_TOKEN: CONFIG.TELEGRAM.BOT_TOKEN,
+            API_URL: CONFIG.TELEGRAM.API_URL
+        };
+        console.log('✅ Конфигурация успешно загружена');
+        return true;
+    }
+    
+    // Попытка загрузить из переменных окружения (если поддерживается)
+    if (typeof process !== 'undefined' && process.env) {
+        TELEGRAM_CONFIG = {
+            CHAT_ID: process.env.TELEGRAM_CHAT_ID || '',
+            BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || '',
+            API_URL: process.env.TELEGRAM_API_URL || 'https://api.telegram.org/bot'
+        };
+        if (TELEGRAM_CONFIG.CHAT_ID && TELEGRAM_CONFIG.BOT_TOKEN) {
+            console.log('✅ Конфигурация загружена из переменных окружения');
+            return true;
+        }
+    }
+    
+    console.warn('⚠️ Конфигурация не найдена. Создайте файл config.js по образцу config.example.js');
+    return false;
+}
+
 // Система уведомлений для мобильных устройств
 let notificationTimeout = null;
 let discountNotificationTimeout = null;
@@ -75,6 +112,12 @@ function initializeElements() {
 
 // Инициализация приложения
 async function initApp() {
+    // Загружаем конфигурацию в первую очередь
+    const configLoaded = loadConfig();
+    if (!configLoaded) {
+        console.warn('⚠️ Внимание: Telegram интеграция не настроена');
+    }
+    
     initializeElements();
     await loadProducts();
     renderProducts();
@@ -867,6 +910,7 @@ function checkout() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const discount = calculateDiscount(subtotal);
     const finalTotal = subtotal - discount;
+    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     
     const orderData = {
         items: cart.map(item => ({
@@ -874,50 +918,363 @@ function checkout() {
             article: item.article,
             price: item.price,
             quantity: item.quantity,
-            total: item.price * item.quantity
+            total: item.price * item.quantity,
+            color: item.color || null,
+            size: item.size || null
         })),
         subtotal: subtotal,
         discount: discount,
         discountPercent: discount > 0 ? 3 : 0,
         total: finalTotal,
-        timestamp: new Date().toISOString()
+        totalQuantity: totalQuantity,
+        timestamp: new Date().toISOString(),
+        orderNumber: generateOrderNumber()
     };
 
     console.log('Данные заказа:', orderData);
 
-    // Отправка данных через Telegram WebApp (если доступно)
-    if (tg && tg.sendData) {
-        try {
-            tg.sendData(JSON.stringify(orderData));
-        } catch (error) {
-            console.error('Ошибка отправки данных:', error);
-            fallbackCheckout(orderData);
-        }
-    } else {
-        fallbackCheckout(orderData);
-    }
+    // Создаем красиво отформатированное сообщение
+    const telegramMessage = formatOrderMessage(orderData);
+
+    // Отправка напрямую в указанный чат
+    sendOrderToTelegram(telegramMessage, orderData);
 
     // Очистка списка товаров после оформления заказа
     cart = [];
     saveCartToStorage();
     updateProductsListUI();
     closeProductsList();
-    showNotification('Заказ отправлен!');
+    showNotification('Заказ отправлен в Telegram!');
     
     if (tg && tg.HapticFeedback) {
         tg.HapticFeedback.notificationOccurred('success');
     }
 }
 
-// Резервный способ оформления заказа
+// Генерация номера заказа
+function generateOrderNumber() {
+    const now = new Date();
+    const timestamp = now.getTime().toString().slice(-6); // Последние 6 цифр timestamp
+    const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+    return `POLLEN-${timestamp}${random}`;
+}
+
+// Форматирование сообщения заказа для Telegram
+function formatOrderMessage(orderData) {
+    const orderDate = new Date(orderData.timestamp).toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    let message = `🧶 *НОВЫЙ ЗАКАЗ POLLEN*\n`;
+    message += `📋 Заказ №: \`${orderData.orderNumber}\`\n`;
+    message += `📅 Дата: ${orderDate}\n`;
+    message += `👥 Количество позиций: ${orderData.items.length}\n`;
+    message += `📦 Общее количество: ${orderData.totalQuantity} шт\n\n`;
+
+    message += `*СОСТАВ ЗАКАЗА:*\n`;
+    orderData.items.forEach((item, index) => {
+        message += `\n${index + 1}️⃣ *${item.name}*\n`;
+        message += `   📄 Артикул: \`${item.article}\`\n`;
+        
+        if (item.color) {
+            const colorNames = {
+                'olive': 'Оливковый',
+                'black': 'Черный',
+                'blue': 'Голубой',
+                'dark-blue': 'Синий',
+                'light-pink': 'Светло-розовый',
+                'light-brown': 'Светло-коричневый',
+                'cream': 'Сливочный',
+                'beige': 'Бежевый',
+                'mustard': 'Горчичный',
+                'indigo': 'Индиго',
+                'powder': 'Пудра',
+                'cocoa-light': 'Какао-лайт',
+                'black-white': 'Черно-белый',
+                'beige-mix': 'Бежевый микс',
+                'black-brown': 'Черно-коричневый',
+                'milk-lime': 'Молочно-лаймовый',
+                'orange': 'Оранжевый',
+                'dark-beige': 'Тёмно-бежевый',
+                'milk-beige': 'Молочно-бежевый'
+            };
+            message += `   🎨 Цвет: ${colorNames[item.color] || item.color}\n`;
+        }
+        
+        if (item.size) {
+            message += `   📏 Размер: ${item.size}\n`;
+        }
+        
+        message += `   💰 Цена за шт: ${formatPrice(item.price)} ₽\n`;
+        message += `   📊 Количество: ${item.quantity} шт\n`;
+        message += `   💵 Сумма: ${formatPrice(item.total)} ₽\n`;
+    });
+
+    message += `\n*ИТОГО:*\n`;
+    message += `💰 Подытог: ${formatPrice(orderData.subtotal)} ₽\n`;
+    
+    if (orderData.discount > 0) {
+        message += `🎉 Скидка ${orderData.discountPercent}%: -${formatPrice(orderData.discount)} ₽\n`;
+        message += `✅ *К оплате: ${formatPrice(orderData.total)} ₽*\n`;
+    } else {
+        message += `✅ *К оплате: ${formatPrice(orderData.total)} ₽*\n`;
+    }
+
+    message += `\n📞 *Свяжитесь с клиентом для уточнения деталей заказа*`;
+    
+    return message;
+}
+
+// Основная функция отправки заказа в Telegram
+async function sendOrderToTelegram(message, orderData) {
+    console.log('🚀 Начинаем отправку заказа в Telegram');
+    
+    let success = false;
+    
+    // Способ 1: Прямая отправка в чат через Bot API
+    try {
+        console.log('📱 Попытка 1: Прямая отправка через Bot API');
+        success = await sendDirectToTelegram(message, orderData);
+        if (success) {
+            showNotification('✅ Заказ отправлен в Telegram!', 'success');
+            return;
+        }
+    } catch (error) {
+        console.error('❌ Ошибка прямой отправки:', error);
+    }
+    
+    // Способ 2: Отправка через Telegram Web App (если доступен)
+    if (tg && tg.sendData && !success) {
+        try {
+            console.log('📱 Попытка 2: Отправка через Telegram Web App');
+            tg.sendData(JSON.stringify({
+                type: 'order',
+                chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                message: message,
+                data: orderData
+            }));
+            success = true;
+            showNotification('✅ Заказ отправлен через Telegram Web App!', 'success');
+            console.log('✅ Заказ отправлен через tg.sendData');
+        } catch (error) {
+            console.error('❌ Ошибка отправки через Web App:', error);
+        }
+    }
+    
+    // Способ 3: Отправка через proxy/webhook
+    if (!success) {
+        try {
+            console.log('📱 Попытка 3: Отправка через proxy');
+            success = await sendViaProxy(message, orderData);
+            if (success) {
+                showNotification('✅ Заказ отправлен!', 'success');
+                return;
+            }
+        } catch (error) {
+            console.error('❌ Ошибка отправки через proxy:', error);
+        }
+    }
+    
+    // Способ 4: Показать главную кнопку Telegram
+    if (tg && tg.MainButton && !success) {
+        console.log('📱 Попытка 4: Использование главной кнопки Telegram');
+        tg.MainButton.text = `📋 Отправить заказ №${orderData.orderNumber}`;
+        tg.MainButton.color = '#833177';
+        tg.MainButton.show();
+        
+        tg.MainButton.onClick(async () => {
+            try {
+                const directSuccess = await sendDirectToTelegram(message, orderData);
+                if (directSuccess) {
+                    tg.MainButton.hide();
+                    showNotification('✅ Заказ отправлен!', 'success');
+                } else {
+                    // Fallback - отправляем через sendData
+                    tg.sendData(message);
+                    tg.MainButton.hide();
+                    showNotification('✅ Заказ отправлен!', 'success');
+                }
+            } catch (error) {
+                console.error('❌ Ошибка отправки через главную кнопку:', error);
+                tg.MainButton.hide();
+                fallbackTelegramSend(message, orderData);
+            }
+        });
+        
+        showNotification('📱 Нажмите кнопку внизу для отправки заказа', 'info');
+        success = true; // Считаем успехом, так как кнопка показана
+    }
+    
+    // Способ 5: Резервная отправка
+    if (!success) {
+        console.log('📱 Используем резервный способ отправки');
+        fallbackTelegramSend(message, orderData);
+    }
+}
+
+// Резервная отправка в Telegram
+function fallbackTelegramSend(message, orderData) {
+    console.log('🔄 Резервная отправка заказа в Telegram');
+    console.log('Сообщение для отправки:', message);
+    
+    // Сохраняем заказ локально
+    sendToTelegramBot(message, orderData);
+    
+    // Показываем варианты пользователю
+    if (tg) {
+        // В Telegram Web App
+        if (tg.close) {
+            setTimeout(() => {
+                if (confirm(`📋 Заказ №${orderData.orderNumber} готов!\n\n❓ Закрыть приложение и отправить заказ в чат вручную?`)) {
+                    // Копируем в буфер обмена перед закрытием
+                    navigator.clipboard.writeText(message).then(() => {
+                        console.log('✅ Сообщение скопировано в буфер обмена');
+                    }).catch(() => {
+                        console.log('❌ Не удалось скопировать в буфер обмена');
+                    });
+                    tg.close();
+                }
+            }, 1000);
+        } else {
+            showNotification('💾 Заказ сохранен. Попробуйте обновить страницу', 'info');
+        }
+    } else {
+        // В обычном браузере
+        fallbackCheckout(orderData);
+    }
+}
+
+// Прямая отправка сообщения в Telegram чат
+async function sendDirectToTelegram(message, orderData) {
+    // Проверяем наличие конфигурации
+    if (!TELEGRAM_CONFIG.CHAT_ID || !TELEGRAM_CONFIG.BOT_TOKEN) {
+        console.error('❌ Telegram не настроен. Создайте config.js файл с настройками');
+        return false;
+    }
+    
+    console.log('📤 Отправка заказа в Telegram чат:', TELEGRAM_CONFIG.CHAT_ID);
+    
+    const url = `${TELEGRAM_CONFIG.API_URL}${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+    
+    // Добавляем информацию о пользователе, если доступна
+    let fullMessage = message;
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        fullMessage = `👤 *КЛИЕНТ:*\n`;
+        fullMessage += `ID: \`${user.id}\`\n`;
+        fullMessage += `Имя: ${user.first_name}${user.last_name ? ' ' + user.last_name : ''}\n`;
+        if (user.username) {
+            fullMessage += `Username: @${user.username}\n`;
+        }
+        fullMessage += `\n${message}`;
+    }
+    
+    const payload = {
+        chat_id: TELEGRAM_CONFIG.CHAT_ID,
+        text: fullMessage,
+        parse_mode: 'Markdown'
+    };
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        const result = await response.json();
+        
+        if (result.ok) {
+            console.log('✅ Заказ успешно отправлен в Telegram чат');
+            return true;
+        } else {
+            console.error('❌ Ошибка отправки в Telegram:', result);
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Ошибка сети при отправке в Telegram:', error);
+        return false;
+    }
+}
+
+// Отправка через webhook или proxy
+async function sendViaProxy(message, orderData) {
+    console.log('Попытка отправки через webhook/proxy');
+    
+    // Можно добавить отправку через ваш сервер-прокси
+    const proxyUrl = 'https://your-server.com/api/telegram/send'; // Замените на ваш URL
+    
+    try {
+        const response = await fetch(proxyUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                message: message,
+                orderData: orderData
+            })
+        });
+        
+        if (response.ok) {
+            console.log('✅ Заказ отправлен через proxy');
+            return true;
+        }
+    } catch (error) {
+        console.error('❌ Ошибка отправки через proxy:', error);
+    }
+    
+    return false;
+}
+
+// Отправка боту через Telegram Web App Data (резерв)
+function sendToTelegramBot(message, orderData) {
+    console.log('Резервная отправка через Telegram Web App Data');
+    
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        // Данные пользователя доступны
+        const userData = tg.initDataUnsafe.user;
+        console.log('Пользователь:', userData);
+        
+        // Сохраняем данные заказа в локальном хранилище для бота
+        const orderForBot = {
+            ...orderData,
+            user: userData,
+            telegramMessage: message
+        };
+        
+        localStorage.setItem('pending_order', JSON.stringify(orderForBot));
+        console.log('Заказ сохранен для отправки боту');
+    }
+}
+
+// Резервный способ оформления заказа для браузера
 function fallbackCheckout(orderData) {
-    const orderText = `Новый заказ:\n\n${orderData.items.map(item => 
-        `${item.name} (${item.article})\nКоличество: ${item.quantity}\nЦена: ${formatPrice(item.price)} ₽\nСумма: ${formatPrice(item.total)} ₽`
-    ).join('\n\n')}\n\nИтого: ${formatPrice(orderData.total)} ₽`;
+    const orderText = formatOrderMessage(orderData);
+    console.log('Fallback checkout - Текст заказа:', orderText);
     
-    console.log('Текст заказа:', orderText);
-    
-    // Можно добавить дополнительную логику для отправки заказа
+    // Показываем пользователю текст заказа
+    if (confirm('Telegram Web App недоступен. Скопировать данные заказа в буфер обмена?')) {
+        navigator.clipboard.writeText(orderText).then(() => {
+            showNotification('Данные заказа скопированы в буфер обмена');
+        }).catch(() => {
+            // Fallback для старых браузеров
+            const textArea = document.createElement('textarea');
+            textArea.value = orderText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('Данные заказа скопированы в буфер обмена');
+        });
+    }
 }
 
 // Показ уведомления

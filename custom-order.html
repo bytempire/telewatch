@@ -100,40 +100,17 @@
             
             console.log('📞 Попытка совершить звонок на', phoneNumber);
             
-            // Визуальная обратная связь - изменяем текст кнопки
-            const button = document.querySelector('.phone-button');
-            const actionSpan = button?.querySelector('.phone-action');
-            const originalText = actionSpan?.textContent;
-            
-            if (actionSpan) {
-                actionSpan.textContent = '🔄 Открываю диалер...';
-                button.style.opacity = '0.8';
-            }
-            
             // Haptic feedback
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
-            
-            // Небольшая задержка для визуального эффекта
-            await new Promise(resolve => setTimeout(resolve, 300));
 
             // Способ 1: Попытка через window.open с разными параметрами
             try {
                 console.log('📱 Попытка открыть диалер через window.open');
                 window.open(`tel:${phoneNumber}`, '_blank');
                 console.log('✅ Команда window.open выполнена');
-                
-                // Даем время на открытие диалера
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // Проверяем, остались ли мы в том же окне (если да, то диалер не открылся)
-                if (document.hasFocus()) {
-                    console.log('⚠️ Диалер возможно не открылся, пробуем другие способы');
-                } else {
-                    console.log('✅ Кажется, диалер открылся');
-                    return;
-                }
+                return;
             } catch (error) {
                 console.log('❌ window.open не сработал:', error);
             }
@@ -192,9 +169,6 @@
                 
                 document.body.removeChild(tempLink);
                 console.log('✅ Временная ссылка создана и активирована');
-                
-                // Даем время на обработку
-                await new Promise(resolve => setTimeout(resolve, 200));
                 return;
             } catch (error) {
                 console.log('❌ Временная ссылка не сработала:', error);
@@ -238,13 +212,6 @@
                 console.log('❌ Не удалось скопировать номер:', error);
             }
 
-            // Восстанавливаем исходный текст кнопки
-            setTimeout(() => {
-                if (actionSpan && originalText) {
-                    actionSpan.textContent = originalText;
-                    button.style.opacity = '1';
-                }
-            }, 1000);
         }
 
         // Функция возврата на главную страницу

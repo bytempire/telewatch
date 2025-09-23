@@ -37,7 +37,7 @@
                     <p>Для оформления индивидуального заказа свяжитесь с нами</p>
                     <button class="phone-button" onclick="handlePhoneCall()">
                         <span class="phone-number">+7 (910) 574-26-20</span>
-                        <span class="phone-action">Позвонить</span>
+                        <span class="phone-action">📞 Позвонить</span>
                     </button>
                 </div>
             </div>
@@ -106,7 +106,7 @@
             const originalText = actionSpan?.textContent;
             
             if (actionSpan) {
-                actionSpan.textContent = 'Обработка...';
+                actionSpan.textContent = '🔄 Открываю диалер...';
                 button.style.opacity = '0.8';
             }
             
@@ -118,48 +118,124 @@
             // Небольшая задержка для визуального эффекта
             await new Promise(resolve => setTimeout(resolve, 300));
 
-            // Способ 1: Попытка использовать Telegram Web App API
+            // Способ 1: Попытка через window.open с разными параметрами
+            try {
+                console.log('📱 Попытка открыть диалер через window.open');
+                window.open(`tel:${phoneNumber}`, '_blank');
+                console.log('✅ Команда window.open выполнена');
+                
+                // Даем время на открытие диалера
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Проверяем, остались ли мы в том же окне (если да, то диалер не открылся)
+                if (document.hasFocus()) {
+                    console.log('⚠️ Диалер возможно не открылся, пробуем другие способы');
+                } else {
+                    console.log('✅ Кажется, диалер открылся');
+                    return;
+                }
+            } catch (error) {
+                console.log('❌ window.open не сработал:', error);
+            }
+
+            // Способ 2: Попытка использовать tg.openTelegramLink (для внешних ссылок)
+            if (tg && tg.openTelegramLink) {
+                try {
+                    console.log('🔗 Попытка открыть через tg.openTelegramLink');
+                    tg.openTelegramLink(`tel:${phoneNumber}`);
+                    console.log('✅ Попытка через openTelegramLink выполнена');
+                    return;
+                } catch (error) {
+                    console.log('❌ tg.openTelegramLink не сработал:', error);
+                }
+            }
+
+            // Способ 3: Попытка через tg.openLink с параметрами
             if (tg && tg.openLink) {
                 try {
                     console.log('🔗 Попытка открыть через tg.openLink');
-                    tg.openLink(`tel:${phoneNumber}`);
+                    tg.openLink(`tel:${phoneNumber}`, {try_instant_view: false});
+                    console.log('✅ Попытка через openLink выполнена');
                     return;
                 } catch (error) {
                     console.log('❌ tg.openLink не сработал:', error);
                 }
             }
 
-            // Способ 2: Копирование в буфер обмена + уведомление
+            // Способ 4: Прямое перенаправление
             try {
-                await navigator.clipboard.writeText(phoneNumber);
-                
-                // Показываем уведомление через Telegram API
-                if (tg && tg.showAlert) {
-                    tg.showAlert(`📞 Номер телефона скопирован!\n\n${formattedNumber}\n\nВы можете позвонить через любое приложение.`);
-                } else {
-                    alert(`📞 Номер телефона скопирован!\n\n${formattedNumber}\n\nВы можете позвонить через любое приложение.`);
-                }
-                console.log('✅ Номер скопирован в буфер обмена');
+                console.log('☎️ Попытка прямого перенаправления на tel:');
+                window.location.href = `tel:${phoneNumber}`;
+                console.log('✅ Прямое перенаправление выполнено');
                 return;
             } catch (error) {
-                console.log('❌ Не удалось скопировать номер:', error);
+                console.log('❌ Прямое перенаправление не сработало:', error);
             }
 
-            // Способ 3: Показать номер в уведомлении
-            const message = `📞 Позвоните нам:\n\n${formattedNumber}\n\n(Номер можно скопировать длинным нажатием)`;
+            // Способ 5: Создание невидимой ссылки и клик по ней
+            try {
+                console.log('🔗 Попытка создать временную ссылку');
+                const tempLink = document.createElement('a');
+                tempLink.href = `tel:${phoneNumber}`;
+                tempLink.style.display = 'none';
+                tempLink.target = '_blank';
+                tempLink.rel = 'noopener noreferrer';
+                document.body.appendChild(tempLink);
+                
+                // Симулируем клик пользователя
+                const clickEvent = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                tempLink.dispatchEvent(clickEvent);
+                
+                document.body.removeChild(tempLink);
+                console.log('✅ Временная ссылка создана и активирована');
+                
+                // Даем время на обработку
+                await new Promise(resolve => setTimeout(resolve, 200));
+                return;
+            } catch (error) {
+                console.log('❌ Временная ссылка не сработала:', error);
+            }
+            
+            // Способ 5.5: Попытка через iframe (для некоторых браузеров)
+            try {
+                console.log('🖼️ Попытка через невидимый iframe');
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = `tel:${phoneNumber}`;
+                document.body.appendChild(iframe);
+                
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    console.log('✅ iframe удален');
+                }, 1000);
+                
+                console.log('✅ iframe создан для tel: ссылки');
+                return;
+            } catch (error) {
+                console.log('❌ iframe метод не сработал:', error);
+            }
+
+            // Способ 6: Fallback - показать инструкцию пользователю
+            const message = `📞 Не удалось автоматически открыть диалер.\n\nПозвоните по номеру:\n${formattedNumber}\n\n📱 Инструкция:\n1. Скопируйте номер (длинное нажатие)\n2. Откройте приложение "Телефон"\n3. Вставьте номер и позвоните`;
             
             if (tg && tg.showAlert) {
                 tg.showAlert(message);
             } else {
                 alert(message);
             }
+            
+            console.log('📢 Показали инструкцию пользователю');
 
-            // Способ 4: Попытка стандартного tel: для обычных браузеров
+            // Способ 7: Попытка скопировать номер как последний резерв
             try {
-                window.location.href = `tel:${phoneNumber}`;
-                console.log('✅ Перенаправление на tel: ссылку');
+                await navigator.clipboard.writeText(phoneNumber);
+                console.log('📋 Номер скопирован в буфер как резерв');
             } catch (error) {
-                console.log('❌ tel: ссылка не сработала:', error);
+                console.log('❌ Не удалось скопировать номер:', error);
             }
 
             // Восстанавливаем исходный текст кнопки

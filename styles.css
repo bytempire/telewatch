@@ -1652,76 +1652,24 @@ body {
     margin: 0 auto;
 }
 
-.custom-order-intro {
+.custom-order-image {
     text-align: center;
     margin-bottom: 32px;
-    padding: 24px;
-    background: #f8f9fa;
     border-radius: 16px;
     border: 2px solid #833177;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.intro-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-}
-
-.custom-order-intro h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #000000;
-    margin-bottom: 12px;
-}
-
-.custom-order-intro p {
-    font-size: 16px;
-    color: #666666;
-    line-height: 1.6;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
-    margin-bottom: 32px;
-}
-
-.feature-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    border: 2px solid #833177;
+    overflow: hidden;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s ease;
 }
 
-.feature-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
+.development-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 14px;
 }
 
-.feature-card h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #000000;
-    margin-bottom: 8px;
-}
-
-.feature-card p {
-    font-size: 12px;
-    color: #666666;
-    line-height: 1.4;
-}
-
-.feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(131, 49, 119, 0.2);
-    background: rgba(131, 49, 119, 0.02);
-}
 
 .order-form-placeholder {
     background: #ffffff;
@@ -1907,22 +1855,8 @@ body {
         gap: 12px;
     }
     
-    .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    
-    .feature-card {
-        padding: 16px;
-    }
-    
-    .feature-icon {
-        font-size: 28px;
-        margin-bottom: 8px;
-    }
-    
-    .custom-order-intro {
-        padding: 20px;
+    .custom-order-image {
+        margin-bottom: 24px;
     }
     
     .order-form-placeholder {
@@ -1999,8 +1933,8 @@ body {
         gap: 10px;
     }
     
-    .custom-order-intro {
-        padding: 16px;
+    .custom-order-image {
+        margin-bottom: 20px;
     }
     
     .order-form-placeholder {

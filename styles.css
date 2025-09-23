@@ -1709,13 +1709,6 @@ body {
     animation: pulse 2s infinite;
 }
 
-.expand-hint {
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    margin: 0;
-}
 
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -2283,14 +2276,14 @@ body {
 }
 
 .fullscreen-close {
-    position: absolute;
-    top: -50px;
-    right: -10px;
-    font-size: 40px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 36px;
     color: white;
     cursor: pointer;
     z-index: 16000;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -2298,11 +2291,16 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .fullscreen-close:hover {
     background: rgba(131, 49, 119, 0.8);
     transform: scale(1.1);
+}
+
+.fullscreen-close:active {
+    transform: scale(0.95);
 }
 
 @keyframes zoomIn {
@@ -2319,11 +2317,11 @@ body {
 /* Адаптивность для полноэкранного режима */
 @media (max-width: 768px) {
     .fullscreen-close {
-        top: -40px;
-        right: -5px;
+        top: 15px;
+        right: 15px;
         font-size: 32px;
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
     }
     
     .fullscreen-image {
@@ -2336,9 +2334,9 @@ body {
         top: 10px;
         right: 10px;
         font-size: 28px;
-        width: 36px;
-        height: 36px;
-        position: fixed;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.9);
     }
     
     .fullscreen-modal-content {
@@ -2350,6 +2348,16 @@ body {
         max-width: 100vw;
         max-height: 100vh;
         border-radius: 0;
+    }
+}
+
+@media (max-width: 320px) {
+    .fullscreen-close {
+        top: 8px;
+        right: 8px;
+        font-size: 24px;
+        width: 36px;
+        height: 36px;
     }
 }
 

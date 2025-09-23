@@ -130,9 +130,9 @@
             if (scrollableContent && scrollHint) {
                 let hasScrolled = false;
                 
-                // Скрыть подсказку после первого скролла
+                // Скрыть подсказку при любом скролле (даже минимальном)
                 scrollableContent.addEventListener('scroll', () => {
-                    if (!hasScrolled && scrollableContent.scrollTop > 10) {
+                    if (!hasScrolled && scrollableContent.scrollTop > 0) {
                         hasScrolled = true;
                         scrollHint.classList.add('hidden');
                         
@@ -153,12 +153,7 @@
                     });
                 }
                 
-                // Автоматически скрыть подсказку через 5 секунд
-                setTimeout(() => {
-                    if (!hasScrolled) {
-                        scrollHint.classList.add('hidden');
-                    }
-                }, 5000);
+                // Подсказка скрывается только при скролле, без таймаута
             }
         });
     </script>

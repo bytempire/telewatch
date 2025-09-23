@@ -28,6 +28,9 @@ let TELEGRAM_CONFIG = {
 
 // Функция загрузки конфигурации
 function loadConfig() {
+    console.log('🔧 Загружаем конфигурацию...');
+    console.log('CONFIG доступен:', typeof CONFIG !== 'undefined');
+    
     // Попытка загрузить конфигурацию из внешнего файла
     if (typeof CONFIG !== 'undefined' && CONFIG.TELEGRAM) {
         TELEGRAM_CONFIG = {
@@ -35,7 +38,9 @@ function loadConfig() {
             BOT_TOKEN: CONFIG.TELEGRAM.BOT_TOKEN,
             API_URL: CONFIG.TELEGRAM.API_URL
         };
-        console.log('✅ Конфигурация успешно загружена');
+        console.log('✅ Конфигурация успешно загружена из CONFIG');
+        console.log('CHAT_ID:', TELEGRAM_CONFIG.CHAT_ID);
+        console.log('BOT_TOKEN:', TELEGRAM_CONFIG.BOT_TOKEN ? 'установлен' : 'НЕ УСТАНОВЛЕН');
         return true;
     }
     
@@ -53,6 +58,7 @@ function loadConfig() {
     }
     
     console.warn('⚠️ Конфигурация не найдена. Создайте файл config.js по образцу config.example.js');
+    console.log('Текущая конфигурация:', TELEGRAM_CONFIG);
     return false;
 }
 
@@ -112,10 +118,14 @@ function initializeElements() {
 
 // Инициализация приложения
 async function initApp() {
+    console.log('🚀 Инициализация приложения...');
+    
     // Загружаем конфигурацию в первую очередь
     const configLoaded = loadConfig();
     if (!configLoaded) {
         console.warn('⚠️ Внимание: Telegram интеграция не настроена');
+    } else {
+        console.log('✅ Telegram интеграция настроена');
     }
     
     initializeElements();
@@ -1145,15 +1155,22 @@ function fallbackTelegramSend(message, orderData) {
 
 // Прямая отправка сообщения в Telegram чат
 async function sendDirectToTelegram(message, orderData) {
+    console.log('🔍 Проверяем конфигурацию Telegram...');
+    console.log('CHAT_ID:', TELEGRAM_CONFIG.CHAT_ID);
+    console.log('BOT_TOKEN:', TELEGRAM_CONFIG.BOT_TOKEN ? 'установлен' : 'НЕ УСТАНОВЛЕН');
+    
     // Проверяем наличие конфигурации
     if (!TELEGRAM_CONFIG.CHAT_ID || !TELEGRAM_CONFIG.BOT_TOKEN) {
         console.error('❌ Telegram не настроен. Создайте config.js файл с настройками');
+        console.error('CHAT_ID пустой:', !TELEGRAM_CONFIG.CHAT_ID);
+        console.error('BOT_TOKEN пустой:', !TELEGRAM_CONFIG.BOT_TOKEN);
         return false;
     }
     
     console.log('📤 Отправка заказа в Telegram чат:', TELEGRAM_CONFIG.CHAT_ID);
     
     const url = `${TELEGRAM_CONFIG.API_URL}${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`;
+    console.log('🔗 URL для отправки:', url);
     
     // Добавляем информацию о пользователе, если доступна
     let fullMessage = message;
@@ -1174,6 +1191,8 @@ async function sendDirectToTelegram(message, orderData) {
         parse_mode: 'Markdown'
     };
     
+    console.log('📦 Payload для отправки:', payload);
+    
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -1184,12 +1203,15 @@ async function sendDirectToTelegram(message, orderData) {
         });
         
         const result = await response.json();
+        console.log('📨 Ответ от Telegram API:', result);
         
         if (result.ok) {
             console.log('✅ Заказ успешно отправлен в Telegram чат');
             return true;
         } else {
             console.error('❌ Ошибка отправки в Telegram:', result);
+            console.error('Код ошибки:', result.error_code);
+            console.error('Описание ошибки:', result.description);
             return false;
         }
     } catch (error) {

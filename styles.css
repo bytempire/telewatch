@@ -1655,7 +1655,7 @@ body {
 .custom-order-image {
     position: relative;
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     border-radius: 16px;
     border: 2px solid #833177;
     overflow: hidden;
@@ -1720,7 +1720,7 @@ body {
 .phone-call-block {
     background: #ffffff;
     border-radius: 16px;
-    padding: 32px 24px;
+    padding: 20px 20px;
     text-align: center;
     border: 2px solid #833177;
     opacity: 0;
@@ -1729,39 +1729,39 @@ body {
 }
 
 .phone-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
+    font-size: 36px;
+    margin-bottom: 10px;
 }
 
 .phone-call-block h3 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: #000000;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .phone-call-block p {
-    font-size: 14px;
+    font-size: 13px;
     color: #666666;
-    line-height: 1.5;
-    margin-bottom: 24px;
+    line-height: 1.4;
+    margin-bottom: 16px;
 }
 
 .phone-button {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 16px 24px;
+    gap: 2px;
+    padding: 12px 20px;
     background: #833177;
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 500;
     font-family: inherit;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(131, 49, 119, 0.2);
+    box-shadow: 0 3px 8px rgba(131, 49, 119, 0.2);
 }
 
 .phone-button:hover {
@@ -1781,13 +1781,13 @@ body {
 }
 
 .phone-number {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .phone-action {
-    font-size: 14px;
+    font-size: 13px;
     opacity: 0.9;
 }
 
@@ -1946,11 +1946,11 @@ body {
     }
     
     .custom-order-image {
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
     
     .phone-call-block {
-        padding: 24px 20px;
+        padding: 16px 16px;
     }
 }
 
@@ -2024,35 +2024,61 @@ body {
     }
     
     .custom-order-image {
-        margin-bottom: 20px;
+        margin-bottom: 12px;
     }
     
     .phone-call-block {
-        padding: 20px 16px;
+        padding: 16px 12px;
     }
     
     .phone-button {
-        padding: 14px 20px;
+        padding: 10px 16px;
+        gap: 1px;
     }
     
     .phone-number {
+        font-size: 14px;
+    }
+    
+    .phone-action {
+        font-size: 11px;
+    }
+    
+    .phone-call-block h3 {
         font-size: 16px;
+        margin-bottom: 6px;
+    }
+    
+    .phone-call-block p {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .phone-icon {
+        font-size: 28px;
+        margin-bottom: 6px;
     }
 }
 
 /* Дополнительная адаптивность для телефонной кнопки */
 @media (max-width: 480px) {
+    .phone-call-block {
+        padding: 18px 18px;
+    }
+    
     .phone-call-block h3 {
-        font-size: 18px;
+        font-size: 17px;
+        margin-bottom: 7px;
     }
     
     .phone-call-block p {
-        font-size: 13px;
+        font-size: 12px;
+        margin-bottom: 14px;
     }
     
     .phone-button {
-        padding: 12px 18px;
-        gap: 2px;
+        padding: 11px 18px;
+        gap: 1px;
     }
     
     .phone-number {
@@ -2061,6 +2087,11 @@ body {
     
     .phone-action {
         font-size: 12px;
+    }
+    
+    .phone-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
     }
 }
 

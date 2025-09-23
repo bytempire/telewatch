@@ -1655,7 +1655,7 @@ body {
 .custom-order-image {
     position: relative;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     border-radius: 16px;
     border: 2px solid #833177;
     overflow: hidden;
@@ -1720,7 +1720,7 @@ body {
 .phone-call-block {
     background: #ffffff;
     border-radius: 16px;
-    padding: 20px 20px;
+    padding: 16px 20px;
     text-align: center;
     border: 2px solid #833177;
     opacity: 0;
@@ -1728,23 +1728,11 @@ body {
     transition: all 0.3s ease;
 }
 
-.phone-icon {
-    font-size: 36px;
-    margin-bottom: 10px;
-}
-
 .phone-call-block h3 {
     font-size: 18px;
     font-weight: 600;
     color: #000000;
-    margin-bottom: 8px;
-}
-
-.phone-call-block p {
-    font-size: 13px;
-    color: #666666;
-    line-height: 1.4;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .phone-button {
@@ -1946,11 +1934,11 @@ body {
     }
     
     .custom-order-image {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
     
     .phone-call-block {
-        padding: 16px 16px;
+        padding: 14px 16px;
     }
 }
 
@@ -2024,11 +2012,11 @@ body {
     }
     
     .custom-order-image {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
     
     .phone-call-block {
-        padding: 16px 12px;
+        padding: 12px 12px;
     }
     
     .phone-button {
@@ -2046,34 +2034,19 @@ body {
     
     .phone-call-block h3 {
         font-size: 16px;
-        margin-bottom: 6px;
-    }
-    
-    .phone-call-block p {
-        font-size: 12px;
-        margin-bottom: 12px;
-    }
-    
-    .phone-icon {
-        font-size: 28px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 }
 
 /* Дополнительная адаптивность для телефонной кнопки */
 @media (max-width: 480px) {
     .phone-call-block {
-        padding: 18px 18px;
+        padding: 14px 18px;
     }
     
     .phone-call-block h3 {
         font-size: 17px;
-        margin-bottom: 7px;
-    }
-    
-    .phone-call-block p {
-        font-size: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
     }
     
     .phone-button {
@@ -2087,11 +2060,6 @@ body {
     
     .phone-action {
         font-size: 12px;
-    }
-    
-    .phone-icon {
-        font-size: 32px;
-        margin-bottom: 8px;
     }
 }
 

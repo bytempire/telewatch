@@ -24,7 +24,11 @@
             <div class="custom-order-container">
                 <!-- Изображение процесса разработки -->
                 <div class="custom-order-image">
-                    <img src="2.jpg" alt="Процесс разработки индивидуального заказа" class="development-image">
+                    <img src="2.jpg" alt="Процесс разработки индивидуального заказа" class="development-image" onclick="openFullscreenImage()">
+                    <div class="image-overlay">
+                        <span class="expand-icon">🔍</span>
+                        <p class="expand-hint">Нажмите для увеличения</p>
+                    </div>
                 </div>
 
                 <!-- Форма заказа (заглушка) -->
@@ -35,6 +39,14 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Модальное окно для полноэкранного просмотра -->
+    <div class="fullscreen-modal" id="fullscreenModal">
+        <div class="fullscreen-modal-content">
+            <span class="fullscreen-close" id="fullscreenClose">&times;</span>
+            <img class="fullscreen-image" id="fullscreenImage" src="2.jpg" alt="Процесс разработки индивидуального заказа">
+        </div>
     </div>
 
     <script>
@@ -49,6 +61,27 @@
             console.log('Telegram Web App не доступен');
         }
 
+        // Полноэкранный просмотр изображения
+        function openFullscreenImage() {
+            const modal = document.getElementById('fullscreenModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+        function closeFullscreenImage() {
+            const modal = document.getElementById('fullscreenModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
         // Функция возврата на главную страницу
         function goBack() {
             window.location.href = 'index.html';
@@ -59,14 +92,40 @@
         }
 
 
-        // Анимация при загрузке
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
+            // Анимация элементов
             const elements = document.querySelectorAll('.custom-order-image, .order-form-placeholder');
             elements.forEach((element, index) => {
                 setTimeout(() => {
                     element.style.opacity = '1';
                     element.style.transform = 'translateY(0)';
                 }, index * 150);
+            });
+
+            // Обработчики для полноэкранного режима
+            const fullscreenModal = document.getElementById('fullscreenModal');
+            const fullscreenClose = document.getElementById('fullscreenClose');
+
+            // Закрытие по клику на крестик
+            if (fullscreenClose) {
+                fullscreenClose.addEventListener('click', closeFullscreenImage);
+            }
+
+            // Закрытие по клику вне изображения
+            if (fullscreenModal) {
+                fullscreenModal.addEventListener('click', (e) => {
+                    if (e.target === fullscreenModal) {
+                        closeFullscreenImage();
+                    }
+                });
+            }
+
+            // Закрытие по нажатию Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && fullscreenModal.style.display === 'flex') {
+                    closeFullscreenImage();
+                }
             });
         });
     </script>

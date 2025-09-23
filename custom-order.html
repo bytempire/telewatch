@@ -30,11 +30,15 @@
                     </div>
                 </div>
 
-                <!-- Форма заказа (заглушка) -->
-                <div class="order-form-placeholder">
-                    <div class="placeholder-icon">📝</div>
-                    <h3>Форма заказа</h3>
-                    <p>Форма для оформления индивидуального заказа будет добавлена в ближайшее время.</p>
+                <!-- Кнопка звонка -->
+                <div class="phone-call-block">
+                    <div class="phone-icon">📞</div>
+                    <h3>Связаться с нами</h3>
+                    <p>Для оформления индивидуального заказа свяжитесь с нами</p>
+                    <a href="tel:+79105742620" class="phone-button" onclick="handlePhoneCall()">
+                        <span class="phone-number">+7 (910) 574-26-20</span>
+                        <span class="phone-action">Позвонить</span>
+                    </a>
                 </div>
             </div>
         </main>
@@ -89,6 +93,15 @@
             }
         }
 
+        // Обработка нажатия на кнопку звонка
+        function handlePhoneCall() {
+            console.log('📞 Попытка совершить звонок на +79105742620');
+            
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        }
+
         // Функция возврата на главную страницу
         function goBack() {
             window.location.href = 'index.html';
@@ -102,7 +115,7 @@
         // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             // Анимация элементов
-            const elements = document.querySelectorAll('.custom-order-image, .order-form-placeholder');
+            const elements = document.querySelectorAll('.custom-order-image, .phone-call-block');
             elements.forEach((element, index) => {
                 setTimeout(() => {
                     element.style.opacity = '1';

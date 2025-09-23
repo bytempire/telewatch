@@ -17,9 +17,6 @@
             <div class="logo-container">
                 <img src="logo.png" alt="POLLEN" class="logo-small">
             </div>
-            <div class="cart-icon" id="cartIcon">
-                📋 <span class="cart-count" id="cartCount">0</span>
-            </div>
         </header>
 
         <!-- Каталог товаров -->
@@ -178,6 +175,14 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Закрепленная корзина -->
+    <div class="fixed-cart" id="fixedCart">
+        <button class="fixed-cart-button" onclick="openProductsList()">
+            <span class="fixed-cart-icon">🛒</span>
+            <span class="fixed-cart-count" id="fixedCartCount">0</span>
+        </button>
     </div>
 
     <!-- Загрузка конфигурации (если файл существует) -->

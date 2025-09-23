@@ -75,7 +75,7 @@ const elementsMap = {
     productModal: null,
     productsListPanel: null,
     backdrop: null,
-    cartCount: null,
+    // cartCount удален - используется только закрепленная корзина
     productsListItems: null,
     productsListTotal: null,
     photoCarousel: null,
@@ -100,7 +100,7 @@ function initializeElements() {
         if (key === 'productModal') elementsMap[key] = document.getElementById('productModal');
         if (key === 'productsListPanel') elementsMap[key] = document.getElementById('productsListPanel');
         if (key === 'backdrop') elementsMap[key] = document.getElementById('backdrop');
-        if (key === 'cartCount') elementsMap[key] = document.getElementById('cartCount');
+        // cartCount больше не инициализируется
         if (key === 'productsListItems') elementsMap[key] = document.getElementById('productsListItems');
         if (key === 'productsListTotal') elementsMap[key] = document.getElementById('productsListTotal');
         if (key === 'photoCarousel') elementsMap[key] = document.getElementById('photoCarousel');
@@ -132,6 +132,9 @@ async function initApp() {
     await loadProducts();
     renderProducts();
     setupEventListeners();
+    
+    // Инициализируем закрепленную корзину
+    updateFixedCart();
     loadCartFromStorage();
     updateProductsListUI();
     
@@ -842,6 +845,29 @@ function calculateDiscount(totalPrice) {
     return 0;
 }
 
+// Обновление закрепленной корзины
+function updateFixedCart() {
+    const fixedCart = document.getElementById('fixedCart');
+    const fixedCartCount = document.getElementById('fixedCartCount');
+    
+    if (!fixedCart || !fixedCartCount) return;
+    
+    // Показываем количество уникальных артикулов, а не общее количество товаров
+    const uniqueProducts = cart.length;
+    
+    // Обновляем счетчик
+    fixedCartCount.textContent = uniqueProducts;
+    
+    // Показываем/скрываем корзину
+    if (uniqueProducts > 0) {
+        fixedCart.classList.add('show');
+        fixedCartCount.style.display = 'flex';
+    } else {
+        fixedCart.classList.remove('show');
+        fixedCartCount.style.display = 'none';
+    }
+}
+
 // Обновление интерфейса списка товаров
 function updateProductsListUI() {
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -850,11 +876,11 @@ function updateProductsListUI() {
     const finalPrice = totalPrice - discount;
     const uniqueProducts = cart.length; // Количество уникальных артикулов
 
-    // Обновление счетчика товаров (показываем количество артикулов)
-    if (elementsMap.cartCount) {
-        elementsMap.cartCount.textContent = uniqueProducts;
-        elementsMap.cartCount.style.display = uniqueProducts > 0 ? 'flex' : 'none';
-    }
+    // Счетчик товаров в шапке больше не используется - только закрепленная корзина
+    // Закрепленная корзина показывает количество артикулов (uniqueProducts)
+    
+    // Обновляем закрепленную корзину
+    updateFixedCart();
 
     // Обновление общей стоимости с учетом скидки
     if (elementsMap.productsListTotal) {
@@ -1433,8 +1459,7 @@ function setupEventListeners() {
     // Добавление в корзину
     document.getElementById('addToCartBtn')?.addEventListener('click', addToCart);
     
-    // Список товаров
-    document.getElementById('cartIcon')?.addEventListener('click', openProductsList);
+    // Список товаров (cartIcon удален из шапки)
     document.getElementById('closeProductsList')?.addEventListener('click', closeProductsList);
     document.getElementById('checkoutBtn')?.addEventListener('click', checkout);
     

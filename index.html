@@ -82,6 +82,14 @@
 
     </div>
 
+    <!-- Закрепленная корзина -->
+    <div class="fixed-cart" id="fixedCart">
+        <button class="fixed-cart-button" onclick="openProductsList()">
+            <span class="fixed-cart-icon">🛒</span>
+            <span class="fixed-cart-count" id="fixedCartCount">0</span>
+        </button>
+    </div>
+
     <script>
         // Telegram Web App инициализация
         let tg = window.Telegram?.WebApp;

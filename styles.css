@@ -1755,9 +1755,11 @@ body {
     padding: 16px 24px;
     background: #833177;
     color: white;
-    text-decoration: none;
+    border: none;
     border-radius: 12px;
     font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(131, 49, 119, 0.2);
 }
@@ -1771,6 +1773,11 @@ body {
 .phone-button:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(131, 49, 119, 0.2);
+}
+
+.phone-button:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(131, 49, 119, 0.2), 0 0 0 3px rgba(131, 49, 119, 0.3);
 }
 
 .phone-number {

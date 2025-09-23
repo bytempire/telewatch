@@ -35,10 +35,10 @@
                     <div class="phone-icon">📞</div>
                     <h3>Связаться с нами</h3>
                     <p>Для оформления индивидуального заказа свяжитесь с нами</p>
-                    <a href="tel:+79105742620" class="phone-button" onclick="handlePhoneCall()">
+                    <button class="phone-button" onclick="handlePhoneCall()">
                         <span class="phone-number">+7 (910) 574-26-20</span>
                         <span class="phone-action">Позвонить</span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </main>
@@ -94,12 +94,81 @@
         }
 
         // Обработка нажатия на кнопку звонка
-        function handlePhoneCall() {
-            console.log('📞 Попытка совершить звонок на +79105742620');
+        async function handlePhoneCall() {
+            const phoneNumber = '+79105742620';
+            const formattedNumber = '+7 (910) 574-26-20';
             
+            console.log('📞 Попытка совершить звонок на', phoneNumber);
+            
+            // Визуальная обратная связь - изменяем текст кнопки
+            const button = document.querySelector('.phone-button');
+            const actionSpan = button?.querySelector('.phone-action');
+            const originalText = actionSpan?.textContent;
+            
+            if (actionSpan) {
+                actionSpan.textContent = 'Обработка...';
+                button.style.opacity = '0.8';
+            }
+            
+            // Haptic feedback
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('medium');
             }
+            
+            // Небольшая задержка для визуального эффекта
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            // Способ 1: Попытка использовать Telegram Web App API
+            if (tg && tg.openLink) {
+                try {
+                    console.log('🔗 Попытка открыть через tg.openLink');
+                    tg.openLink(`tel:${phoneNumber}`);
+                    return;
+                } catch (error) {
+                    console.log('❌ tg.openLink не сработал:', error);
+                }
+            }
+
+            // Способ 2: Копирование в буфер обмена + уведомление
+            try {
+                await navigator.clipboard.writeText(phoneNumber);
+                
+                // Показываем уведомление через Telegram API
+                if (tg && tg.showAlert) {
+                    tg.showAlert(`📞 Номер телефона скопирован!\n\n${formattedNumber}\n\nВы можете позвонить через любое приложение.`);
+                } else {
+                    alert(`📞 Номер телефона скопирован!\n\n${formattedNumber}\n\nВы можете позвонить через любое приложение.`);
+                }
+                console.log('✅ Номер скопирован в буфер обмена');
+                return;
+            } catch (error) {
+                console.log('❌ Не удалось скопировать номер:', error);
+            }
+
+            // Способ 3: Показать номер в уведомлении
+            const message = `📞 Позвоните нам:\n\n${formattedNumber}\n\n(Номер можно скопировать длинным нажатием)`;
+            
+            if (tg && tg.showAlert) {
+                tg.showAlert(message);
+            } else {
+                alert(message);
+            }
+
+            // Способ 4: Попытка стандартного tel: для обычных браузеров
+            try {
+                window.location.href = `tel:${phoneNumber}`;
+                console.log('✅ Перенаправление на tel: ссылку');
+            } catch (error) {
+                console.log('❌ tel: ссылка не сработала:', error);
+            }
+
+            // Восстанавливаем исходный текст кнопки
+            setTimeout(() => {
+                if (actionSpan && originalText) {
+                    actionSpan.textContent = originalText;
+                    button.style.opacity = '1';
+                }
+            }, 1000);
         }
 
         // Функция возврата на главную страницу

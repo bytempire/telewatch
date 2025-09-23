@@ -128,6 +128,58 @@
         </div>
     </div>
 
+    <!-- Модальное окно для ввода контактных данных -->
+    <div class="contact-modal" id="contactModal">
+        <div class="contact-modal-content">
+            <div class="contact-modal-header">
+                <h3>📞 Контактные данные</h3>
+                <span class="contact-modal-close" id="contactModalClose">&times;</span>
+            </div>
+            <div class="contact-modal-body">
+                <p>Укажите контактные данные для связи с вами:</p>
+                <form id="contactForm">
+                    <div class="contact-input-group">
+                        <label for="contactType">Способ связи:</label>
+                        <select id="contactType" name="contactType" required>
+                            <option value="">Выберите способ связи</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="phone">Номер телефона</option>
+                        </select>
+                    </div>
+                    
+                    <div class="contact-input-group" id="telegramGroup" style="display: none;">
+                        <label for="telegramUsername">Telegram username:</label>
+                        <div class="input-wrapper">
+                            <span class="input-prefix">@</span>
+                            <input type="text" id="telegramUsername" name="telegramUsername" 
+                                   placeholder="ваш_username" maxlength="32">
+                        </div>
+                        <div class="input-hint">Без символа @, например: ivan_petrov</div>
+                    </div>
+                    
+                    <div class="contact-input-group" id="phoneGroup" style="display: none;">
+                        <label for="phoneNumber">Номер телефона:</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" 
+                               placeholder="+7 (999) 123-45-67" maxlength="18">
+                        <div class="input-hint">Укажите номер в формате +7 (999) 123-45-67</div>
+                    </div>
+                    
+                    <div class="contact-input-group">
+                        <label for="customerName">Ваше имя (необязательно):</label>
+                        <input type="text" id="customerName" name="customerName" 
+                               placeholder="Иван Петров" maxlength="50">
+                    </div>
+                </form>
+            </div>
+            <div class="contact-modal-footer">
+                <button type="button" class="btn-cancel" id="contactCancel">Отмена</button>
+                <button type="submit" class="btn-confirm" id="contactSubmit" form="contactForm">
+                    📤 Отправить заказ
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Загрузка конфигурации (если файл существует) -->
     <script src="config.js" onerror="console.warn('⚠️ Файл config.js не найден. Создайте его по образцу config.example.js')"></script>
     <script src="script.js"></script>

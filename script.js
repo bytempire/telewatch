@@ -125,6 +125,12 @@ async function initApp() {
     loadCartFromStorage();
     updateProductsListUI();
     
+    // Инициализируем модальное окно контактных данных
+    const contactModalInitialized = initContactModal();
+    if (!contactModalInitialized) {
+        console.warn('⚠️ Модальное окно контактных данных не инициализировано. Возможно, мы не на странице каталога.');
+    }
+    
     // Проверяем, есть ли уже скидка при загрузке
     checkInitialDiscountState();
 }
@@ -933,22 +939,9 @@ function checkout() {
 
     console.log('Данные заказа:', orderData);
 
-    // Создаем красиво отформатированное сообщение
-    const telegramMessage = formatOrderMessage(orderData);
-
-    // Отправка напрямую в указанный чат
-    sendOrderToTelegram(telegramMessage, orderData);
-
-    // Очистка списка товаров после оформления заказа
-    cart = [];
-    saveCartToStorage();
-    updateProductsListUI();
-    closeProductsList();
-    showNotification('Заказ отправлен в Telegram!');
-    
-    if (tg && tg.HapticFeedback) {
-        tg.HapticFeedback.notificationOccurred('success');
-    }
+    // Показываем модальное окно для ввода контактных данных
+    console.log('📋 Показываем модальное окно контактных данных');
+    showContactModal(orderData);
 }
 
 // Генерация номера заказа
@@ -1040,8 +1033,8 @@ async function sendOrderToTelegram(message, orderData) {
         console.log('📱 Попытка 1: Прямая отправка через Bot API');
         success = await sendDirectToTelegram(message, orderData);
         if (success) {
-            showNotification('✅ Заказ отправлен в Telegram!', 'success');
-            return;
+            console.log('✅ Прямая отправка в Telegram успешна');
+            return true;
         }
     } catch (error) {
         console.error('❌ Ошибка прямой отправки:', error);
@@ -1058,8 +1051,8 @@ async function sendOrderToTelegram(message, orderData) {
                 data: orderData
             }));
             success = true;
-            showNotification('✅ Заказ отправлен через Telegram Web App!', 'success');
             console.log('✅ Заказ отправлен через tg.sendData');
+            return true;
         } catch (error) {
             console.error('❌ Ошибка отправки через Web App:', error);
         }
@@ -1071,8 +1064,8 @@ async function sendOrderToTelegram(message, orderData) {
             console.log('📱 Попытка 3: Отправка через proxy');
             success = await sendViaProxy(message, orderData);
             if (success) {
-                showNotification('✅ Заказ отправлен!', 'success');
-                return;
+                console.log('✅ Отправка через proxy успешна');
+                return true;
             }
         } catch (error) {
             console.error('❌ Ошибка отправки через proxy:', error);
@@ -1114,6 +1107,8 @@ async function sendOrderToTelegram(message, orderData) {
         console.log('📱 Используем резервный способ отправки');
         fallbackTelegramSend(message, orderData);
     }
+    
+    return success;
 }
 
 // Резервная отправка в Telegram
@@ -1525,6 +1520,294 @@ function setupEventListeners() {
 
 // Запуск приложения при загрузке страницы
 document.addEventListener('DOMContentLoaded', initApp);
+
+// ===== МОДАЛЬНОЕ ОКНО КОНТАКТНЫХ ДАННЫХ =====
+
+// Переменные модального окна
+let currentOrderData = null;
+let contactModalElements = null;
+
+// Инициализация модального окна контактных данных
+function initContactModal() {
+    console.log('🔧 Инициализация модального окна контактных данных');
+    
+    contactModalElements = {
+        modal: document.getElementById('contactModal'),
+        closeBtn: document.getElementById('contactModalClose'),
+        cancelBtn: document.getElementById('contactCancel'),
+        submitBtn: document.getElementById('contactSubmit'),
+        form: document.getElementById('contactForm'),
+        contactTypeSelect: document.getElementById('contactType'),
+        telegramGroup: document.getElementById('telegramGroup'),
+        phoneGroup: document.getElementById('phoneGroup'),
+        telegramInput: document.getElementById('telegramUsername'),
+        phoneInput: document.getElementById('phoneNumber'),
+        nameInput: document.getElementById('customerName')
+    };
+
+    // Проверяем, что все элементы найдены
+    const missingElements = [];
+    Object.keys(contactModalElements).forEach(key => {
+        if (!contactModalElements[key]) {
+            missingElements.push(key);
+        }
+    });
+    
+    if (missingElements.length > 0) {
+        console.error('❌ Не найдены элементы модального окна:', missingElements);
+        return false;
+    }
+    
+    console.log('✅ Все элементы модального окна найдены');
+
+    // Обработчики событий
+    if (contactModalElements.closeBtn) {
+        contactModalElements.closeBtn.addEventListener('click', closeContactModal);
+    }
+    
+    if (contactModalElements.cancelBtn) {
+        contactModalElements.cancelBtn.addEventListener('click', closeContactModal);
+    }
+    
+    if (contactModalElements.modal) {
+        contactModalElements.modal.addEventListener('click', (e) => {
+            if (e.target === contactModalElements.modal) {
+                closeContactModal();
+            }
+        });
+    }
+
+    // Переключение между типами контактов
+    if (contactModalElements.contactTypeSelect) {
+        contactModalElements.contactTypeSelect.addEventListener('change', (e) => {
+            toggleContactInputs(e.target.value);
+        });
+    }
+
+    // Обработка формы
+    if (contactModalElements.form) {
+        contactModalElements.form.addEventListener('submit', handleContactFormSubmit);
+    }
+    
+    // Форматирование телефонного номера
+    if (contactModalElements.phoneInput) {
+        contactModalElements.phoneInput.addEventListener('input', formatPhoneNumber);
+        contactModalElements.phoneInput.addEventListener('input', validateContactForm);
+    }
+    
+    // Валидация username
+    if (contactModalElements.telegramInput) {
+        contactModalElements.telegramInput.addEventListener('input', validateContactForm);
+    }
+    
+    console.log('✅ Инициализация модального окна завершена успешно');
+    return true;
+}
+
+// Показать модальное окно для ввода контактных данных
+function showContactModal(orderData) {
+    console.log('📱 showContactModal вызвана с данными:', orderData);
+    currentOrderData = orderData;
+    
+    if (!contactModalElements) {
+        console.error('❌ Модальное окно не инициализировано');
+        return;
+    }
+
+    console.log('✅ Элементы модального окна найдены');
+
+    // Сброс формы
+    contactModalElements.form.reset();
+    contactModalElements.telegramGroup.style.display = 'none';
+    contactModalElements.phoneGroup.style.display = 'none';
+    contactModalElements.submitBtn.disabled = true;
+
+    console.log('📋 Форма сброшена, показываем модальное окно');
+
+    // Показать модальное окно
+    contactModalElements.modal.classList.add('show');
+    
+    console.log('✅ Модальное окно показано (класс .show добавлен)');
+    
+    // Haptic feedback
+    if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
+}
+
+// Закрыть модальное окно
+function closeContactModal() {
+    if (contactModalElements && contactModalElements.modal) {
+        contactModalElements.modal.classList.remove('show');
+        currentOrderData = null;
+    }
+}
+
+// Переключение между типами контактов
+function toggleContactInputs(contactType) {
+    if (!contactModalElements) return;
+
+    contactModalElements.telegramGroup.style.display = 'none';
+    contactModalElements.phoneGroup.style.display = 'none';
+    
+    if (contactType === 'telegram') {
+        contactModalElements.telegramGroup.style.display = 'block';
+        contactModalElements.telegramInput.required = true;
+        contactModalElements.phoneInput.required = false;
+    } else if (contactType === 'phone') {
+        contactModalElements.phoneGroup.style.display = 'block';
+        contactModalElements.phoneInput.required = true;
+        contactModalElements.telegramInput.required = false;
+    }
+    
+    validateContactForm();
+}
+
+// Валидация контактной формы
+function validateContactForm() {
+    if (!contactModalElements) return;
+
+    const contactType = contactModalElements.contactTypeSelect.value;
+    let isValid = false;
+    
+    if (contactType === 'telegram') {
+        const username = contactModalElements.telegramInput.value.trim();
+        isValid = username.length >= 2 && /^[a-zA-Z0-9_]+$/.test(username);
+    } else if (contactType === 'phone') {
+        const phone = contactModalElements.phoneInput.value.replace(/\D/g, '');
+        isValid = phone.length >= 10;
+    }
+    
+    contactModalElements.submitBtn.disabled = !isValid;
+}
+
+// Форматирование номера телефона
+function formatPhoneNumber(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.startsWith('7') || value.startsWith('8')) {
+        if (value.startsWith('8')) {
+            value = '7' + value.slice(1);
+        }
+        
+        if (value.length >= 11) {
+            value = value.slice(0, 11);
+            const formatted = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}-${value.slice(9, 11)}`;
+            e.target.value = formatted;
+        }
+    } else if (value.length > 0) {
+        value = '7' + value;
+        if (value.length >= 11) {
+            value = value.slice(0, 11);
+            const formatted = `+7 (${value.slice(1, 4)}) ${value.slice(4, 7)}-${value.slice(7, 9)}-${value.slice(9, 11)}`;
+            e.target.value = formatted;
+        }
+    }
+}
+
+// Обработка отправки формы контактных данных
+async function handleContactFormSubmit(e) {
+    e.preventDefault();
+    console.log('🔄 Начинаем обработку формы контактных данных');
+    
+    if (!currentOrderData || !contactModalElements) {
+        console.error('❌ Ошибка: нет данных заказа или элементов формы');
+        return;
+    }
+    
+    const contactType = contactModalElements.contactTypeSelect.value;
+    console.log('📋 Тип контакта:', contactType);
+    
+    let contactInfo = {};
+    
+    if (contactType === 'telegram') {
+        const username = contactModalElements.telegramInput.value.trim();
+        console.log('📱 Telegram username:', username);
+        contactInfo = {
+            type: 'telegram',
+            value: '@' + username,
+            display: 'Telegram: @' + username
+        };
+    } else if (contactType === 'phone') {
+        const phone = contactModalElements.phoneInput.value;
+        console.log('📞 Номер телефона:', phone);
+        contactInfo = {
+            type: 'phone', 
+            value: phone,
+            display: 'Телефон: ' + phone
+        };
+    }
+    
+    const customerName = contactModalElements.nameInput.value.trim();
+    if (customerName) {
+        contactInfo.name = customerName;
+        console.log('👤 Имя клиента:', customerName);
+    }
+    
+    // Добавляем контактную информацию к данным заказа
+    currentOrderData.contact = contactInfo;
+    console.log('✅ Контактные данные добавлены к заказу:', contactInfo);
+    
+    // Сохраняем данные заказа перед закрытием модального окна
+    const orderDataWithContact = { ...currentOrderData };
+    console.log('💾 Сохранили данные заказа:', orderDataWithContact);
+    
+    // Закрываем модальное окно
+    closeContactModal();
+    
+    // Отправляем заказ
+    console.log('📤 Начинаем отправку заказа с контактными данными');
+    await sendOrderWithContact(orderDataWithContact);
+}
+
+// Отправка заказа с контактными данными
+async function sendOrderWithContact(orderData) {
+    console.log('🚀 Отправка заказа с контактными данными:', orderData);
+
+    // Создаем сообщение с контактными данными
+    const telegramMessage = formatOrderMessageWithContact(orderData);
+    console.log('📝 Сформированное сообщение:', telegramMessage);
+
+    // Отправка в Telegram
+    console.log('📤 Вызываем sendOrderToTelegram...');
+    const success = await sendOrderToTelegram(telegramMessage, orderData);
+    
+    if (success) {
+        console.log('✅ Заказ успешно отправлен!');
+        // Очистка корзины и уведомление
+        cart = [];
+        saveCartToStorage();
+        updateProductsListUI();
+        closeProductsList();
+        showNotification('Заказ отправлен!');
+        
+        if (tg && tg.HapticFeedback) {
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+    } else {
+        console.error('❌ Не удалось отправить заказ');
+        showNotification('Ошибка отправки заказа', 'error');
+    }
+}
+
+// Форматирование сообщения заказа с контактными данными
+function formatOrderMessageWithContact(orderData) {
+    // Используем стандартную функцию для получения полного сообщения
+    const originalMessage = formatOrderMessage(orderData);
+    
+    // Добавляем контактные данные в конец сообщения
+    let message = originalMessage;
+    
+    if (orderData.contact) {
+        message += `\n👤 *КОНТАКТНЫЕ ДАННЫЕ:*\n`;
+        if (orderData.contact.name) {
+            message += `Имя: ${orderData.contact.name}\n`;
+        }
+        message += `${orderData.contact.display}\n`;
+    }
+    
+    return message;
+}
 
 // Обработка изменений темы Telegram
 if (tg) {

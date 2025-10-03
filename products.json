@@ -407,7 +407,7 @@
       "price": 1555,
       "article": "0350",
       "images": [
-        "./images/0350 джемпер бордовый (1).jpg"
+        "./images/0350-burgundy-1.jpg"
       ],
       "specs": {
         "Класс": "10кл",
@@ -420,40 +420,40 @@
             "name": "Бордовый",
             "value": "burgundy",
             "images": [
-              "./images/0350 джемпер бордовый (1).jpg",
-              "./images/0350 джемпер бордовый (3).jpg"
+              "./images/0350-burgundy-1.jpg",
+              "./images/0350-burgundy-3.jpg"
             ]
           },
           {
             "name": "Васильковый",
             "value": "cornflower-blue",
             "images": [
-              "./images/0350 джемпер васильковый (1).jpg",
-              "./images/0350 джемпер васильковый (5).jpg"
+              "./images/0350-vasilkovyi-1.jpg",
+              "./images/0350-vasilkovyi-5.jpg"
             ]
           },
           {
             "name": "Жемчужный",
             "value": "pearl",
             "images": [
-              "./images/0350 джемпер жемчужный (1).jpg",
-              "./images/0350 джемпер жемчужный (6).jpg"
+              "./images/0350-zhemchuzhnyi-1.jpg",
+              "./images/0350-zhemchuzhnyi-6.jpg"
             ]
           },
           {
             "name": "Молочный",
             "value": "milk",
             "images": [
-              "./images/0350 джемпер молочный (3).jpg",
-              "./images/0350 джемпер молочный (4).jpg"
+              "./images/0350-molochnyi-3.jpg",
+              "./images/0350-molochnyi-4.jpg"
             ]
           },
           {
             "name": "Темно-коричневый",
             "value": "dark-brown",
             "images": [
-              "./images/0350 джемпер т.коричневый (2).jpg",
-              "./images/0350 джемпер т.коричневый (5).jpg"
+              "./images/0350-dark-brown-2.jpg",
+              "./images/0350-dark-brown-5.jpg"
             ]
           }
         ],

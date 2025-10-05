@@ -1,3 +1,316 @@
+/* Стили для начальной страницы */
+.landing-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.landing-logo {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.landing-header h1 {
+    color: #333;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.landing-header p {
+    color: #666;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.landing-main {
+    flex: 1;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.order-type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.order-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.order-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #833177, #e91e63);
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border-color: #833177;
+}
+
+.order-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.retail-card:hover {
+    border-color: #e91e63;
+}
+
+.wholesale-card:hover {
+    border-color: #833177;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.order-card h2 {
+    color: #333;
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.order-card p {
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.5;
+}
+
+.price-info {
+    margin-bottom: 1.5rem;
+}
+
+.price-label {
+    display: block;
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.price-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #833177;
+}
+
+.retail-card .price-value {
+    color: #e91e63;
+}
+
+.card-button {
+    background: linear-gradient(135deg, #833177, #e91e63);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.retail-card .card-button {
+    background: linear-gradient(135deg, #e91e63, #ff6b9d);
+}
+
+.wholesale-card .card-button {
+    background: linear-gradient(135deg, #833177, #b39ddb);
+}
+
+.card-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(131, 49, 119, 0.4);
+}
+
+
+/* Стили для розничного каталога */
+.order-type-badge {
+    background: linear-gradient(135deg, #e91e63, #ff6b9d);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+}
+
+/* Адаптивность для начальной страницы */
+@media (max-width: 768px) {
+    .landing-container {
+        min-height: 100vh;
+    }
+    
+    .landing-header {
+        padding: 1.5rem 1rem;
+    }
+    
+    .landing-logo {
+        max-width: 100px;
+        margin-bottom: 0.8rem;
+    }
+    
+    .landing-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .landing-header p {
+        font-size: 0.9rem;
+    }
+    
+    .landing-main {
+        padding: 1.5rem 1rem;
+    }
+    
+    .order-type-cards {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .order-card {
+        padding: 1.2rem;
+        border-radius: 12px;
+    }
+    
+    .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .order-card h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .order-card p {
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        line-height: 1.4;
+    }
+    
+    .price-info {
+        margin-bottom: 1.2rem;
+    }
+    
+    .price-label {
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .price-value {
+        font-size: 1.5rem;
+    }
+    
+    .card-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+    }
+    
+}
+
+/* Стили для сенсорных устройств */
+.touch-device .order-card {
+    -webkit-tap-highlight-color: rgba(131, 49, 119, 0.1);
+}
+
+.touch-device .order-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Дополнительная адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+    .landing-header {
+        padding: 1rem 0.8rem;
+    }
+    
+    .landing-logo {
+        max-width: 80px;
+    }
+    
+    .landing-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .landing-header p {
+        font-size: 0.8rem;
+    }
+    
+    .landing-main {
+        padding: 1rem 0.8rem;
+    }
+    
+    .order-card {
+        padding: 1rem;
+    }
+    
+    .card-icon {
+        font-size: 2rem;
+    }
+    
+    .order-card h2 {
+        font-size: 1.2rem;
+    }
+    
+    .order-card p {
+        font-size: 0.85rem;
+    }
+    
+    .price-value {
+        font-size: 1.3rem;
+    }
+    
+    .card-button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+}
+
+/* Стили для розничного каталога с одной карточкой */
+.retail-catalog .menu-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto 3rem auto;
+    justify-content: center;
+}
+
 /* Сброс стилей и базовые настройки */
 * {
     margin: 0;

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeleWatch - Розничный каталог</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body class="retail-catalog">
+    <div class="app" id="app">
+        <!-- Заголовок приложения -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="logo.png" alt="TeleWatch" class="logo">
+            </div>
+            <div class="header-info">
+                <span class="order-type-badge">Розничный заказ</span>
+            </div>
+        </header>
+
+        <!-- Главное меню -->
+        <main class="main-menu">
+            <!-- Сетка меню -->
+            <div class="menu-grid">
+                <!-- Каталог товаров -->
+                <div class="menu-card" onclick="openCatalog()">
+                    <div class="menu-icon">🛍️</div>
+                    <h2>Каталог товаров</h2>
+                    <p>Готовые изделия из нашей коллекции</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Закрепленная корзина -->
+    <div class="fixed-cart" id="fixedCart">
+        <button class="fixed-cart-button" onclick="openProductsList()">
+            <span class="fixed-cart-icon">🛒</span>
+            <span class="fixed-cart-count" id="fixedCartCount">0</span>
+        </button>
+    </div>
+
+    <script>
+        // Telegram Web App инициализация
+        let tg = window.Telegram?.WebApp;
+
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            tg.enableClosingConfirmation();
+        } else {
+            console.log('Telegram Web App не доступен');
+        }
+
+        // Функции навигации
+        function openCatalog() {
+            window.location.href = 'retail-catalog-products.html';
+            
+            // Добавляем тактильную обратную связь
+            if (tg && tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+
+
+        // Добавляем эффекты при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuCards = document.querySelectorAll('.menu-card');
+            menuCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+    
+    <!-- Загрузка конфигурации (если файл существует) -->
+    <script src="config.js" onerror="console.warn('⚠️ Файл config.js не найден. Создайте его по образцу config.example.js')"></script>
+    <script src="retail-script.js"></script>
+</body>
+</html>

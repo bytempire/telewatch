@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeleWatch - Оптовый каталог</title>
+    <title>TeleWatch - Розничный каталог</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -18,7 +18,7 @@
                 <img src="logo.png" alt="TeleWatch" class="logo-small">
             </div>
             <div class="header-info">
-                <span class="order-type-badge">Оптовый заказ</span>
+                <span class="order-type-badge">Розничный заказ</span>
             </div>
         </header>
 
@@ -83,7 +83,7 @@
                         <div class="add-to-cart">
                             <div class="quantity-selector">
                                 <label for="qtyInput" class="qty-label">Количество:</label>
-                                <input type="number" class="qty-input" id="qtyInput" placeholder="мин. 10 шт" inputmode="numeric">
+                                <input type="number" class="qty-input" id="qtyInput" placeholder="мин. 1 шт" inputmode="numeric">
                             </div>
                             <button class="add-cart-btn" id="addToCartBtn">Добавить</button>
                         </div>
@@ -99,85 +99,68 @@
                     <h2>Список товаров</h2>
                     <button class="close-products-list" id="closeProductsList">&times;</button>
                 </div>
-                <div class="products-list-items" id="productsListItems">
-                    <!-- Товары в списке будут добавлены динамически -->
+                <div class="products-list" id="productsList">
+                    <!-- Товары будут добавлены динамически -->
                 </div>
                 <div class="products-list-footer">
-                    <div class="products-list-total">
-                        <strong>Итого: <span id="productsListTotal">0</span></strong>
+                    <div class="total-price">
+                        <span>Итого: <span id="totalPrice">0</span> ₽</span>
                     </div>
                     <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
                 </div>
             </div>
         </div>
 
-        <!-- Backdrop для модальных окон -->
-        <div class="backdrop" id="backdrop"></div>
-
-        <!-- Полноэкранный просмотр изображений -->
-        <div class="fullscreen-modal" id="fullscreenModal">
-            <div class="fullscreen-content">
-                <span class="close-fullscreen" id="closeFullscreen">&times;</span>
-                <img class="fullscreen-image" id="fullscreenImage" alt="Полноэкранное изображение">
-                <button class="fullscreen-nav prev-fullscreen" id="prevFullscreen">&#10094;</button>
-                <button class="fullscreen-nav next-fullscreen" id="nextFullscreen">&#10095;</button>
-                <div class="fullscreen-counter" id="fullscreenCounter">
-                    <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
+        <!-- Модальное окно для контактных данных -->
+        <div class="contact-modal" id="contactModal">
+            <div class="contact-modal-content">
+                <div class="contact-modal-header">
+                    <h3>Контактные данные</h3>
+                    <button class="contact-modal-close" id="contactModalClose">&times;</button>
+                </div>
+                <div class="contact-modal-body">
+                    <form id="contactForm">
+                        <div class="contact-input-group">
+                            <label>Способ связи:</label>
+                            <div class="contact-type-buttons">
+                                <button type="button" class="contact-type-btn active" data-type="telegram">Telegram</button>
+                                <button type="button" class="contact-type-btn" data-type="phone">Телефон</button>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-input-group" id="telegramGroup" style="display: none;">
+                            <label for="telegramUsername">Telegram username:</label>
+                            <div class="input-wrapper">
+                                <span class="input-prefix">@</span>
+                                <input type="text" id="telegramUsername" name="telegramUsername" 
+                                       placeholder="ваш_username" maxlength="32">
+                            </div>
+                            <div class="input-hint">Без символа @, например: ivan_petrov</div>
+                        </div>
+                        
+                        <div class="contact-input-group" id="phoneGroup" style="display: none;">
+                            <label for="phoneNumber">Номер телефона:</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" 
+                                   placeholder="+7 (999) 123-45-67" maxlength="18">
+                            <div class="input-hint">Укажите номер в формате +7 (999) 123-45-67</div>
+                        </div>
+                        
+                        <div class="contact-input-group">
+                            <label for="customerName">Ваше имя:</label>
+                            <input type="text" id="customerName" name="customerName" 
+                                   placeholder="Иван Петров" maxlength="50">
+                        </div>
+                    </form>
+                </div>
+                <div class="contact-modal-footer">
+                    <button type="button" class="btn-cancel" id="contactCancel">Отмена</button>
+                    <button type="submit" class="btn-confirm" id="contactSubmit" form="contactForm">
+                        📤 Отправить заказ
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Модальное окно для ввода контактных данных -->
-    <div class="contact-modal" id="contactModal">
-        <div class="contact-modal-content">
-            <div class="contact-modal-header">
-                <h3>📞 Контактные данные</h3>
-                <span class="contact-modal-close" id="contactModalClose">&times;</span>
-            </div>
-            <div class="contact-modal-body">
-                <p>Укажите контактные данные для связи с вами:</p>
-                <form id="contactForm">
-                    <div class="contact-input-group">
-                        <label for="contactType">Способ связи:</label>
-                        <select id="contactType" name="contactType" required>
-                            <option value="">Выберите способ связи</option>
-                            <option value="telegram">Telegram</option>
-                            <option value="phone">Номер телефона</option>
-                        </select>
-                    </div>
-                    
-                    <div class="contact-input-group" id="telegramGroup" style="display: none;">
-                        <label for="telegramUsername">Telegram username:</label>
-                        <div class="input-wrapper">
-                            <span class="input-prefix">@</span>
-                            <input type="text" id="telegramUsername" name="telegramUsername" 
-                                   placeholder="ваш_username" maxlength="32">
-                        </div>
-                        <div class="input-hint">Без символа @, например: ivan_petrov</div>
-                    </div>
-                    
-                    <div class="contact-input-group" id="phoneGroup" style="display: none;">
-                        <label for="phoneNumber">Номер телефона:</label>
-                        <input type="tel" id="phoneNumber" name="phoneNumber" 
-                               placeholder="+7 (999) 123-45-67" maxlength="18">
-                        <div class="input-hint">Укажите номер в формате +7 (999) 123-45-67</div>
-                    </div>
-                    
-                    <div class="contact-input-group">
-                        <label for="customerName">Ваше имя:</label>
-                        <input type="text" id="customerName" name="customerName" 
-                               placeholder="Иван Петров" maxlength="50">
-                    </div>
-                </form>
-            </div>
-            <div class="contact-modal-footer">
-                <button type="button" class="btn-cancel" id="contactCancel">Отмена</button>
-                <button type="submit" class="btn-confirm" id="contactSubmit" form="contactForm">
-                    📤 Отправить заказ
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Закрепленная корзина -->
@@ -190,11 +173,11 @@
 
     <!-- Загрузка конфигурации (если файл существует) -->
     <script src="config.js" onerror="console.warn('⚠️ Файл config.js не найден. Создайте его по образцу config.example.js')"></script>
-    <script src="script.js"></script>
+    <script src="retail-script.js"></script>
     <script>
         // Функция возврата на главную страницу
         function goBack() {
-            window.location.href = 'index.html';
+            window.location.href = 'retail-catalog.html';
         }
     </script>
 </body>

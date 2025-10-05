@@ -311,6 +311,17 @@
     justify-content: center;
 }
 
+/* Центрирование логотипа когда нет правой части header */
+.retail-catalog .header,
+.wholesale-catalog .header {
+    justify-content: center;
+}
+
+.retail-catalog .logo-container,
+.wholesale-catalog .logo-container {
+    margin: 0 auto;
+}
+
 /* Сброс стилей и базовые настройки */
 * {
     margin: 0;

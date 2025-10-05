@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body>
+<body class="wholesale-catalog">
     <div class="app" id="app">
         <!-- Заголовок приложения -->
         <header class="header">
-            <div class="logo-container">
-                <img src="logo.png" alt="TeleWatch" class="logo">
+            <div class="nav-back" onclick="goBack()">
+                ← Назад
             </div>
-            <div class="header-info">
-                <span class="order-type-badge">Оптовый заказ</span>
+            <div class="logo-container">
+                <img src="logo.png" alt="TeleWatch" class="logo-small">
             </div>
         </header>
 
@@ -122,6 +122,10 @@
             if (tg && tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('light');
             }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
         }
 
         // Добавляем эффекты при загрузке

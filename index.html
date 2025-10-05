@@ -15,7 +15,7 @@
 
         <main class="landing-main">
             <div class="order-type-cards">
-                <div class="order-card retail-card" onclick="goToRetail()">
+                <div class="order-card retail-card" onclick="console.log('Кнопка нажата!'); console.log('Вызываем goToRetail...'); goToRetail(); console.log('goToRetail вызван');">
                     <div class="card-icon">🛍️</div>
                     <h2>Розничный заказ</h2>
                     <p>Индивидуальные заказы для личного использования</p>
@@ -73,13 +73,15 @@
         });
 
         function goToRetail() {
-            // Переход к розничному каталогу
-            window.location.href = 'retail-catalog.html';
+            // Переход сразу к каталогу товаров розничного заказа
+            console.log('Переход к розничному каталогу товаров...');
+            console.log('Текущий URL:', window.location.href);
+            window.location.href = 'retail-catalog-products.html?v=' + Date.now();
         }
 
         function goToWholesale() {
-            // Переход к оптовому каталогу (текущий функционал)
-            window.location.href = 'catalog.html';
+            // Переход к оптовому каталогу с информацией о компании
+            window.location.href = 'wholesale-catalog.html';
         }
 
         // Сохраняем тип заказа в localStorage
@@ -87,16 +89,6 @@
             localStorage.setItem('orderType', type);
         }
 
-        // Обновляем функции для сохранения типа заказа
-        function goToRetail() {
-            setOrderType('retail');
-            window.location.href = 'retail-catalog.html';
-        }
-
-        function goToWholesale() {
-            setOrderType('wholesale');
-            window.location.href = 'wholesale-catalog.html';
-        }
     </script>
 </body>
 </html>

@@ -1,13 +1,5 @@
-// Telegram Web App инициализация
-let tg = window.Telegram?.WebApp;
-
-if (tg) {
-    tg.ready();
-    tg.expand();
-    tg.enableClosingConfirmation();
-} else {
-    console.log('Telegram Web App не доступен');
-}
+// Telegram Web App инициализация (уже выполнена в HTML)
+const tg = window.Telegram?.WebApp;
 
 // Глобальные переменные
 let products = [];

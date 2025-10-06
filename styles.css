@@ -83,7 +83,7 @@
 }
 
 .retail-card:hover {
-    border-color: #e91e63;
+    border-color: #833177;
 }
 
 .wholesale-card:hover {
@@ -125,7 +125,7 @@
 }
 
 .retail-card .price-value {
-    color: #e91e63;
+    color: #833177;
 }
 
 .card-button {
@@ -139,7 +139,7 @@
 }
 
 .retail-card .card-button {
-    background: linear-gradient(135deg, #e91e63, #ff6b9d);
+    background: linear-gradient(135deg, #833177, #b39ddb);
 }
 
 .wholesale-card .card-button {

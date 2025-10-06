@@ -736,7 +736,7 @@ function renderProductsListItems() {
                                 type="number" 
                                 class="products-list-qty-input" 
                                 value="${item.quantity}" 
-                                min="10"
+                                min="1"
                                 data-product-id="${item.id}"
                                 onchange="updateProductQuantity('${item.id}', this.value)"
                                 onblur="validateQuantity('${item.id}', this.value)"
@@ -761,11 +761,11 @@ function updateProductQuantity(productId, newQuantity) {
         return;
     }
 
-    if (quantity < 10) {
-        item.quantity = 10;
+    if (quantity < 1) {
+        item.quantity = 1;
         const input = document.querySelector(`[data-product-id="${productId}"]`);
-        if (input) input.value = 10;
-        showNotification('Минимальное количество для заказа 10 шт');
+        if (input) input.value = 1;
+        showNotification('Минимальное количество для заказа 1 шт');
     } else {
         item.quantity = quantity;
     }
@@ -786,13 +786,9 @@ function validateQuantity(productId, value) {
     const input = document.querySelector(`[data-product-id="${productId}"]`);
     
     if (!value || isNaN(quantity) || quantity < 1) {
-        if (input) input.value = 10;
-        item.quantity = 10;
-        showNotification('Минимальное количество для заказа 10 шт');
-    } else if (quantity < 10) {
-        if (input) input.value = 10;
-        item.quantity = 10;
-        showNotification('Минимальное количество для заказа 10 шт');
+        if (input) input.value = 1;
+        item.quantity = 1;
+        showNotification('Минимальное количество для заказа 1 шт');
     } else {
         item.quantity = quantity;
     }
@@ -918,7 +914,7 @@ function updateProductsListUI() {
 // Сохранение корзины в localStorage
 function saveCartToStorage() {
     try {
-        localStorage.setItem('telewatch_cart', JSON.stringify(cart));
+        localStorage.setItem('telewatch_cart_retail', JSON.stringify(cart));
     } catch (error) {
         console.error('Ошибка сохранения корзины:', error);
     }
@@ -927,7 +923,7 @@ function saveCartToStorage() {
 // Загрузка корзины из localStorage
 function loadCartFromStorage() {
     try {
-        const savedCart = localStorage.getItem('telewatch_cart');
+        const savedCart = localStorage.getItem('telewatch_cart_retail');
         if (savedCart) {
             cart = JSON.parse(savedCart);
         }
@@ -1423,10 +1419,10 @@ function setupEventListeners() {
         if (isNaN(value) || value === 0) {
             e.target.value = '';
             showNotification('Введите корректное число');
-        } else if (value < 10) {
+        } else if (value < 1) {
             // Больше не выставляем 10 автоматически — пользователь должен сам ввести допустимое значение
             e.target.value = '';
-            showNotification('Минимальное количество для заказа 10 шт');
+            showNotification('Минимальное количество для заказа 1 шт');
         }
     });
     

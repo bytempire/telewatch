@@ -96,12 +96,12 @@
                     <h2>Список товаров</h2>
                     <button class="close-products-list" id="closeProductsList">&times;</button>
                 </div>
-                <div class="products-list" id="productsList">
-                    <!-- Товары будут добавлены динамически -->
+                <div class="products-list-items" id="productsListItems">
+                    <!-- Товары в списке будут добавлены динамически -->
                 </div>
                 <div class="products-list-footer">
-                    <div class="total-price">
-                        <span>Итого: <span id="totalPrice">0</span> ₽</span>
+                    <div class="products-list-total">
+                        <strong>Итого: <span id="productsListTotal">0</span></strong>
                     </div>
                     <button class="checkout-btn" id="checkoutBtn">Оформить заказ</button>
                 </div>
@@ -154,6 +154,22 @@
                     <button type="submit" class="btn-confirm" id="contactSubmit" form="contactForm">
                         📤 Отправить заказ
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backdrop для модальных окон -->
+        <div class="backdrop" id="backdrop"></div>
+
+        <!-- Полноэкранный просмотр изображений -->
+        <div class="fullscreen-modal" id="fullscreenModal">
+            <div class="fullscreen-content">
+                <span class="close-fullscreen" id="closeFullscreen">&times;</span>
+                <img class="fullscreen-image" id="fullscreenImage" alt="Полноэкранное изображение">
+                <button class="fullscreen-nav prev-fullscreen" id="prevFullscreen">&#10094;</button>
+                <button class="fullscreen-nav next-fullscreen" id="nextFullscreen">&#10095;</button>
+                <div class="fullscreen-counter" id="fullscreenCounter">
+                    <span id="currentImageIndex">1</span> / <span id="totalImages">1</span>
                 </div>
             </div>
         </div>

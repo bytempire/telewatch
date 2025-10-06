@@ -922,7 +922,7 @@ function updateProductsListUI() {
 // Сохранение корзины в localStorage
 function saveCartToStorage() {
     try {
-        localStorage.setItem('telewatch_cart', JSON.stringify(cart));
+        localStorage.setItem('telewatch_cart_wholesale', JSON.stringify(cart));
     } catch (error) {
         console.error('Ошибка сохранения корзины:', error);
     }
@@ -931,7 +931,7 @@ function saveCartToStorage() {
 // Загрузка корзины из localStorage
 function loadCartFromStorage() {
     try {
-        const savedCart = localStorage.getItem('telewatch_cart');
+        const savedCart = localStorage.getItem('telewatch_cart_wholesale');
         if (savedCart) {
             cart = JSON.parse(savedCart);
         }

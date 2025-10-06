@@ -118,34 +118,23 @@
                 <div class="contact-modal-body">
                     <form id="contactForm">
                         <div class="contact-input-group">
-                            <label>Способ связи:</label>
-                            <div class="contact-type-buttons">
-                                <button type="button" class="contact-type-btn active" data-type="telegram">Telegram</button>
-                                <button type="button" class="contact-type-btn" data-type="phone">Телефон</button>
-                            </div>
+                            <label for="customerName">ФИО:</label>
+                            <input type="text" id="customerName" name="customerName" 
+                                   placeholder="Иванов Иван Иванович" maxlength="80" required>
                         </div>
-                        
-                        <div class="contact-input-group" id="telegramGroup" style="display: none;">
-                            <label for="telegramUsername">Telegram username:</label>
-                            <div class="input-wrapper">
-                                <span class="input-prefix">@</span>
-                                <input type="text" id="telegramUsername" name="telegramUsername" 
-                                       placeholder="ваш_username" maxlength="32">
-                            </div>
-                            <div class="input-hint">Без символа @, например: ivan_petrov</div>
+
+                        <div class="contact-input-group">
+                            <label for="cdekAddress">Адрес ПВЗ CDEK:</label>
+                            <input type="text" id="cdekAddress" name="cdekAddress" 
+                                   placeholder="Город, улица, номер ПВЗ" maxlength="140" required>
+                            <div class="input-hint">Укажите точный адрес пункта выдачи CDEK</div>
                         </div>
-                        
-                        <div class="contact-input-group" id="phoneGroup" style="display: none;">
+
+                        <div class="contact-input-group" id="phoneGroup">
                             <label for="phoneNumber">Номер телефона:</label>
                             <input type="tel" id="phoneNumber" name="phoneNumber" 
-                                   placeholder="+7 (999) 123-45-67" maxlength="18">
-                            <div class="input-hint">Укажите номер в формате +7 (999) 123-45-67</div>
-                        </div>
-                        
-                        <div class="contact-input-group">
-                            <label for="customerName">Ваше имя:</label>
-                            <input type="text" id="customerName" name="customerName" 
-                                   placeholder="Иван Петров" maxlength="50">
+                                   placeholder="+7 (999) 123-45-67" maxlength="18" required>
+                            <div class="input-hint">Формат: +7 (999) 123-45-67</div>
                         </div>
                     </form>
                 </div>

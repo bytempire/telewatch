@@ -1576,12 +1576,9 @@ function initContactModal() {
         cancelBtn: document.getElementById('contactCancel'),
         submitBtn: document.getElementById('contactSubmit'),
         form: document.getElementById('contactForm'),
-        contactTypeSelect: document.getElementById('contactType'),
-        telegramGroup: document.getElementById('telegramGroup'),
-        phoneGroup: document.getElementById('phoneGroup'),
-        telegramInput: document.getElementById('telegramUsername'),
         phoneInput: document.getElementById('phoneNumber'),
-        nameInput: document.getElementById('customerName')
+        nameInput: document.getElementById('customerName'),
+        cdekAddressInput: document.getElementById('cdekAddress')
     };
 
     // Проверяем, что все элементы найдены
@@ -1616,13 +1613,6 @@ function initContactModal() {
         });
     }
 
-    // Переключение между типами контактов
-    if (contactModalElements.contactTypeSelect) {
-        contactModalElements.contactTypeSelect.addEventListener('change', (e) => {
-            toggleContactInputs(e.target.value);
-        });
-    }
-
     // Обработка формы
     if (contactModalElements.form) {
         contactModalElements.form.addEventListener('submit', handleContactFormSubmit);
@@ -1634,10 +1624,8 @@ function initContactModal() {
         contactModalElements.phoneInput.addEventListener('input', validateContactForm);
     }
     
-    // Валидация username
-    if (contactModalElements.telegramInput) {
-        contactModalElements.telegramInput.addEventListener('input', validateContactForm);
-    }
+    contactModalElements.nameInput?.addEventListener('input', validateContactForm);
+    contactModalElements.cdekAddressInput?.addEventListener('input', validateContactForm);
     
     console.log('✅ Инициализация модального окна завершена успешно');
     return true;
@@ -1657,8 +1645,6 @@ function showContactModal(orderData) {
 
     // Сброс формы
     contactModalElements.form.reset();
-    contactModalElements.telegramGroup.style.display = 'none';
-    contactModalElements.phoneGroup.style.display = 'none';
     contactModalElements.submitBtn.disabled = true;
 
     console.log('📋 Форма сброшена, показываем модальное окно');
@@ -1683,40 +1669,17 @@ function closeContactModal() {
 }
 
 // Переключение между типами контактов
-function toggleContactInputs(contactType) {
-    if (!contactModalElements) return;
-
-    contactModalElements.telegramGroup.style.display = 'none';
-    contactModalElements.phoneGroup.style.display = 'none';
-    
-    if (contactType === 'telegram') {
-        contactModalElements.telegramGroup.style.display = 'block';
-        contactModalElements.telegramInput.required = true;
-        contactModalElements.phoneInput.required = false;
-    } else if (contactType === 'phone') {
-        contactModalElements.phoneGroup.style.display = 'block';
-        contactModalElements.phoneInput.required = true;
-        contactModalElements.telegramInput.required = false;
-    }
-    
-    validateContactForm();
-}
+// Удалена логика переключения типов контакта — для розницы собираем ФИО, адрес CDEK и телефон
 
 // Валидация контактной формы
 function validateContactForm() {
     if (!contactModalElements) return;
 
-    const contactType = contactModalElements.contactTypeSelect.value;
-    let isValid = false;
-    
-    if (contactType === 'telegram') {
-        const username = contactModalElements.telegramInput.value.trim();
-        isValid = username.length >= 2 && /^[a-zA-Z0-9_]+$/.test(username);
-    } else if (contactType === 'phone') {
-        const phone = contactModalElements.phoneInput.value.replace(/\D/g, '');
-        isValid = phone.length >= 10;
-    }
-    
+    const fullName = contactModalElements.nameInput?.value.trim() || '';
+    const cdekAddress = contactModalElements.cdekAddressInput?.value.trim() || '';
+    const phoneDigits = (contactModalElements.phoneInput?.value || '').replace(/\D/g, '');
+    const isValid = fullName.length >= 3 && cdekAddress.length >= 5 && phoneDigits.length >= 10;
+
     contactModalElements.submitBtn.disabled = !isValid;
 }
 
@@ -1754,34 +1717,18 @@ async function handleContactFormSubmit(e) {
         return;
     }
     
-    const contactType = contactModalElements.contactTypeSelect.value;
-    console.log('📋 Тип контакта:', contactType);
-    
     let contactInfo = {};
-    
-    if (contactType === 'telegram') {
-        const username = contactModalElements.telegramInput.value.trim();
-        console.log('📱 Telegram username:', username);
-        contactInfo = {
-            type: 'telegram',
-            value: '@' + username,
-            display: 'Telegram: @' + username
-        };
-    } else if (contactType === 'phone') {
-        const phone = contactModalElements.phoneInput.value;
-        console.log('📞 Номер телефона:', phone);
-        contactInfo = {
-            type: 'phone', 
-            value: phone,
-            display: 'Телефон: ' + phone
-        };
-    }
-    
     const customerName = contactModalElements.nameInput.value.trim();
-    if (customerName) {
-        contactInfo.name = customerName;
-        console.log('👤 Имя клиента:', customerName);
-    }
+    const phone = contactModalElements.phoneInput.value.trim();
+    const cdekAddress = contactModalElements.cdekAddressInput.value.trim();
+
+    contactInfo = {
+        type: 'retail',
+        name: customerName,
+        value: phone,
+        display: 'Телефон: ' + phone,
+        cdekAddress: cdekAddress
+    };
     
     // Добавляем контактную информацию к данным заказа
     currentOrderData.contact = contactInfo;
@@ -1841,6 +1788,9 @@ function formatOrderMessageWithContact(orderData) {
         message += `\n👤 *КОНТАКТНЫЕ ДАННЫЕ:*\n`;
         if (orderData.contact.name) {
             message += `Имя: ${orderData.contact.name}\n`;
+        }
+        if (orderData.contact.cdekAddress) {
+            message += `CDEK: ${orderData.contact.cdekAddress}\n`;
         }
         message += `${orderData.contact.display}\n`;
     }

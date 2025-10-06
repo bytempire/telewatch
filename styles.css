@@ -175,71 +175,71 @@
     }
     
     .landing-header {
-        padding: 1.5rem 1rem;
+        padding: 1rem 0.8rem;
     }
     
     .landing-logo {
-        max-width: 100px;
-        margin-bottom: 0.8rem;
+        max-width: 80px;
+        margin-bottom: 0.6rem;
     }
     
     .landing-header h1 {
-        font-size: 1.5rem;
-        margin-bottom: 0.3rem;
+        font-size: 1.4rem;
+        margin-bottom: 0.2rem;
     }
     
     .landing-header p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     
     .landing-main {
-        padding: 1.5rem 1rem;
+        padding: 1rem 0.8rem;
     }
     
     .order-type-cards {
         grid-template-columns: 1fr;
-        gap: 1.2rem;
-        margin-bottom: 2rem;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
     }
     
     .order-card {
-        padding: 1.2rem;
+        padding: 1rem;
         border-radius: 12px;
     }
     
     .card-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.8rem;
+        font-size: 2.2rem;
+        margin-bottom: 0.6rem;
     }
     
     .order-card h2 {
-        font-size: 1.3rem;
-        margin-bottom: 0.8rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.6rem;
     }
     
     .order-card p {
-        font-size: 0.9rem;
-        margin-bottom: 1.2rem;
-        line-height: 1.4;
+        font-size: 0.85rem;
+        margin-bottom: 0.9rem;
+        line-height: 1.35;
     }
     
     .price-info {
-        margin-bottom: 1.2rem;
+        margin-bottom: 0.9rem;
     }
     
     .price-label {
-        font-size: 0.8rem;
-        margin-bottom: 0.3rem;
+        font-size: 0.75rem;
+        margin-bottom: 0.25rem;
     }
     
     .price-value {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
     
     .card-button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        border-radius: 18px;
     }
     
 }
@@ -257,48 +257,59 @@
 /* Дополнительная адаптивность для очень маленьких экранов */
 @media (max-width: 480px) {
     .landing-header {
-        padding: 1rem 0.8rem;
+        padding: 0.8rem 0.6rem;
     }
     
     .landing-logo {
-        max-width: 80px;
+        max-width: 70px;
     }
     
     .landing-header h1 {
-        font-size: 1.3rem;
-    }
-    
-    .landing-header p {
-        font-size: 0.8rem;
-    }
-    
-    .landing-main {
-        padding: 1rem 0.8rem;
-    }
-    
-    .order-card {
-        padding: 1rem;
-    }
-    
-    .card-icon {
-        font-size: 2rem;
-    }
-    
-    .order-card h2 {
         font-size: 1.2rem;
     }
     
+    .landing-header p {
+        font-size: 0.78rem;
+    }
+    
+    .landing-main {
+        padding: 0.8rem 0.6rem;
+    }
+    
+    .order-type-cards {
+        gap: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .order-card {
+        padding: 0.9rem;
+    }
+    
+    .card-icon {
+        font-size: 1.9rem;
+    }
+    
+    .order-card h2 {
+        font-size: 1.1rem;
+    }
+    
     .order-card p {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .price-label {
+        font-size: 0.72rem;
     }
     
     .price-value {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
     
     .card-button {
-        padding: 8px 16px;
-        font-size: 0.85rem;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+        border-radius: 16px;
     }
     
 }

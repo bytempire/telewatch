@@ -1,3 +1,56 @@
+// Создание платежа ЮKassa через backend-прокси
+async function createYooKassaPayment(orderData) {
+    // Поддержка двух вариантов:
+    // 1) CONFIG.YOOKASSA.PAYMENT_ENDPOINT — полный URL до файла (например, https://domain.com/yookassa_create.php)
+    // 2) CONFIG.YOOKASSA.PROXY_URL — базовый URL, к которому добавим /payments/create
+    const hasConfig = typeof CONFIG !== 'undefined' && CONFIG.YOOKASSA;
+    const paymentEndpoint = hasConfig && CONFIG.YOOKASSA.PAYMENT_ENDPOINT ? CONFIG.YOOKASSA.PAYMENT_ENDPOINT : '';
+    const proxyBase = hasConfig && CONFIG.YOOKASSA.PROXY_URL ? CONFIG.YOOKASSA.PROXY_URL : '';
+    const endpoint = paymentEndpoint || (proxyBase ? (proxyBase.replace(/\/$/, '') + '/payments/create') : '');
+
+    if (!endpoint) {
+        console.warn('⚠️ Не настроен endpoint ЮKassa. Укажите CONFIG.YOOKASSA.PAYMENT_ENDPOINT или PROXY_URL в config.js');
+        showNotification('Оплата временно недоступна. Свяжитесь с нами', 'warning');
+        return null;
+    }
+
+    // Готовим полезную нагрузку для создания платежа
+    const payload = {
+        amount: orderData.total,
+        currency: 'RUB',
+        description: `POLLEN Retail ${orderData.orderNumber}`,
+        receipt: {
+            customer: {
+                full_name: orderData.contact?.name || '',
+                phone: orderData.contact?.value || '',
+            },
+            items: orderData.items.map((it) => ({
+                description: it.name,
+                quantity: it.quantity,
+                amount: { value: it.price, currency: 'RUB' },
+                vat_code: 1
+            }))
+        },
+        metadata: {
+            orderNumber: orderData.orderNumber,
+            cdekAddress: orderData.contact?.cdekAddress || ''
+        },
+        return_url: window.location.href
+    };
+
+    const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to create payment');
+    }
+
+    const data = await res.json();
+    return data?.confirmation_url || null;
+}
 // Telegram Web App инициализация (уже выполнена в HTML)
 const tg = window.Telegram?.WebApp;
 
@@ -1750,29 +1803,18 @@ async function handleContactFormSubmit(e) {
 async function sendOrderWithContact(orderData) {
     console.log('🚀 Отправка заказа с контактными данными:', orderData);
 
-    // Создаем сообщение с контактными данными
-    const telegramMessage = formatOrderMessageWithContact(orderData);
-    console.log('📝 Сформированное сообщение:', telegramMessage);
-
-    // Отправка в Telegram
-    console.log('📤 Вызываем sendOrderToTelegram...');
-    const success = await sendOrderToTelegram(telegramMessage, orderData);
-    
-    if (success) {
-        console.log('✅ Заказ успешно отправлен!');
-        // Очистка корзины и уведомление
-        cart = [];
-        saveCartToStorage();
-        updateProductsListUI();
-        closeProductsList();
-        showNotification('Заказ отправлен!');
-        
-        if (tg && tg.HapticFeedback) {
-            tg.HapticFeedback.notificationOccurred('success');
+    try {
+        // Создаем платёж через ваш backend-прокси и получаем confirmation_url ЮKassa
+        const confirmationUrl = await createYooKassaPayment(orderData);
+        if (confirmationUrl) {
+            // Переходим на страницу оплаты ЮKassa
+            window.location.href = confirmationUrl;
+            return;
         }
-    } else {
-        console.error('❌ Не удалось отправить заказ');
-        showNotification('Ошибка отправки заказа', 'error');
+        showNotification('Не удалось создать оплату', 'error');
+    } catch (e) {
+        console.error('Ошибка создания платежа:', e);
+        showNotification('Ошибка создания платежа', 'error');
     }
 }
 

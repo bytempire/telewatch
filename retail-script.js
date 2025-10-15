@@ -38,18 +38,32 @@ async function createYooKassaPayment(orderData) {
         return_url: window.location.href
     };
 
-    const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
+    try {
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                amount: payload.amount, // сервер ожидает amount как число
+                orderId: payload.metadata.orderNumber,
+                description: payload.description
+            })
+        });
 
-    if (!res.ok) {
-        throw new Error('Failed to create payment');
+        if (!res.ok) {
+            const text = await res.text();
+            console.error('Ошибка создания платежа:', res.status, text);
+            throw new Error('Failed to create payment');
+        }
+
+        const data = await res.json();
+        // Наш PHP возвращает { success, paymentUrl, paymentId }
+        const url = data?.paymentUrl || data?.confirmation_url || null;
+        return url;
+    } catch (err) {
+        console.error('Исключение при создании платежа:', err);
+        showNotification('Не удалось создать оплату. Попробуйте еще раз', 'error');
+        return null;
     }
-
-    const data = await res.json();
-    return data?.confirmation_url || null;
 }
 // Telegram Web App инициализация (уже выполнена в HTML)
 const tg = window.Telegram?.WebApp;
